@@ -1,6 +1,6 @@
 import os
 
-path = "facebank" + os.sep + "noonan"
+path = "facebank" + os.sep + "normal"
 dirs = os.listdir(path)
 
 i = 1
