@@ -25,8 +25,9 @@ if __name__ == '__main__':
     
     learner = face_learner(conf, True)
     learner.threshold = args.threshold
-    if conf.device.type == 'cpu':
-        learner.load_state(conf, 'cpu_final.pth', True, True)
+    if conf.device.type == 'cpu': # conf.device.type = 'cpu' for CRC01/02 
+        learner.load_state(conf, 'mobilefacenet.pth', True, True)
+        # learner.load_state(conf, 'cpu_final.pth', True, True)
     else:
         learner.load_state(conf, 'final.pth', True, True)
     learner.model.eval()
