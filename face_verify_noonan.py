@@ -42,9 +42,10 @@ if __name__ == '__main__':
 
     test_dir = conf.data_path/args.dataset_dir/'test'
     if args.tta:
-        verify_dir = conf.data_path/args.dataset_dir + '_tta'/'verify'
+        verify_type = args.dataset_dir + '_tta'
     else:
-        verify_dir = conf.data_path/args.dataset_dir/'verify'
+        verify_type = args.dataset_dir
+    verify_dir = conf.data_path/verify_type/'verify'
     if not verify_dir.is_dir():
         verify_dir.mkdir(parents=False)
     
