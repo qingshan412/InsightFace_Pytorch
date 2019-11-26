@@ -22,7 +22,7 @@ if __name__ == '__main__':
     mtcnn = MTCNN()
     print('mtcnn loaded')
     
-    learner = face_learner(conf, True)
+    learner = face_learner(conf, inference=True)
     learner.threshold = args.threshold
     if conf.device.type == 'cpu': # conf.device.type = 'cpu' for CRC01/02 
         learner.load_state(conf, 'mobilefacenet.pth', True, True)
