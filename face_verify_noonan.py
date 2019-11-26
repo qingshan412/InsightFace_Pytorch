@@ -40,12 +40,12 @@ if __name__ == '__main__':
         targets, names = load_facebank(conf)
         print('facebank loaded')
 
-    test_dir = conf.facebank_path/args.dataset_dir/'test'
+    test_dir = conf.data_path/'facebank'/args.dataset_dir/'test'
     if args.tta:
         verify_type = args.dataset_dir + '_tta'
     else:
         verify_type = args.dataset_dir
-    verify_dir = conf.facebank_path/verify_type/'verify'
+    verify_dir = confdata_path/'facebank'/verify_type/'verify'
     if not verify_dir.is_dir():
         verify_dir.mkdir(parents=True)
     
