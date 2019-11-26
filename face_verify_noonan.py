@@ -59,6 +59,7 @@ if __name__ == '__main__':
                 else:
                     try:
                         image = Image.open(fil)
+                        frame = cv2.imread(fil)
                     except:
                         continue
                     
