@@ -87,6 +87,9 @@ class MTCNN():
 
             # collect boxes (and offsets, and scores) from different scales
             bounding_boxes = [i for i in bounding_boxes if i is not None]
+            print('\n\n\n')
+            print(bounding_boxes.shape)
+            print('\n\n\n')
             bounding_boxes = np.vstack(bounding_boxes)
 
             keep = nms(bounding_boxes[:, 0:5], nms_thresholds[0])
