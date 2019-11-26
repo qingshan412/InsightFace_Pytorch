@@ -45,7 +45,7 @@ if __name__ == '__main__':
         verify_type = args.dataset_dir + '_tta'
     else:
         verify_type = args.dataset_dir
-    verify_dir = confdata_path/'facebank'/verify_type/'verify'
+    verify_dir = conf.data_path/'facebank'/verify_type/'verify'
     if not verify_dir.is_dir():
         verify_dir.mkdir(parents=True)
     
