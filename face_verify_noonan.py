@@ -69,8 +69,8 @@ if __name__ == '__main__':
                     for idx,bbox in enumerate(bboxes):
                         frame = draw_box_name(bbox, names[results[idx] + 1] + '_{:.2f}'.format(score[idx]), frame)
                     
-                    cv2.imshow(fil.name, frame)
+                    # cv2.imshow(fil.name, frame)
                     print(verify_dir/fil.name)
-                    cv2.imwrite(verify_dir/fil.name, frame)
+                    cv2.imwrite(str(verify_dir/fil.name), frame)
 
 
