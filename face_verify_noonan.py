@@ -47,7 +47,7 @@ if __name__ == '__main__':
         verify_type = args.dataset_dir
     verify_dir = conf.data_path/verify_type/'verify'
     if not verify_dir.is_dir():
-        verify_dir.mkdir(parents=False)
+        verify_dir.mkdir(parents=True)
     
     for path in test_dir.iterdir():
         if path.is_file():
