@@ -57,9 +57,9 @@ if __name__ == '__main__':
                 if not fil.is_file():
                     continue
                 else:
+                    print(fil)
                     image = Image.open(fil)
                     frame = cv2.imread(fil)
-                    print(fil)
                     bboxes, faces = mtcnn.align_multi(image, conf.face_limit, conf.min_face_size)
                     bboxes = bboxes[:,:-1] #shape:[10,4],only keep 10 highest possibiity faces
                     bboxes = bboxes.astype(int)
