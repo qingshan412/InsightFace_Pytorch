@@ -39,7 +39,7 @@ class MTCNN():
         return boxes, faces
 
     def detect_faces(self, image, min_face_size=20.0,
-                     thresholds=[0.5, 0.5, 0.5],
+                     thresholds=[0.4, 0.5, 0.6],
                      nms_thresholds=[0.7, 0.7, 0.7]):
         """
         Arguments:
