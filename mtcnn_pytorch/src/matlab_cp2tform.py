@@ -119,8 +119,8 @@ def findSimilarity(uv, xy, options=None):
 
     options = {'K': 2}
 
-#    uv = np.array(uv)
-#    xy = np.array(xy)
+    # uv = np.array(uv)
+    # xy = np.array(xy)
 
     # Solve for trans1
     trans1, trans1_inv = findNonreflectiveSimilarity(uv, xy, options)

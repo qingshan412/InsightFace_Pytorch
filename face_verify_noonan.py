@@ -62,7 +62,6 @@ if __name__ == '__main__':
                     frame = cv2.imread(str(fil))
                     image = Image.fromarray(frame)
                     bboxes, faces = mtcnn.align_multi(image, conf.face_limit, conf.min_face_size)
-                    print(bboxes)
                     bboxes = bboxes[:,:-1] #shape:[10,4],only keep 10 highest possibiity faces
                     bboxes = bboxes.astype(int)
                     bboxes = bboxes + [-1,-1,1,1] # personal choice    
