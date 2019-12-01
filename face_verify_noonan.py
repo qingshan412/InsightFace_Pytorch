@@ -57,7 +57,7 @@ if __name__ == '__main__':
                 if not fil.is_file():
                     continue
                 else:
-                    print(fil)
+                    # print(fil)
                     # image = Image.open(fil)
                     frame = cv2.imread(str(fil))
                     image = Image.fromarray(frame)
