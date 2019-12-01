@@ -40,7 +40,7 @@ class MTCNN():
 
     def detect_faces(self, image, min_face_size=20.0,
                      thresholds=[0.5, 0.6, 0.7],
-                     nms_thresholds=[0.6, 0.6, 0.6]):
+                     nms_thresholds=[0.5, 0.5, 0.5]):
         """
         Arguments:
             image: an instance of PIL.Image.
