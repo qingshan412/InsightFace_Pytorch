@@ -16,7 +16,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='for face verification')
     parser.add_argument("-ds", "--dataset_dir", help="where to get data", default="noonan+normal", type=str)
     parser.add_argument('-th','--threshold',help='threshold to decide identical faces',default=1.54, type=float)
-    parser.add_argument("-u", "--update", help="whether perform update the facebank",action="store_true")
+    # parser.add_argument("-u", "--update", help="whether perform update the facebank",action="store_true")
     parser.add_argument("-tta", "--tta", help="whether test time augmentation",action="store_true")
     parser.add_argument("-k", "--kfold", help="Returns the number of splitting iterations in the cross-validator.", 
                         default=10, type=int)
