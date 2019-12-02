@@ -40,8 +40,8 @@ if __name__ == '__main__':
     conf.facebank_path = conf.facebank_path/args.dataset_dir/'train'
     test_dir = conf.data_path/'facebank'/args.dataset_dir/'test'
 
-    normals = glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'raw') + '/normal*')
-    noonans = glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'raw') + '/noonan*')
+    normals = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'raw') + '/normal*'))
+    noonans = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'raw') + '/noonan*'))
     kf = KFold(n_splits=args.kfold)
     for fold_idx, (train_index, test_index) in enumerate(kf.split(normals)):
         normals_train, normals_test = normals[train_index], normals[test_index]
