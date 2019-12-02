@@ -11,6 +11,7 @@ from utils import load_facebank, draw_box_name, prepare_facebank
 
 from sklearn.model_selection import KFold
 import os, glob, shutil
+import numpy as np
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='for face verification')
