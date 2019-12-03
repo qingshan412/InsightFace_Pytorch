@@ -46,7 +46,9 @@ if __name__ == '__main__':
     kf = KFold(n_splits=args.kfold)
     for fold_idx, (train_index, test_index) in enumerate(kf.split(normals)):
         normals_train, normals_test = normals[train_index], normals[test_index]
-        noonans_train, noonans_test = noonans[train_index], noonans[test_index]
+        noonans_train, noonans_test = noonans[train_index], noonans[test_index]\
+        print(train_index)
+        print(test_index)
         # save trains to conf.facebank_path/args.dataset_dir/'train'
         prev = glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'train') + '/*/*')
         for p in prev:
