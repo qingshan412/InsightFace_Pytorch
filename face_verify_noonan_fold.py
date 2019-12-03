@@ -59,8 +59,9 @@ if __name__ == '__main__':
         for p in prev:
             os.remove(p)
         for i in range(len(normals_test)):
-            shutil.copy(normals_train[i], normals_train[i].replace('raw', 'test/normal'))
-            shutil.copy(noonans_train[i], noonans_train[i].replace('raw', 'test/noonan'))
+            print(normals_test[i])
+            shutil.copy(normals_test[i], normals_train[i].replace('raw', 'test/normal'))
+            shutil.copy(noonans_test[i], noonans_train[i].replace('raw', 'test/noonan'))
         print(fold_idx)
         print('datasets ready')
 
