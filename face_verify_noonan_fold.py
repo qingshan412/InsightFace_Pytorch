@@ -59,7 +59,7 @@ if __name__ == '__main__':
         for p in prev:
             os.remove(p)
         for i in range(len(normals_test)):
-            print(normals_test[i])
+            # print(normals_test[i])
             shutil.copy(normals_test[i], normals_train[i].replace('raw', 'test/normal'))
             shutil.copy(noonans_test[i], noonans_train[i].replace('raw', 'test/noonan'))
         print(fold_idx)
@@ -84,7 +84,7 @@ if __name__ == '__main__':
                     if not fil.is_file():
                         continue
                     else:
-                        # print(fil)
+                        print(fil)
                         # image = Image.open(fil)
                         frame = cv2.imread(str(fil))
                         image = Image.fromarray(frame)
