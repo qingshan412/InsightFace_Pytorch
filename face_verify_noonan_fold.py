@@ -72,7 +72,7 @@ if __name__ == '__main__':
             verify_type = 'verify_tta_' + str(fold_idx)
         else:
             verify_type = 'verify_' + str(fold_idx)
-        verify_dir = conf.data_path/'facebank'/args.dataset_dir/verify_type
+        verify_dir = conf.data_path/'facebank'/args.dataset_dir/'fold'/verify_type
         if not verify_dir.is_dir():
             verify_dir.mkdir(parents=True)
         
@@ -96,8 +96,8 @@ if __name__ == '__main__':
                         for idx,bbox in enumerate(bboxes):
                             frame = draw_box_name(bbox, names[results[idx] + 1] + '_{:.2f}'.format(score[idx]), frame)
                         
-                        new_name = '_'.join(str(fil).split('/')[-2:])
+                        # new_name = '_'.join(str(fil).split('/')[-2:])
                         # print(verify_dir/fil.name)
-                        cv2.imwrite(str(verify_dir/new_name), frame)
+                        cv2.imwrite(str(verify_dir/fil.name), frame)
 
 
