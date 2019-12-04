@@ -17,7 +17,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='for face verification')
     parser.add_argument("-ds", "--dataset_dir", help="where to get data", default="noonan+normal", type=str)
     parser.add_argument('-th','--threshold',help='threshold to decide identical faces',default=1.54, type=float)
-    # parser.add_argument("-u", "--update", help="whether perform update the facebank",action="store_true")
     parser.add_argument("-tta", "--tta", help="whether test time augmentation",action="store_true")
     parser.add_argument("-k", "--kfold", help="Returns the number of splitting iterations in the cross-validator.", 
                         default=10, type=int)
@@ -43,8 +42,8 @@ if __name__ == '__main__':
 
     normals = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'raw') + '/normal*'))
     noonans = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'raw') + '/noonan*'))
-    print(normals)
-    print(noonans)
+    print(len(normals))
+    print(len(noonans))
     kf = KFold(n_splits=args.kfold)
     for fold_idx, (train_index, test_index) in enumerate(kf.split(normals)):
         normals_train, normals_test = normals[train_index], normals[test_index]
