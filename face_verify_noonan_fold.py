@@ -42,14 +42,11 @@ if __name__ == '__main__':
 
     normals = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'raw') + '/normal*'))
     noonans = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'raw') + '/noonan*'))
-    print(len(normals))
-    print(len(noonans))
+
     kf = KFold(n_splits=args.kfold)
     for fold_idx, (train_index, test_index) in enumerate(kf.split(normals)):
         normals_train, normals_test = normals[train_index], normals[test_index]
         noonans_train, noonans_test = noonans[train_index], noonans[test_index]
-        print(train_index)
-        print(test_index)
         # save trains to conf.facebank_path/args.dataset_dir/'train'
         prev = glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'train') + '/*/*')
         for p in prev:
@@ -62,9 +59,10 @@ if __name__ == '__main__':
         for p in prev:
             os.remove(p)
         for i in range(len(normals_test)):
-            # print(normals_test[i])
-            shutil.copy(normals_test[i], normals_train[i].replace('raw', 'test/normal'))
-            shutil.copy(noonans_test[i], noonans_train[i].replace('raw', 'test/noonan'))
+            print('{} to {}'.format(normals_test[i], normals_test[i].replace('raw', 'test/normal')))
+            print('{} to {}'.format(noonans_test[i], noonans_test[i].replace('raw', 'test/normal')))
+            shutil.copy(normals_test[i], normals_test[i].replace('raw', 'test/normal'))
+            shutil.copy(noonans_test[i], noonans_test[i].replace('raw', 'test/noonan'))
         print(fold_idx)
         print('datasets ready')
 
