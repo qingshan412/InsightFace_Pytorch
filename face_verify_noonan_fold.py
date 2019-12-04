@@ -64,8 +64,8 @@ if __name__ == '__main__':
         print(fold_idx)
         print('datasets ready')
 
-        # targets, names = prepare_facebank(conf, learner.model, mtcnn, tta = args.tta)
-        # print('facebank updated')
+        targets, names = prepare_facebank(conf, learner.model, mtcnn, tta = args.tta)
+        print('facebank updated')
 
         if args.tta:
             verify_type = 'verify_tta_' + str(fold_idx)
@@ -84,18 +84,18 @@ if __name__ == '__main__':
                         continue
                     else:
                         print(fil)
-                        # frame = cv2.imread(str(fil))
-                        # image = Image.fromarray(frame)
-                        # bboxes, faces = mtcnn.align_multi(image, conf.face_limit, conf.min_face_size)
-                        # bboxes = bboxes[:,:-1] #shape:[10,4],only keep 10 highest possibiity faces
-                        # bboxes = bboxes.astype(int)
-                        # bboxes = bboxes + [-1,-1,1,1] # personal choice    
-                        # results, score = learner.infer(conf, faces, targets, args.tta)
-                        # for idx,bbox in enumerate(bboxes):
-                        #     frame = draw_box_name(bbox, names[results[idx] + 1] + '_{:.2f}'.format(score[idx]), frame)
+                        frame = cv2.imread(str(fil))
+                        image = Image.fromarray(frame)
+                        bboxes, faces = mtcnn.align_multi(image, conf.face_limit, conf.min_face_size)
+                        bboxes = bboxes[:,:-1] #shape:[10,4],only keep 10 highest possibiity faces
+                        bboxes = bboxes.astype(int)
+                        bboxes = bboxes + [-1,-1,1,1] # personal choice    
+                        results, score = learner.infer(conf, faces, targets, args.tta)
+                        for idx,bbox in enumerate(bboxes):
+                            frame = draw_box_name(bbox, names[results[idx] + 1] + '_{:.2f}'.format(score[idx]), frame)
                         
-                        # # new_name = '_'.join(str(fil).split('/')[-2:])
-                        # # print(verify_dir/fil.name)
-                        # cv2.imwrite(str(verify_dir/fil.name), frame)
+                        # new_name = '_'.join(str(fil).split('/')[-2:])
+                        # print(verify_dir/fil.name)
+                        cv2.imwrite(str(verify_dir/fil.name), frame)
 
 
