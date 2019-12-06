@@ -13,6 +13,7 @@ import mxnet as mx
 from tqdm import tqdm
 
 from itertools import combinations
+from mtcnn import MTCNN
 import os
 
 def de_preprocess(tensor):
@@ -71,6 +72,7 @@ def load_bin(path, rootdir, transform, image_size=[112,112]):
 def load_noonan_val_pair(path, rootdir, transform, image_size=[112,112]):
     # path: path for original images, str
     # rootdir: path to store images and issame_list, Path
+    mtcnn = MTCNN()
     if not rootdir.exists():
         rootdir.mkdir()
     images = os.listdir(path)
@@ -81,7 +83,11 @@ def load_noonan_val_pair(path, rootdir, transform, image_size=[112,112]):
     i = 0
     for pair in pairs:
         img0 = Image.open(os.path.join(path, pair[0]))
+        if img0.size != (112, 112):
+            img0 = mtcnn.align(img0)
         img1 = Image.open(os.path.join(path, pair[1]))
+        if img1.size != (112, 112):
+            img1 = mtcnn.align(img1)
         data[2*i, ...] = transform(img0)
         data[2*i + 1, ...] = transform(img1)
         if ('noonan' in pair[0] and 'noonan' in pair[1]) or ('normal' in pair[0] and 'normal' in pair[1]):
