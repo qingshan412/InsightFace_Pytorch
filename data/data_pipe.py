@@ -69,15 +69,19 @@ def load_bin(path, rootdir, transform, image_size=[112,112]):
     return data, issame_list
 
 def load_noonan_val_pair(path, rootdir, transform, image_size=[112,112]):
-    images = os.listdir(rootdir)
+    # path: path for original images, str
+    # rootdir: path to store images and issame_list, Path
+    if not rootdir.exists():
+        rootdir.mkdir()
+    images = os.listdir(path)
     comb_size = len(images) * (len(images) - 1) / 2
     pairs = combinations(images, 2)
-    data = bcolz.fill([comb_size * 2, 3, image_size[0], image_size[1]], dtype=np.float32, rootdir=rootdir, mode='w')
-    issame_list = np.zeros(comb_size)
+    data = bcolz.fill([int(comb_size * 2), 3, image_size[0], image_size[1]], dtype=np.float32, rootdir=rootdir, mode='w')
+    issame_list = np.zeros(int(comb_size))
     i = 0
     for pair in pairs:
-        img0 = Image.open(os.path.join(rootdir, pair[0]))
-        img1 = Image.open(os.path.join(rootdir, pair[1]))
+        img0 = Image.open(os.path.join(path, pair[0]))
+        img1 = Image.open(os.path.join(path, pair[1]))
         data[2*i, ...] = transform(img0)
         data[2*i + 1, ...] = transform(img1)
         if ('noonan' in pair[0] and 'noonan' in pair[1]) or ('normal' in pair[0] and 'normal' in pair[1]):
