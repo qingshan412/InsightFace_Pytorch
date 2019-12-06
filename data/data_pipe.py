@@ -12,6 +12,9 @@ import torch
 import mxnet as mx
 from tqdm import tqdm
 
+from itertools import combinations
+import os
+
 def de_preprocess(tensor):
     return tensor*0.5 + 0.5
     
@@ -59,9 +62,29 @@ def load_bin(path, rootdir, transform, image_size=[112,112]):
         img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
         img = Image.fromarray(img.astype(np.uint8))
         data[i, ...] = transform(img)
-        i += 1
         if i % 1000 == 0:
             print('loading bin', i)
+    print(data.shape)
+    np.save(str(rootdir)+'_list', np.array(issame_list))
+    return data, issame_list
+
+def load_noonan_val_pair(path, rootdir, transform, image_size=[112,112]):
+    images = os.listdir(rootdir)
+    comb_size = len(images) * (len(images) - 1) / 2
+    pairs = combinations(images, 2)
+    data = bcolz.fill([comb_size * 2, 3, image_size[0], image_size[1]], dtype=np.float32, rootdir=rootdir, mode='w')
+    issame_list = np.zeros(comb_size)
+    i = 0
+    for pair in pairs:
+        img0 = Image.open(os.path.join(rootdir, pair[0]))
+        img1 = Image.open(os.path.join(rootdir, pair[1]))
+        data[2*i, ...] = transform(img0)
+        data[2*i + 1, ...] = transform(img1)
+        if ('noonan' in pair[0] and 'noonan' in pair[1]) or ('normal' in pair[0] and 'normal' in pair[1]):
+            issame_list[i] = 1
+        i += 1
+        if i % 1000 == 0:
+            print('loading noonan', i)
     print(data.shape)
     np.save(str(rootdir)+'_list', np.array(issame_list))
     return data, issame_list
