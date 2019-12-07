@@ -73,6 +73,8 @@ def load_noonan_val_pair(path, rootdir, transform, image_size=[112,112]):
     # path: path for original images, str
     # rootdir: path to store images and issame_list, Path
     mtcnn = MTCNN()
+    print('mtcnn loaded')
+    
     if not rootdir.exists():
         rootdir.mkdir()
     images = os.listdir(path)
