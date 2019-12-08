@@ -95,7 +95,6 @@ def load_noonan_val_pair(path, rootdir, transform, image_size=[112,112]):
         if ('noonan' in pair[0] and 'noonan' in pair[1]) or ('normal' in pair[0] and 'normal' in pair[1]):
             issame_list[i] = 1
         i += 1
-        print(i)
         if i % 1000 == 0:
             print('loading noonan', i)
     print(data.shape)
