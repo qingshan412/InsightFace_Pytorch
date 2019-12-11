@@ -71,7 +71,7 @@ if __name__ == '__main__':
             verify_type = 'verify_tta_' + str(fold_idx)
         else:
             verify_type = 'verify_' + str(fold_idx)
-        verify_dir = conf.data_path/'facebank'/args.dataset_dir/'fold'/verify_type
+        verify_dir = conf.data_path/'facebank'/args.dataset_dir/'fold_1'/verify_type
         if not verify_dir.is_dir():
             verify_dir.mkdir(parents=True)
         
