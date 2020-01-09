@@ -137,7 +137,7 @@ def img2lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predict
     predictor = dlib.shape_predictor(predictor_path)
     
     for f in glob.glob(os.path.join(img_path, '*', '*.jpg')):
-         lmk_f = f.replace(img_path, lmk_path)
+        lmk_f = f.replace(img_path, lmk_path)
         print(lmk_f)
         lmk_dir = os.path.join(lmk_f.split('/')[:-1])
         print(lmk_dir)
