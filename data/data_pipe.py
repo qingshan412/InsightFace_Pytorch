@@ -161,6 +161,7 @@ def img2lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predict
         del lmk_draw
         
         lmk_f = f.replace(img_path, lmk_path)
+        print(lmk_f)
         lmk_dir = os.path.join(lmk_f.split('/')[:-1])
         print(lmk_dir)
         os.makedirs(lmk_dir, exist_ok=True)
