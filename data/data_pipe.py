@@ -131,9 +131,8 @@ def load_mx_rec(rec_path):
         img.save(label_path/'{}.jpg'.format(idx), quality=95)
 
 ### using system call for directory operatios instead of pathlib as before
-def img2lmk(img_path, lmk_path, predictor_path='lmk_predictor/shape_predictor_68_face_landmarks.dat'):
-    os.makedirs(lmk_path, exist_ok=True)
-
+def img2lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predictor_68_face_landmarks.dat'):
+    # os.makedirs(lmk_path, exist_ok=True)
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor(predictor_path)
     
@@ -161,7 +160,10 @@ def img2lmk(img_path, lmk_path, predictor_path='lmk_predictor/shape_predictor_68
         lmk_draw.point(points, fill='white')
         del lmk_draw
         
-        lmk_img.save(f.replace(img_path, lmk_path))
+        lmk_f = f.replace(img_path, lmk_path)
+        lmk_dir = os.path.join(lmk_f.split('/')[:-1])
+        os.makedirs(lmk_dir, exist_ok=True)
+        lmk_img.save(lmk_f)
 
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
