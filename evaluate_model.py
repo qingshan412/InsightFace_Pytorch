@@ -14,3 +14,10 @@ fp, issame = load_noonan_val_pair('data/facebank/noonan+normal/raw_112', Path('d
 accuracy, best_threshold, roc_curve_tensor = learner.evaluate(conf, fp, issame, nrof_folds=10, tta=True)
 print('fp - accuray:{}, threshold:{}'.format(accuracy, best_threshold))
 trans.ToPILImage()(roc_curve_tensor)
+
+
+from data.data_pipe import img2lmk
+
+img_path = 'data/facebank/webface/imgs'
+lmk_path = 'data/facebank/webface/lmks'
+img2lmk(img_path, lmk_path)
