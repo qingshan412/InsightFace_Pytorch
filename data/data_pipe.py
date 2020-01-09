@@ -2,7 +2,7 @@ from pathlib import Path
 from torch.utils.data import Dataset, ConcatDataset, DataLoader
 from torchvision import transforms as trans
 from torchvision.datasets import ImageFolder
-from PIL import Image, ImageFile
+from PIL import Image, ImageFile, ImageDraw
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 import numpy as np
 import cv2
@@ -14,7 +14,7 @@ from tqdm import tqdm
 
 from itertools import combinations
 from mtcnn import MTCNN
-import os
+import os, glob, dlib
 
 def de_preprocess(tensor):
     return tensor*0.5 + 0.5
@@ -129,6 +129,39 @@ def load_mx_rec(rec_path):
         if not label_path.exists():
             label_path.mkdir()
         img.save(label_path/'{}.jpg'.format(idx), quality=95)
+
+### using system call for directory operatios instead of pathlib as before
+def img2lmk(img_path, lmk_path, predictor_path='lmk_predictor/shape_predictor_68_face_landmarks.dat'):
+    os.makedirs(lmk_path, exist_ok=True)
+
+    detector = dlib.get_frontal_face_detector()
+    predictor = dlib.shape_predictor(predictor_path)
+    
+    for f in glob.glob(os.path.join(img_path, '*', '*.jpg')):
+        img = dlib.load_rgb_image(f)
+        lmk_img = np.ones(img.shape) * img.mean()
+        lmk_img = Image.fromarray(lmk_img.astype('uint8'))
+
+        # Ask the detector to find the bounding boxes of each face. The 0 in the
+        # second argument indicates that we should upsample the image 0 time. Usually, 
+        # it's set to 1 to make everything bigger and allow us to detect more faces.
+        dets = detector(img, 0)
+
+        if len(dets) != 1:
+            print("Processing file: {}".format(f))
+            print("Number of faces detected: {}".format(len(dets)))
+            continue
+        rec = [dets[0].left(), dets[0].top(), dets[0].right(), dets[0].bottom()]
+        
+        shape = predictor(img, dets[0])
+        points = [(p.x, p.y) for p in shape.parts()]
+
+        lmk_draw = ImageDraw.Draw(lmk_img)
+        lmk_draw.rectangle(rec, outline='black')
+        lmk_draw.point(points, fill='white')
+        del lmk_draw
+        
+        lmk_img.save(f.replace(img_path, lmk_path))
 
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
