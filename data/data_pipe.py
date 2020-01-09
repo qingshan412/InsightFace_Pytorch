@@ -137,6 +137,12 @@ def img2lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predict
     predictor = dlib.shape_predictor(predictor_path)
     
     for f in glob.glob(os.path.join(img_path, '*', '*.jpg')):
+         lmk_f = f.replace(img_path, lmk_path)
+        # print(lmk_f)
+        lmk_dir = os.path.join(lmk_f.split('/')[:-1])
+        # print(lmk_dir)
+        os.makedirs(lmk_dir, exist_ok=True)
+
         img = dlib.load_rgb_image(f)
         lmk_img = np.ones(img.shape) * img.mean()
         lmk_img = Image.fromarray(lmk_img.astype('uint8'))
@@ -160,11 +166,6 @@ def img2lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predict
         lmk_draw.point(points, fill='white')
         del lmk_draw
         
-        lmk_f = f.replace(img_path, lmk_path)
-        # print(lmk_f)
-        lmk_dir = os.path.join(lmk_f.split('/')[:-1])
-        # print(lmk_dir)
-        os.makedirs(lmk_dir, exist_ok=True)
         lmk_img.save(lmk_f)
 
 # class train_dataset(Dataset):
