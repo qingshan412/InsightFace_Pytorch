@@ -144,9 +144,6 @@ def img2lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predict
         os.makedirs(lmk_dir, exist_ok=True)
 
         img = dlib.load_rgb_image(f)
-        lmk_img = np.ones(img.shape) * img.mean()
-        lmk_img = Image.fromarray(lmk_img.astype('uint8'))
-
         # Ask the detector to find the bounding boxes of each face. The 0 in the
         # second argument indicates that we should upsample the image 0 time. Usually, 
         # it's set to 1 to make everything bigger and allow us to detect more faces.
@@ -161,6 +158,8 @@ def img2lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predict
         shape = predictor(img, dets[0])
         points = [(p.x, p.y) for p in shape.parts()]
 
+        lmk_img = np.ones(img.shape) * img.mean()
+        lmk_img = Image.fromarray(lmk_img.astype('uint8'))
         lmk_draw = ImageDraw.Draw(lmk_img)
         lmk_draw.rectangle(rec, outline='black')
         lmk_draw.point(points, fill='white')
