@@ -16,8 +16,16 @@
 # trans.ToPILImage()(roc_curve_tensor)
 
 
-from data.data_pipe import img2lmk
+# from data.data_pipe import img2lmk
 
+# img_path = 'data/facebank/webface/imgs'
+# lmk_path = 'data/facebank/webface/lmks'
+# img2lmk(img_path, lmk_path)
+
+
+from data.data_pipe import mv_no_face_img
+
+record = 'tmp'
 img_path = 'data/facebank/webface/imgs'
-lmk_path = 'data/facebank/webface/lmks'
-img2lmk(img_path, lmk_path)
+no_face_path = 'data/facebank/webface/no_face'
+img2lmk(record, img_path, no_face_path)

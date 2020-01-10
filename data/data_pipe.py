@@ -14,7 +14,7 @@ from tqdm import tqdm
 
 from itertools import combinations
 from mtcnn import MTCNN
-import os, glob, dlib
+import os, glob, dlib, shutil
 
 def de_preprocess(tensor):
     return tensor*0.5 + 0.5
@@ -166,6 +166,17 @@ def img2lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predict
         del lmk_draw
         
         lmk_img.save(lmk_f)
+
+### move images from which dlib cannot detect a face to a folder
+def mv_no_face_img(record, img_path, no_face_path):
+    with open(record) as f:
+        for line in f:
+            if "Processing" in line:
+                img_path = line.strip().split(' ')[-1]
+                no_img_path = img_path.replace(img_path, no_face_path)
+                no_img_dir = os.sep.join(no_img_path.split(os.sep)[:-1])
+                os.makedirs(no_img_dir, exist_ok=True)
+                shutil.move(img_path, no_img_path)
 
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
