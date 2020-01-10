@@ -28,4 +28,4 @@ from data.data_pipe import mv_no_face_img
 record = 'tmp'
 img_path = 'data/facebank/webface/imgs'
 no_face_path = 'data/facebank/webface/no_face'
-img2lmk(record, img_path, no_face_path)
+mv_no_face_img(record, img_path, no_face_path)
