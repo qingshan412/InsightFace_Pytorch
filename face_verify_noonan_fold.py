@@ -17,9 +17,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='for face verification')
     parser.add_argument("-ds", "--dataset_dir", help="where to get data", default="noonan+normal", type=str)
     parser.add_argument('-th','--threshold',help='threshold to decide identical faces',default=1.54, type=float)
-    parser.add_argument("-tta", "--tta", help="whether test time augmentation",action="store_true")
-    parser.add_argument("-k", "--kfold", help="Returns the number of splitting iterations in the cross-validator.", 
+    parser.add_argument("-k", "--kfold", help="returns the number of splitting iterations in the cross-validator.", 
                         default=10, type=int)
+    parser.add_argument("-s", "--use_shuffled_kfold", help="whether to use shuffled kfold.", action="store_true")
+    parser.add_argument("-tta", "--tta", help="whether test time augmentation",action="store_true")
     args = parser.parse_args()
 
     conf = get_config(False)
@@ -37,13 +38,27 @@ if __name__ == '__main__':
     learner.model.eval()
     print('learner loaded')
     
+    # mkdir for folder containing verification results
+    verify_type = 'verify'
+    if args.tta:
+        verify_type += '_tta'
+    if args.use_shuffled_kfold:
+        verify_type += '_shuffled'
+    verify_dir = conf.data_path/'facebank'/args.dataset_dir/verify_type
+    if not verify_dir.is_dir():
+        verify_dir.mkdir(parents=True)
+
     conf.facebank_path = conf.facebank_path/args.dataset_dir/'train'
     test_dir = conf.data_path/'facebank'/args.dataset_dir/'test'
 
     normals = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'raw') + '/normal*'))
     noonans = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'raw') + '/noonan*'))
 
-    kf = KFold(n_splits=args.kfold)
+    if args.use_shuffled_kfold:
+        kf = KFold(n_splits=args.kfold, shuffle=True, random_state=6)
+    else:
+        kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
+    
     for fold_idx, (train_index, test_index) in enumerate(kf.split(normals)):
         normals_train, normals_test = normals[train_index], normals[test_index]
         noonans_train, noonans_test = noonans[train_index], noonans[test_index]
@@ -67,13 +82,11 @@ if __name__ == '__main__':
         targets, names = prepare_facebank(conf, learner.model, mtcnn, tta = args.tta)
         print('facebank updated')
 
-        if args.tta:
-            verify_type = 'verify_tta_' + str(fold_idx)
-        else:
-            verify_type = 'verify_' + str(fold_idx)
-        verify_dir = conf.data_path/'facebank'/args.dataset_dir/'fold_1'/verify_type
-        if not verify_dir.is_dir():
-            verify_dir.mkdir(parents=True)
+        # folder for 1 fold
+        # verify_fold = str(fold_idx)
+        verify_fold_dir = verify_dir/str(fold_idx)
+        if not verify_fold_dir.is_dir():
+            verify_fold_dir.mkdir(parents=True)
         
         for path in test_dir.iterdir():
             if path.is_file():
@@ -96,6 +109,6 @@ if __name__ == '__main__':
                         
                         # new_name = '_'.join(str(fil).split('/')[-2:])
                         # print(verify_dir/fil.name)
-                        cv2.imwrite(str(verify_dir/fil.name), frame)
+                        cv2.imwrite(str(verify_fold_dir/fil.name), frame)
 
 

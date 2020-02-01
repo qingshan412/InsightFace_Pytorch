@@ -13,10 +13,11 @@ from PIL import Image
 from torchvision import transforms as trans
 import math
 import bcolz
+import pprint
 
 class face_learner(object):
     def __init__(self, conf, inference=False):
-        print(conf)
+        pprint.pprint(conf)
         if conf.use_mobilfacenet:
             self.model = MobileFaceNet(conf.embedding_size).to(conf.device)
             print('MobileFaceNet model generated')
