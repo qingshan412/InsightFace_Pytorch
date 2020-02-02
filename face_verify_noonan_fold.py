@@ -59,6 +59,11 @@ if __name__ == '__main__':
     else:
         kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
     
+    # count for roc-auc
+    counts = {}
+    for name in names:
+        counts[name] = [0, 0] # #false, #true
+
     for fold_idx, (train_index, test_index) in enumerate(kf.split(normals)):
         normals_train, normals_test = normals[train_index], normals[test_index]
         noonans_train, noonans_test = noonans[train_index], noonans[test_index]
@@ -105,10 +110,14 @@ if __name__ == '__main__':
                         bboxes = bboxes + [-1,-1,1,1] # personal choice    
                         results, score = learner.infer(conf, faces, targets, args.tta)
                         for idx,bbox in enumerate(bboxes):
-                            frame = draw_box_name(bbox, names[results[idx] + 1] + '_{:.2f}'.format(score[idx]), frame)
-                        
+                            pred_name = names[results[idx] + 1]
+                            frame = draw_box_name(bbox, pred_name + '_{:.2f}'.format(score[idx]), frame)
+                            if pred_name in fil.name:
+                                counts[pred_name][1] += 1
+                            else:
+                                counts[pred_name][0] += 1
                         # new_name = '_'.join(str(fil).split('/')[-2:])
                         # print(verify_dir/fil.name)
                         cv2.imwrite(str(verify_fold_dir/fil.name), frame)
 
-
+print(counts)
