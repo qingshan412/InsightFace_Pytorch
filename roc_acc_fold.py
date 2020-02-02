@@ -161,10 +161,10 @@ if __name__ == '__main__':
     for i in range(len(names_considered)):
         name = names_considered[i]
         if i%2 != 1:
-            plt.plot(fp_tp[name][0], fp_tp[name][1], label=name+' ROC curve '),
+            plt.plot(fp_tp[name][0], fp_tp[name][1], label=name+' ROC curve', 
                      color=colors[i], linewidth=4)
         else:
-            plt.plot(fp_tp[name][0], fp_tp[name][1], label=name+' ROC curve '),
+            plt.plot(fp_tp[name][0], fp_tp[name][1], label=name+' ROC curve', 
                      color=colors[i], linestyle=':', linewidth=4)
     
     plt.plot([0, 1], [0, 1], 'k--', lw=lw)
