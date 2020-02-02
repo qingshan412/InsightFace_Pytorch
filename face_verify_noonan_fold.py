@@ -60,9 +60,7 @@ if __name__ == '__main__':
         kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
     
     # count for roc-auc
-    counts = {}
-    for name in names:
-        counts[name] = [0, 0] # #false, #true
+    counts = {'normal': [0, 0], 'noonan': [0, 0]} # #false, #true
 
     for fold_idx, (train_index, test_index) in enumerate(kf.split(normals)):
         normals_train, normals_test = normals[train_index], normals[test_index]
