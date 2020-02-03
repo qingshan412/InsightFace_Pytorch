@@ -180,15 +180,15 @@ if __name__ == '__main__':
     for i in range(len(names_considered)):
         name = names_considered[i]
         if i%2 != 1:
-            plt.plot(accuracy[name], label=name+' accuracy curve '),
+            plt.plot(threshold_array + 1.0, accuracy[name], label=name+' accuracy curve '),
                      color=colors[i], linewidth=4)
         else:
-            plt.plot(fp_tp[name][0], fp_tp[name][1], label=name+' accuracy curve '),
+            plt.plot(threshold_array + 1.0, accuracy[name], label=name+' accuracy curve '),
                      color=colors[i], linestyle=':', linewidth=4)
     
     plt.ylim([0.0, 1.05])
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
+    plt.xlabel('Threshold')
+    plt.ylabel('Accuracy')
     plt.legend(loc="lower right")
     plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/accuracy.png')
     plt.close()
