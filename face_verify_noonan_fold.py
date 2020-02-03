@@ -116,7 +116,8 @@ if __name__ == '__main__':
                     if pred_name in fil.name:
                         counts[pred_name][1] += 1
                     else:
-                        counts[fil.name][0] += 1
+                        orig_name = ''.join([i for i in fil.name.split('.')[0] if not i.isdigit()])
+                        counts[orig_name][0] += 1
                 # new_name = '_'.join(str(fil).split('/')[-2:])
                 # print(verify_dir/fil.name)
                 cv2.imwrite(str(verify_fold_dir/fil.name), frame)
