@@ -125,7 +125,8 @@ if __name__ == '__main__':
                             continue
                         else:
                             print(fil)
-                            if fil.name not in names_considered:
+                            orig_name = ''.join([i for i in fil.name.strip().split('.')[0] if not i.isdigit()])
+                            if orig_name not in names_considered:
                                 print("Un-considered name:", fil.name)
                                 continue
                             frame = cv2.imread(str(fil))
@@ -139,9 +140,9 @@ if __name__ == '__main__':
                                 pred_name = names[results[idx] + 1]
                                 frame = draw_box_name(bbox, pred_name + '_{:.2f}'.format(score[idx]), frame)
                                 if pred_name in fil.name:
-                                    counts[pred_name][1] += 1
+                                    counts[orig_name][1] += 1
                                 else:
-                                    counts[fil.name][0] += 1
+                                    counts[orig_name][0] += 1
                                     if pred_name in names_considered:
                                         counts[pred_name][2] += 1
                             # new_name = '_'.join(str(fil).split('/')[-2:])
@@ -150,8 +151,8 @@ if __name__ == '__main__':
 
         print(counts)
         for name in names_considered:
-            fp_tp[name][0].append(counts[name][1] / (counts[name][1] + counts[name][2]))
-            fp_tp[name][1].append(counts[name][2] / (counts[name][1] + counts[name][2]))
+            fp_tp[name][0].append(counts[name][2] / (counts[name][1] + counts[name][2]))
+            fp_tp[name][1].append(counts[name][1] / (counts[name][1] + counts[name][2]))
             accuracy[name].append(counts[name][1] / (counts[name][0] + counts[name][1]))
         
     # plots
