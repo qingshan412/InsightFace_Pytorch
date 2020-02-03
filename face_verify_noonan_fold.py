@@ -53,6 +53,8 @@ if __name__ == '__main__':
 
     normals = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'raw') + '/normal*'))
     noonans = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'raw') + '/noonan*'))
+    print('normals:', normals.size)
+    print('noonans:', noonans.size)
 
     if args.use_shuffled_kfold:
         kf = KFold(n_splits=args.kfold, shuffle=True, random_state=6)
@@ -80,6 +82,7 @@ if __name__ == '__main__':
             shutil.copy(normals_test[i], normals_test[i].replace('raw', 'test/normal'))
             shutil.copy(noonans_test[i], noonans_test[i].replace('raw', 'test/noonan'))
         print(fold_idx)
+        print(test_index.size)
         print('datasets ready')
 
         targets, names = prepare_facebank(conf, learner.model, mtcnn, tta = args.tta)
@@ -92,30 +95,30 @@ if __name__ == '__main__':
             verify_fold_dir.mkdir(parents=True)
         
         for path in test_dir.iterdir():
-            if path.is_file():
-                continue
-            else:
-                for fil in path.iterdir():
-                    if not fil.is_file():
-                        continue
+            # if path.is_file():
+            #     continue
+            # else:
+            for fil in path.iterdir():
+                # if not fil.is_file():
+                #     continue
+                # else:
+                print(fil)
+                frame = cv2.imread(str(fil))
+                image = Image.fromarray(frame)
+                bboxes, faces = mtcnn.align_multi(image, conf.face_limit, conf.min_face_size)
+                bboxes = bboxes[:,:-1] #shape:[10,4],only keep 10 highest possibiity faces
+                bboxes = bboxes.astype(int)
+                bboxes = bboxes + [-1,-1,1,1] # personal choice    
+                results, score = learner.infer(conf, faces, targets, args.tta)
+                for idx,bbox in enumerate(bboxes):
+                    pred_name = names[results[idx] + 1]
+                    frame = draw_box_name(bbox, pred_name + '_{:.2f}'.format(score[idx]), frame)
+                    if pred_name in fil.name:
+                        counts[pred_name][1] += 1
                     else:
-                        print(fil)
-                        frame = cv2.imread(str(fil))
-                        image = Image.fromarray(frame)
-                        bboxes, faces = mtcnn.align_multi(image, conf.face_limit, conf.min_face_size)
-                        bboxes = bboxes[:,:-1] #shape:[10,4],only keep 10 highest possibiity faces
-                        bboxes = bboxes.astype(int)
-                        bboxes = bboxes + [-1,-1,1,1] # personal choice    
-                        results, score = learner.infer(conf, faces, targets, args.tta)
-                        for idx,bbox in enumerate(bboxes):
-                            pred_name = names[results[idx] + 1]
-                            frame = draw_box_name(bbox, pred_name + '_{:.2f}'.format(score[idx]), frame)
-                            if pred_name in fil.name:
-                                counts[pred_name][1] += 1
-                            else:
-                                counts[pred_name][0] += 1
-                        # new_name = '_'.join(str(fil).split('/')[-2:])
-                        # print(verify_dir/fil.name)
-                        cv2.imwrite(str(verify_fold_dir/fil.name), frame)
+                        counts[fil.name][0] += 1
+                # new_name = '_'.join(str(fil).split('/')[-2:])
+                # print(verify_dir/fil.name)
+                cv2.imwrite(str(verify_fold_dir/fil.name), frame)
 
-print(counts)
+    print(counts)
