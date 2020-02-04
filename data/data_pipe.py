@@ -15,6 +15,8 @@ from tqdm import tqdm
 from itertools import combinations
 from mtcnn import MTCNN
 import os, glob, dlib, shutil
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 
 def de_preprocess(tensor):
     return tensor*0.5 + 0.5
@@ -142,7 +144,6 @@ def img2lmk(img_path, lmk_path, in_place=False, predictor_path='data/lmk_predict
     else:
         data_path = os.path.join(img_path, '*.jpg')
     for f in glob.glob(data_path):
-        print("Processing file: {}".format(f))
         lmk_f = f.replace(img_path, lmk_path)
         # print(lmk_f)
         lmk_dir = os.sep.join(lmk_f.split(os.sep)[:-1])
@@ -156,6 +157,7 @@ def img2lmk(img_path, lmk_path, in_place=False, predictor_path='data/lmk_predict
         dets = detector(img, 0)
 
         if len(dets) != 1:
+            print("Processing file: {}".format(f))
             print("Number of faces detected: {}".format(len(dets)))
             continue
         rec = [dets[0].left(), dets[0].top(), dets[0].right(), dets[0].bottom()]
@@ -165,15 +167,26 @@ def img2lmk(img_path, lmk_path, in_place=False, predictor_path='data/lmk_predict
 
         if in_place:
             lmk_img = Image.open(f)
+            plt.clf()
+            plt.imshow(lmk_img)
+            plt.plot([p[0] for p in points], [p[1] for p in points], marker='o', color='r', markersize= 5)
+            currentAxisA = plt.gca()
+            rect = patches.Rectangle((rec[3], rec[0]), rec[2] - rec[0], rec[1] - rec[3], 
+                                     linewidth=2, edgecolor='g', facecolor='none')
+            currentAxisA.add_patch(rect)
+            currentAxisA.axes.get_xaxis().set_visible(False)
+            currentAxisA.axes.get_yaxis().set_visible(False)
+            currentAxisA.spines['left'].set_color('none')
+            currentAxisA.spines['bottom'].set_color('none')
+            plt.savefig(lmk_f, bbox_inches='tight', pad_inches=0.0)
         else:
             lmk_img = np.ones(img.shape) * img.mean()
             lmk_img = Image.fromarray(lmk_img.astype('uint8'))
-        lmk_draw = ImageDraw.Draw(lmk_img)
-        lmk_draw.rectangle(rec, outline='green') #'black'
-        lmk_draw.point(points, fill='red') #'white'
-        del lmk_draw
-        
-        lmk_img.save(lmk_f)
+            lmk_draw = ImageDraw.Draw(lmk_img)
+            lmk_draw.rectangle(rec, outline='green') #'black'
+            lmk_draw.point(points, fill='red') #'white'
+            del lmk_draw
+            lmk_img.save(lmk_f)
 
 ### move images from which dlib cannot detect a face to a folder
 def mv_no_face_img(record, orig_path, no_face_path):
