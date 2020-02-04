@@ -172,7 +172,7 @@ def img2lmk(img_path, lmk_path, in_place=False, predictor_path='data/lmk_predict
             plt.scatter([p[0] for p in points], [p[1] for p in points], marker='o', color='r', markersize= 5)
             currentAxisA = plt.gca()
             rect = patches.Rectangle((rec[3], rec[0]), rec[2] - rec[0], rec[1] - rec[3], 
-                                     linewidth=2, edgecolor='g', facecolor='none')
+                                     linewidth=5, edgecolor='g', facecolor='none')
             currentAxisA.add_patch(rect)
             currentAxisA.axes.get_xaxis().set_visible(False)
             currentAxisA.axes.get_yaxis().set_visible(False)
