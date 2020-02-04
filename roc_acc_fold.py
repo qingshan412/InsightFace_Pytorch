@@ -86,8 +86,8 @@ if __name__ == '__main__':
 
         # prepare folders
         for name in names_considered:
-            os.mkdirs(str(conf.data_path/'facebank'/args.dataset_dir/'train') + '/' + name, exist_ok=True)
-            os.mkdirs(str(conf.data_path/'facebank'/args.dataset_dir/'test') + '/' + name, exist_ok=True)
+            os.makedirs(str(conf.data_path/'facebank'/args.dataset_dir/'train') + '/' + name, exist_ok=True)
+            os.makedirs(str(conf.data_path/'facebank'/args.dataset_dir/'test') + '/' + name, exist_ok=True)
             
         for fold_idx, (train_index, test_index) in enumerate(kf.split(normals)):
             train_set = {}

@@ -67,8 +67,8 @@ if __name__ == '__main__':
     counts = {'normal': [0, 0], 'noonan': [0, 0]} # #false, #true
 
     # prepare folders
-    os.mkdirs(str(conf.data_path/'facebank'/args.dataset_dir/'train'/'normal'), exist_ok=True)
-    os.mkdirs(str(conf.data_path/'facebank'/args.dataset_dir/'test'/'test'), exist_ok=True)
+    os.makedirs(str(conf.data_path/'facebank'/args.dataset_dir/'train'/'normal'), exist_ok=True)
+    os.makedirs(str(conf.data_path/'facebank'/args.dataset_dir/'test'/'test'), exist_ok=True)
 
     for fold_idx, (train_index, test_index) in enumerate(kf.split(normals)):
         normals_train, normals_test = normals[train_index], normals[test_index]
