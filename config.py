@@ -17,7 +17,7 @@ def get_config(training = True, args = None):
     conf.net_depth = 50
     conf.drop_ratio = 0.6
     conf.net_mode = 'ir_se' # or 'ir'
-    conf.device = torch.device('cuda:{}'.format(0)) if args.gpu_id else torch.device('cpu')
+    conf.device = torch.device('cuda:{}'.format(0)) if args and args.gpu_id else torch.device('cpu')
     # torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     conf.test_transform = trans.Compose([
                     trans.ToTensor(),
