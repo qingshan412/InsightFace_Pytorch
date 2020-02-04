@@ -35,6 +35,7 @@ if __name__ == '__main__':
     
     learner = face_learner(conf, inference=True)
     
+    names_considered = args.names_considered.strip().split(',')
     threshold_array = np.arange(0, 1, 0.1)
     fp_tp = {}
     accuracy = {}
@@ -69,7 +70,6 @@ if __name__ == '__main__':
 
         # collect raw data
         data_dict = {}
-        names_considered = args.names_considered.strip().split(',')
         for name in names_considered:
             data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'raw') + '/' + name + '*'))
 
