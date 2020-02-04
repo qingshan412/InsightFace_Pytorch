@@ -9,9 +9,7 @@
 
 module load python
 
---gpu_ids $CUDA_VISIBLE_DEVICES
-
-python face_verify_noonan_fold_gpu.py > data/facebank/default_2
-python face_verify_noonan_fold_gpu.py -tta > data/facebank/tta_1
-python face_verify_noonan_fold_gpu.py -s > data/facebank/shuffle_1
-python face_verify_noonan_fold_gpu.py -s -tta > data/facebank/shuffle_tta_1
+python face_verify_noonan_fold_gpu.py -g $CUDA_VISIBLE_DEVICES > data/facebank/default_2_gpu
+python face_verify_noonan_fold_gpu.py -tta -g $CUDA_VISIBLE_DEVICES > data/facebank/tta_1_gpu
+python face_verify_noonan_fold_gpu.py -s -g $CUDA_VISIBLE_DEVICES > data/facebank/shuffle_1_gpu
+python face_verify_noonan_fold_gpu.py -s -tta -g $CUDA_VISIBLE_DEVICES > data/facebank/shuffle_tta_1_gpu
