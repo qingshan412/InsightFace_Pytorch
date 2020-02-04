@@ -24,7 +24,7 @@ if __name__ == '__main__':
     parser.add_argument("-tta", "--tta", help="whether test time augmentation",action="store_true")
     args = parser.parse_args()
 
-    conf = get_config(False)
+    conf = get_config(False, args)
 
     mtcnn = MTCNN()
     print('mtcnn loaded')
