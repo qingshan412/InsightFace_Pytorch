@@ -65,24 +65,37 @@ if __name__ == '__main__':
     # count for roc-auc
     counts = {'normal': [0, 0], 'noonan': [0, 0]} # #false, #true
 
+    # prepare folders
+    os.mkdirs(str(conf.data_path/'facebank'/args.dataset_dir/'train'/'normal'), exist_ok=True)
+    os.mkdirs(str(conf.data_path/'facebank'/args.dataset_dir/'test'/'test'), exist_ok=True)
+
     for fold_idx, (train_index, test_index) in enumerate(kf.split(normals)):
         normals_train, normals_test = normals[train_index], normals[test_index]
         noonans_train, noonans_test = noonans[train_index], noonans[test_index]
+        # only remove the files
+        prev = glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'train') + '/*/*')
+        for p in prev:
+            os.remove(p)
+        # if os.path.exists(str(conf.data_path/'facebank'/args.dataset_dir/'train')):
+        #     shutil.rmtree(str(conf.data_path/'facebank'/args.dataset_dir/'train'))
+        # train_normal_dir.mkdir(parents=True)
+        # train_noonan_dir.mkdir(parents=True)
+
         # save trains to conf.facebank_path/args.dataset_dir/'train'
-        if os.path.exists(str(conf.data_path/'facebank'/args.dataset_dir/'train')):
-            shutil.rmtree(str(conf.data_path/'facebank'/args.dataset_dir/'train'))
-        # prev = glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'train') + '/*/*')
-        # for p in prev:
-            # os.remove(p)
         for i in range(len(normals_train)):
             shutil.copy(normals_train[i], normals_train[i].replace('raw', 'train/normal'))
             shutil.copy(noonans_train[i], noonans_train[i].replace('raw', 'train/noonan'))
+
+        # only remove the files        
+        prev = glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'test') + '/*/*')
+        for p in prev:
+            os.remove(p)
+        # if os.path.exists(str(conf.data_path/'facebank'/args.dataset_dir/'test')):
+        #     shutil.rmtree(str(conf.data_path/'facebank'/args.dataset_dir/'test'))
+        # test_normal_dir.mkdir(parents=True)
+        # test_noonan_dir.mkdir(parents=True)
+
         # save tests to conf.data_path/'facebank'/args.dataset_dir/'test'
-        if os.path.exists(str(conf.data_path/'facebank'/args.dataset_dir/'test')):
-            shutil.rmtree(str(conf.data_path/'facebank'/args.dataset_dir/'test'))
-        # prev = glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'test') + '/*/*')
-        # for p in prev:
-            # os.remove(p)
         for i in range(len(normals_test)):
             shutil.copy(normals_test[i], normals_test[i].replace('raw', 'test/normal'))
             shutil.copy(noonans_test[i], noonans_test[i].replace('raw', 'test/noonan'))
