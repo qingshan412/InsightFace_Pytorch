@@ -25,8 +25,8 @@ from data.data_pipe import img2lmk
 
 # img_path = 'data/facebank/nweface/imgs'
 # lmk_path = 'data/facebank/webface/lmks'
-img_path = 'data/facebank/noonan+normal/raw'
-lmk_path = 'data/facebank/noonan+normal/lmks'
+img_path = 'data/facebank/noonan+normal/raw_112'
+lmk_path = 'data/facebank/noonan+normal/lmks_112'
 img2lmk(img_path, lmk_path, in_place=True)
 
 ##############################################################################################
