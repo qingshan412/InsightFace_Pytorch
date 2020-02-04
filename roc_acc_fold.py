@@ -175,9 +175,9 @@ if __name__ == '__main__':
             plt.plot(fp_tp[name][0], fp_tp[name][1], label=name+' ROC curve', 
                      color=colors[i], linestyle=':', linewidth=4)
     
-    plt.plot([0, 1], [0, 1], 'k--', lw=lw)
-    plt.xlim([0.0, 1.0])
-    plt.ylim([0.0, 1.05])
+    # plt.plot([0, 1], [0, 1], 'k--', lw=lw)
+    # plt.xlim([0.0, 1.0])
+    # plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
     plt.legend(loc="lower right")
