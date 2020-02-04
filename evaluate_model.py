@@ -27,7 +27,7 @@ from data.data_pipe import img2lmk
 # lmk_path = 'data/facebank/webface/lmks'
 img_path = 'data/facebank/noonan+normal/raw'
 lmk_path = 'data/facebank/noonan+normal/lmks'
-img2lmk(img_path, lmk_path)
+img2lmk(img_path, lmk_path, in_place=True)
 
 ##############################################################################################
 # remove faces where landmarks cannot be detected

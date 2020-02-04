@@ -135,8 +135,10 @@ def img2lmk(img_path, lmk_path, in_place=False, predictor_path='data/lmk_predict
     # os.makedirs(lmk_path, exist_ok=True)
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor(predictor_path)
+    print('predictor loaded')
     
     for f in glob.glob(os.path.join(img_path, '*', '*.jpg')):
+        print("Processing file: {}".format(f))
         lmk_f = f.replace(img_path, lmk_path)
         # print(lmk_f)
         lmk_dir = os.sep.join(lmk_f.split(os.sep)[:-1])
@@ -150,7 +152,6 @@ def img2lmk(img_path, lmk_path, in_place=False, predictor_path='data/lmk_predict
         dets = detector(img, 0)
 
         if len(dets) != 1:
-            print("Processing file: {}".format(f))
             print("Number of faces detected: {}".format(len(dets)))
             continue
         rec = [dets[0].left(), dets[0].top(), dets[0].right(), dets[0].bottom()]
