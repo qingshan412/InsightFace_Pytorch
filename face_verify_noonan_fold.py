@@ -34,7 +34,8 @@ if __name__ == '__main__':
         learner.load_state(conf, 'mobilefacenet.pth', True, True)
         # learner.load_state(conf, 'cpu_final.pth', True, True)
     else:
-        learner.load_state(conf, 'final.pth', True, True)
+        learner.load_state(conf, 'mobilefacenet.pth', True, True)
+        # learner.load_state(conf, 'final.pth', True, True)
     learner.model.eval()
     print('learner loaded')
     
