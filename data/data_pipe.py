@@ -172,16 +172,14 @@ def img2lmk(img_path, lmk_path, in_place=False, predictor_path='data/lmk_predict
             plt.clf()
             plt.imshow(lmk_img)
             plt.scatter([p[0] for p in points], [p[1] for p in points], marker='o', color='r', linewidths=1)
-            plt.ylim(0, 3000)
-            plt.xlim(-100, 2500)
             currentAxisA = plt.gca()
             currentAxisA.axes.get_xaxis().set_visible(False)
             currentAxisA.axes.get_yaxis().set_visible(False)
             currentAxisA.spines['left'].set_color('none')
             currentAxisA.spines['bottom'].set_color('none')
-            rect = patches.Rectangle((rec[0], rec[1]), (rec[3] - rec[1]), (rec[2] - rec[0]), 
-                                     linewidth=5, edgecolor='g', facecolor='none')
-            currentAxisA.add_patch(rect)
+            # rect = patches.Rectangle((rec[0], rec[1]), (rec[3] - rec[1]), (rec[2] - rec[0]), 
+            #                          linewidth=5, edgecolor='g', facecolor='none')
+            # currentAxisA.add_patch(rect)
             plt.savefig(lmk_f)#, bbox_inches='tight', pad_inches=0.0)
         else:
             lmk_img = np.ones(img.shape) * img.mean()
