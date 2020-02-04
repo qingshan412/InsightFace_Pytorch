@@ -176,10 +176,10 @@ def img2lmk(img_path, lmk_path, in_place=False, predictor_path='data/lmk_predict
             rect = patches.Rectangle((rec[0], rec[1]), (rec[3] - rec[1]), (rec[2] - rec[0]), 
                                      linewidth=5, edgecolor='g', facecolor='none')
             currentAxisA.add_patch(rect)
-            currentAxisA.axes.get_xaxis().set_visible(False)
-            currentAxisA.axes.get_yaxis().set_visible(False)
-            # currentAxisA.spines['left'].set_color('none')
-            # currentAxisA.spines['bottom'].set_color('none')
+            # currentAxisA.axes.get_xaxis().set_visible(False)
+            # currentAxisA.axes.get_yaxis().set_visible(False)
+            currentAxisA.spines['left'].set_color('none')
+            currentAxisA.spines['bottom'].set_color('none')
             plt.savefig(lmk_f, bbox_inches='tight', pad_inches=0.0)
         else:
             lmk_img = np.ones(img.shape) * img.mean()
