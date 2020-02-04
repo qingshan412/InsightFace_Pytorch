@@ -131,7 +131,7 @@ def load_mx_rec(rec_path):
         img.save(label_path/'{}.jpg'.format(idx), quality=95)
 
 ### using system call for directory operatios instead of pathlib as before
-def img2lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predictor_68_face_landmarks.dat'):
+def img2lmk(img_path, lmk_path, in_place=False, predictor_path='data/lmk_predictor/shape_predictor_68_face_landmarks.dat'):
     # os.makedirs(lmk_path, exist_ok=True)
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor(predictor_path)
@@ -158,11 +158,14 @@ def img2lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predict
         shape = predictor(img, dets[0])
         points = [(p.x, p.y) for p in shape.parts()]
 
-        lmk_img = np.ones(img.shape) * img.mean()
-        lmk_img = Image.fromarray(lmk_img.astype('uint8'))
+        if in_place:
+            lmk_img = Image.open(f)
+        else:
+            lmk_img = np.ones(img.shape) * img.mean()
+            lmk_img = Image.fromarray(lmk_img.astype('uint8'))
         lmk_draw = ImageDraw.Draw(lmk_img)
-        lmk_draw.rectangle(rec, outline='black')
-        lmk_draw.point(points, fill='white')
+        lmk_draw.rectangle(rec, outline='green') #'black'
+        lmk_draw.point(points, fill='red') #'white'
         del lmk_draw
         
         lmk_img.save(lmk_f)
