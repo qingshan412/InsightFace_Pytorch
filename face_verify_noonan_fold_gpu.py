@@ -87,8 +87,8 @@ if __name__ == '__main__':
         # save tests to conf.data_path/'facebank'/args.dataset_dir/'test'
         if os.path.exists(str(conf.data_path/'facebank'/args.dataset_dir/'test')):
             shutil.rmtree(str(conf.data_path/'facebank'/args.dataset_dir/'test'))
-        train_normal_dir.mkdir(parents=True)
-        train_noonan_dir.mkdir(parents=True)
+        test_normal_dir.mkdir(parents=True)
+        test_noonan_dir.mkdir(parents=True)
         # prev = glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'test') + '/*/*')
         # for p in prev:
             # os.remove(p)
