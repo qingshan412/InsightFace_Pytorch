@@ -123,37 +123,37 @@ if __name__ == '__main__':
                 verify_fold_dir.mkdir(parents=True)
             
             for path in test_dir.iterdir():
-                if path.is_file():
-                    continue
-                else:
-                    for fil in path.iterdir():
-                        if not fil.is_file():
-                            continue
+                # if path.is_file():
+                #     continue
+                # else:
+                for fil in path.iterdir():
+                    # if not fil.is_file():
+                    #     continue
+                    # else:
+                    print(fil)
+                    orig_name = ''.join([i for i in fil.name.strip().split('.')[0] if not i.isdigit()])
+                    if orig_name not in names_considered:
+                        print("Un-considered name:", fil.name)
+                        continue
+                    frame = cv2.imread(str(fil))
+                    image = Image.fromarray(frame)
+                    bboxes, faces = mtcnn.align_multi(image, conf.face_limit, conf.min_face_size)
+                    bboxes = bboxes[:,:-1] #shape:[10,4],only keep 10 highest possibiity faces
+                    bboxes = bboxes.astype(int)
+                    bboxes = bboxes + [-1,-1,1,1] # personal choice    
+                    results, score = learner.infer(conf, faces, targets, args.tta)
+                    for idx,bbox in enumerate(bboxes):
+                        pred_name = names[results[idx] + 1]
+                        frame = draw_box_name(bbox, pred_name + '_{:.2f}'.format(score[idx]), frame)
+                        if pred_name in fil.name:
+                            counts[orig_name][1] += 1
                         else:
-                            print(fil)
-                            orig_name = ''.join([i for i in fil.name.strip().split('.')[0] if not i.isdigit()])
-                            if orig_name not in names_considered:
-                                print("Un-considered name:", fil.name)
-                                continue
-                            frame = cv2.imread(str(fil))
-                            image = Image.fromarray(frame)
-                            bboxes, faces = mtcnn.align_multi(image, conf.face_limit, conf.min_face_size)
-                            bboxes = bboxes[:,:-1] #shape:[10,4],only keep 10 highest possibiity faces
-                            bboxes = bboxes.astype(int)
-                            bboxes = bboxes + [-1,-1,1,1] # personal choice    
-                            results, score = learner.infer(conf, faces, targets, args.tta)
-                            for idx,bbox in enumerate(bboxes):
-                                pred_name = names[results[idx] + 1]
-                                frame = draw_box_name(bbox, pred_name + '_{:.2f}'.format(score[idx]), frame)
-                                if pred_name in fil.name:
-                                    counts[orig_name][1] += 1
-                                else:
-                                    counts[orig_name][0] += 1
-                                    if pred_name in names_considered:
-                                        counts[pred_name][2] += 1
-                            # new_name = '_'.join(str(fil).split('/')[-2:])
-                            # print(verify_dir/fil.name)
-                            cv2.imwrite(str(verify_fold_dir/fil.name), frame)
+                            counts[orig_name][0] += 1
+                            if pred_name in names_considered:
+                                counts[pred_name][2] += 1
+                    # new_name = '_'.join(str(fil).split('/')[-2:])
+                    # print(verify_dir/fil.name)
+                    cv2.imwrite(str(verify_fold_dir/fil.name), frame)
 
         print(counts)
         for name in names_considered:
