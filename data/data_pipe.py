@@ -161,8 +161,8 @@ def img2lmk(img_path, lmk_path, in_place=False, predictor_path='data/lmk_predict
             print("Number of faces detected: {}".format(len(dets)))
             continue
         rec = [dets[0].left(), dets[0].top(), dets[0].right(), dets[0].bottom()]
-        print(rec)
-        exit(0)
+        # print(rec)
+        # exit(0)
         
         shape = predictor(img, dets[0])
         points = [(p.x, p.y) for p in shape.parts()]
