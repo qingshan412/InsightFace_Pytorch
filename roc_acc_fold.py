@@ -106,7 +106,8 @@ if __name__ == '__main__':
             # tests to conf.data_path/'facebank'/args.dataset_dir/'test'
             for name in names_considered:
                 for i in range(train_index.size):
-                    shutil.copy(test_set[name][i], test_set[name][i].replace('raw', 'train/' + name))
+                    shutil.copy(train_set[name][i], train_set[name][i].replace('raw', 'train/' + name))
+                for i in range(test_index.size):
                     shutil.copy(test_set[name][i], test_set[name][i].replace('raw', 'test/' + name))
             
             print(fold_idx)
