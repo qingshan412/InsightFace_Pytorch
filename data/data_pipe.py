@@ -137,7 +137,11 @@ def img2lmk(img_path, lmk_path, in_place=False, predictor_path='data/lmk_predict
     predictor = dlib.shape_predictor(predictor_path)
     print('predictor loaded')
     
-    for f in glob.glob(os.path.join(img_path, '*', '*.jpg')):
+    if 'webface' in img_path:
+        data_path = os.path.join(img_path, '*', '*.jpg')
+    else:
+        data_path = os.path.join(img_path, '*.jpg')
+    for f in glob.glob(data_path):
         print("Processing file: {}".format(f))
         lmk_f = f.replace(img_path, lmk_path)
         # print(lmk_f)
