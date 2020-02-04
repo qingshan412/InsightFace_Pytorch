@@ -113,6 +113,7 @@ if __name__ == '__main__':
             print(fold_idx)
             print('datasets ready')
 
+            print(str(conf.facebank_path))
             # prepare_facebank
             targets, names = prepare_facebank(conf, learner.model, mtcnn, tta = args.tta)
             print('facebank updated')
