@@ -70,8 +70,14 @@ if __name__ == '__main__':
         normals_train, normals_test = normals[train_index], normals[test_index]
         noonans_train, noonans_test = noonans[train_index], noonans[test_index]
         # save trains to conf.facebank_path/args.dataset_dir/'train'
+        train_normal_dir = conf.data_path/'facebank'/args.dataset_dir/'train'/'normal'
+        train_noonan_dir = conf.data_path/'facebank'/args.dataset_dir/'train'/'noonan'
+        test_normal_dir = conf.data_path/'facebank'/args.dataset_dir/'test'/'normal'
+        test_noonan_dir = conf.data_path/'facebank'/args.dataset_dir/'test'/'noonan'
         if os.path.exists(str(conf.data_path/'facebank'/args.dataset_dir/'train')):
             shutil.rmtree(str(conf.data_path/'facebank'/args.dataset_dir/'train'))
+        train_normal_dir.mkdir(parents=True)
+        train_noonan_dir.mkdir(parents=True)
         # prev = glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'train') + '/*/*')
         # for p in prev:
             # os.remove(p)
@@ -81,6 +87,8 @@ if __name__ == '__main__':
         # save tests to conf.data_path/'facebank'/args.dataset_dir/'test'
         if os.path.exists(str(conf.data_path/'facebank'/args.dataset_dir/'test')):
             shutil.rmtree(str(conf.data_path/'facebank'/args.dataset_dir/'test'))
+        train_normal_dir.mkdir(parents=True)
+        train_noonan_dir.mkdir(parents=True)
         # prev = glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'test') + '/*/*')
         # for p in prev:
             # os.remove(p)
