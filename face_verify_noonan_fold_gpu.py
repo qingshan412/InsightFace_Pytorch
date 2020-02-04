@@ -19,11 +19,12 @@ if __name__ == '__main__':
     parser.add_argument('-th','--threshold',help='threshold to decide identical faces',default=1.54, type=float)
     parser.add_argument("-k", "--kfold", help="returns the number of splitting iterations in the cross-validator.", 
                         default=10, type=int)
+    parser.add_argument("-g", "--gpu_id", help="gpu id to use", default="", type=str)
     parser.add_argument("-s", "--use_shuffled_kfold", help="whether to use shuffled kfold.", action="store_true")
     parser.add_argument("-tta", "--tta", help="whether test time augmentation",action="store_true")
     args = parser.parse_args()
 
-    conf = get_config(False, args)
+    conf = get_config(False)
 
     mtcnn = MTCNN()
     print('mtcnn loaded')

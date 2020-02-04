@@ -4,7 +4,7 @@ import torch
 from torch.nn import CrossEntropyLoss
 from torchvision import transforms as trans
 
-def get_config(training = True):
+def get_config(training = True, args = None):
     conf = edict()
     conf.data_path = Path('data')
     conf.work_path = Path('work_space/')
@@ -17,7 +17,8 @@ def get_config(training = True):
     conf.net_depth = 50
     conf.drop_ratio = 0.6
     conf.net_mode = 'ir_se' # or 'ir'
-    conf.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    conf.device = torch.device('cuda:{}'.format(args.gpu_id)) if args.gpu_id else torch.device('cpu')
+    # torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     conf.test_transform = trans.Compose([
                     trans.ToTensor(),
                     trans.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
