@@ -181,10 +181,10 @@ if __name__ == '__main__':
     for i in range(len(names_considered)):
         name = names_considered[i]
         if i%2 != 1:
-            plt.plot(threshold_array + 1.0, accuracy[name], label=name+' accuracy curve '),
+            plt.plot(threshold_array + 1.0, accuracy[name], label=name+' accuracy curve',
                      color=colors[i], linewidth=4)
         else:
-            plt.plot(threshold_array + 1.0, accuracy[name], label=name+' accuracy curve '),
+            plt.plot(threshold_array + 1.0, accuracy[name], label=name+' accuracy curve',
                      color=colors[i], linestyle=':', linewidth=4)
     
     plt.ylim([0.0, 1.05])

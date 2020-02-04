@@ -68,16 +68,18 @@ if __name__ == '__main__':
         normals_train, normals_test = normals[train_index], normals[test_index]
         noonans_train, noonans_test = noonans[train_index], noonans[test_index]
         # save trains to conf.facebank_path/args.dataset_dir/'train'
-        prev = glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'train') + '/*/*')
-        for p in prev:
-            os.remove(p)
+        shutil.rmtree(str(conf.data_path/'facebank'/args.dataset_dir/'train'))
+        # prev = glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'train') + '/*/*')
+        # for p in prev:
+            # os.remove(p)
         for i in range(len(normals_train)):
             shutil.copy(normals_train[i], normals_train[i].replace('raw', 'train/normal'))
             shutil.copy(noonans_train[i], noonans_train[i].replace('raw', 'train/noonan'))
         # save tests to conf.data_path/'facebank'/args.dataset_dir/'test'
-        prev = glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'test') + '/*/*')
-        for p in prev:
-            os.remove(p)
+        shutil.rmtree(str(conf.data_path/'facebank'/args.dataset_dir/'test'))
+        # prev = glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'test') + '/*/*')
+        # for p in prev:
+            # os.remove(p)
         for i in range(len(normals_test)):
             shutil.copy(normals_test[i], normals_test[i].replace('raw', 'test/normal'))
             shutil.copy(noonans_test[i], noonans_test[i].replace('raw', 'test/noonan'))
