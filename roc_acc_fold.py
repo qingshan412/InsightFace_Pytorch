@@ -42,6 +42,25 @@ if __name__ == '__main__':
     for name in names_considered:
         fp_tp[name] = [[], []] # fpr_list, tpr_list
         accuracy[name] = []
+    
+    conf.facebank_path = conf.facebank_path/args.dataset_dir/'train'
+    train_dir = conf.facebank_path
+    test_dir = conf.data_path/'facebank'/args.dataset_dir/'test'
+    # prepare folders
+    for name in names_considered:
+        os.makedirs(str(train_dir) + '/' + name, exist_ok=True)
+        os.makedirs(str(test_dir) + '/' + name, exist_ok=True)
+    
+    # collect raw data
+    data_dict = {}
+    for name in names_considered:
+        data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'raw') + '/' + name + '*'))
+
+    # init kfold
+    if args.use_shuffled_kfold:
+        kf = KFold(n_splits=args.kfold, shuffle=True, random_state=6)
+    else:
+        kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
 
     for threshold in threshold_array:
         learner.threshold = threshold + 1.0
@@ -64,30 +83,11 @@ if __name__ == '__main__':
         verify_dir = conf.data_path/'facebank'/args.dataset_dir/verify_type/th
         if not verify_dir.is_dir():
             verify_dir.mkdir(parents=True)
-
-        conf.facebank_path = conf.facebank_path/args.dataset_dir/'train'
-        test_dir = conf.data_path/'facebank'/args.dataset_dir/'test'
-
-        # collect raw data
-        data_dict = {}
-        for name in names_considered:
-            data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'raw') + '/' + name + '*'))
-
-        # init kfold
-        if args.use_shuffled_kfold:
-            kf = KFold(n_splits=args.kfold, shuffle=True, random_state=6)
-        else:
-            kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
         
         # count for roc-auc
         counts = {}
         for name in names_considered:
             counts[name] = [0, 0, 0] # #false, #true, #false_positive
-
-        # prepare folders
-        for name in names_considered:
-            os.makedirs(str(conf.data_path/'facebank'/args.dataset_dir/'train') + '/' + name, exist_ok=True)
-            os.makedirs(str(conf.data_path/'facebank'/args.dataset_dir/'test') + '/' + name, exist_ok=True)
             
         for fold_idx, (train_index, test_index) in enumerate(kf.split(data_dict[names_considered[0]])):
             train_set = {}
@@ -96,10 +96,10 @@ if __name__ == '__main__':
                 train_set[name], test_set[name] = data_dict[name][train_index], data_dict[name][test_index]
 
             # remove previous data 
-            prev = glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'train') + '/*/*')
+            prev = glob.glob(str(train_dir) + '/*/*')
             for p in prev:
                 os.remove(p)
-            prev = glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'test') + '/*/*')
+            prev = glob.glob(str(test_dir) + '/*/*')
             for p in prev:
                 os.remove(p)
             # save trains to conf.facebank_path/args.dataset_dir/'train' and 
@@ -113,7 +113,6 @@ if __name__ == '__main__':
             print(fold_idx)
             print('datasets ready')
 
-            print(str(conf.facebank_path))
             # prepare_facebank
             targets, names = prepare_facebank(conf, learner.model, mtcnn, tta = args.tta)
             print('facebank updated')
