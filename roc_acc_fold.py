@@ -89,7 +89,7 @@ if __name__ == '__main__':
             os.makedirs(str(conf.data_path/'facebank'/args.dataset_dir/'train') + '/' + name, exist_ok=True)
             os.makedirs(str(conf.data_path/'facebank'/args.dataset_dir/'test') + '/' + name, exist_ok=True)
             
-        for fold_idx, (train_index, test_index) in enumerate(kf.split(train_set[names_considered[0]])):
+        for fold_idx, (train_index, test_index) in enumerate(kf.split(data_dict[names_considered[0]])):
             train_set = {}
             test_set = {}
             for name in names_considered:
