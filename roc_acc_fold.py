@@ -180,7 +180,7 @@ if __name__ == '__main__':
     # plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
-    plt.legend(loc="lower right")
+    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left')
     plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/fp_tp.png')
     plt.close()
 
@@ -197,6 +197,6 @@ if __name__ == '__main__':
     plt.ylim([0.0, 1.05])
     plt.xlabel('Threshold')
     plt.ylabel('Accuracy')
-    plt.legend(loc="lower right")
+    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left')
     plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/accuracy.png')
     plt.close()
