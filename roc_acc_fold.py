@@ -124,14 +124,8 @@ if __name__ == '__main__':
                 verify_fold_dir.mkdir(parents=True)
             
             for path in test_dir.iterdir():
-                # if path.is_file():
-                #     continue
-                # else:
                 for fil in path.iterdir():
-                    # if not fil.is_file():
-                    #     continue
-                    # else:
-                    print(fil)
+                    # print(fil)
                     orig_name = ''.join([i for i in fil.name.strip().split('.')[0] if not i.isdigit()])
                     if orig_name not in names_considered:
                         print("Un-considered name:", fil.name)
@@ -152,9 +146,7 @@ if __name__ == '__main__':
                             counts[orig_name][0] += 1
                             if pred_name in names_considered:
                                 counts[pred_name][2] += 1
-                    # new_name = '_'.join(str(fil).split('/')[-2:])
-                    # print(verify_dir/fil.name)
-                    cv2.imwrite(str(verify_fold_dir/fil.name), frame)
+                    # cv2.imwrite(str(verify_fold_dir/fil.name), frame)
 
         print(counts)
         for name in names_considered:
