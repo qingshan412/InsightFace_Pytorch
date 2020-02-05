@@ -36,7 +36,6 @@ if __name__ == '__main__':
     learner = face_learner(conf, inference=True)
     
     names_considered = args.names_considered.strip().split(',')
-    threshold_array = np.arange(0, 1, 0.1)
     fp_tp = {}
     accuracy = {}
     for name in names_considered:
@@ -62,6 +61,7 @@ if __name__ == '__main__':
     else:
         kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
 
+    threshold_array = np.arange(0, 2, 0.2)
     for threshold in threshold_array:
         learner.threshold = threshold + 1.0
         
