@@ -61,9 +61,9 @@ if __name__ == '__main__':
     else:
         kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
 
-    threshold_array = np.arange(0, 5, 0.5)
+    threshold_array = np.arange(0, 1.1, 0.5)
     for threshold in threshold_array:
-        learner.threshold = threshold + 1.0
+        learner.threshold = threshold #+ 1.0
         
         if conf.device.type == 'cpu': # conf.device.type = 'cpu' for CRC01/02 
             learner.load_state(conf, 'mobilefacenet.pth', True, True)
