@@ -150,8 +150,9 @@ if __name__ == '__main__':
 
         print(counts)
         for name in names_considered:
-            fp_tp[name][0].append(counts[name][2] / (counts[name][1] + counts[name][2]))
-            fp_tp[name][1].append(counts[name][1] / (counts[name][1] + counts[name][2]))
+            positive = counts[name][1] + counts[name][2]
+            fp_tp[name][0].append(0. if positive == 0 else counts[name][2] / positive)
+            fp_tp[name][1].append(0. if positive == 0 else counts[name][1] / positive)
             accuracy[name].append(counts[name][1] / (counts[name][0] + counts[name][1]))
         
     # plots
