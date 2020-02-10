@@ -61,7 +61,7 @@ if __name__ == '__main__':
     else:
         kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
 
-    threshold_array = np.arange(0, 1.1, 0.1)
+    threshold_array = np.arange(0.2, 1.6, 0.1)
     for threshold in threshold_array:
         learner.threshold = threshold #+ 1.0
         
