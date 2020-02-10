@@ -61,7 +61,7 @@ if __name__ == '__main__':
     else:
         kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
 
-    threshold_array = np.arange(0, 1.1, 0.5)
+    threshold_array = np.arange(0, 1.1, 0.1)
     for threshold in threshold_array:
         learner.threshold = threshold #+ 1.0
         
@@ -161,16 +161,18 @@ if __name__ == '__main__':
     plt.figure()
     for i in range(len(names_considered)):
         name = names_considered[i]
+        fp = np.array(fp_tp[name][0])
+        tp = np.array(fp_tp[name][1])
+        idxs = np.argsort(fp)
         if i%2 != 1:
-            plt.plot(fp_tp[name][0], fp_tp[name][1], label=name+' ROC curve', 
-                     color=colors[i], linewidth=4)
+            plt.plot(fp[idxs], tp[idxs], label=name+' ROC curve', color=colors[i])#, linewidth=4)
         else:
-            plt.plot(fp_tp[name][0], fp_tp[name][1], label=name+' ROC curve', 
-                     color=colors[i], linestyle=':', linewidth=4)
+            plt.plot(fp[idxs], tp[idxs], label=name+' ROC curve', color=colors[i], linestyle=':')#, linewidth=4)
     
-    # plt.plot([0, 1], [0, 1], 'k--', lw=lw)
+    plt.plot([0, 1], [0, 1], 'k--', lw=2)
     # plt.xlim([0.0, 1.0])
     # plt.ylim([0.0, 1.05])
+    plt.title('ROC Threshold:{}-{}'.format(threshold_array[0], threshold_array[-1]))
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
     plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left')
@@ -181,10 +183,10 @@ if __name__ == '__main__':
     for i in range(len(names_considered)):
         name = names_considered[i]
         if i%2 != 1:
-            plt.plot(threshold_array + 1.0, accuracy[name], label=name+' accuracy curve',
+            plt.plot(threshold_array, accuracy[name], label=name+' accuracy curve',
                      color=colors[i], linewidth=4)
         else:
-            plt.plot(threshold_array + 1.0, accuracy[name], label=name+' accuracy curve',
+            plt.plot(threshold_array, accuracy[name], label=name+' accuracy curve',
                      color=colors[i], linestyle=':', linewidth=4)
     
     plt.ylim([0.0, 1.05])
