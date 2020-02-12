@@ -143,6 +143,7 @@ def img2lmk(img_path, lmk_path, in_place=False, predictor_path='data/lmk_predict
         data_path = os.path.join(img_path, '*', '*.jpg')
     else:
         data_path = os.path.join(img_path, '*.jpg')
+    
     for f in glob.glob(data_path):
         lmk_f = f.replace(img_path, lmk_path)
         # print(lmk_f)
@@ -185,8 +186,8 @@ def img2lmk(img_path, lmk_path, in_place=False, predictor_path='data/lmk_predict
             lmk_img = np.ones(img.shape) * img.mean()
             lmk_img = Image.fromarray(lmk_img.astype('uint8'))
             lmk_draw = ImageDraw.Draw(lmk_img)
-            lmk_draw.rectangle(rec, outline='green') #'black'
-            lmk_draw.point(points, fill='red') #'white'
+            lmk_draw.rectangle(rec, outline='black') #'black'
+            lmk_draw.point(points, fill='white') #'white'
             del lmk_draw
             lmk_img.save(lmk_f)
 
