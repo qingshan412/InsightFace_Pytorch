@@ -181,7 +181,7 @@ def img2lmk(img_path, lmk_path, in_place=False, predictor_path='data/lmk_predict
             # rect = patches.Rectangle((rec[0], rec[1]), (rec[3] - rec[1]), (rec[2] - rec[0]), 
             #                          linewidth=5, edgecolor='g', facecolor='none')
             # currentAxisA.add_patch(rect)
-            plt.savefig(lmk_f)#, bbox_inches='tight', pad_inches=0.0)
+            plt.savefig(lmk_f, bbox_inches='tight', pad_inches=0.0)
         else:
             lmk_img = np.ones(img.shape) * img.mean()
             lmk_img = Image.fromarray(lmk_img.astype('uint8'))
