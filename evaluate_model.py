@@ -26,7 +26,7 @@ from data.data_pipe import img2lmk
 
 # img_path = 'data/facebank/nweface/imgs'
 # lmk_path = 'data/facebank/webface/lmks'
-img_path = 'data/facebank/noonan+normal/raw_112'
+img_path = 'data/facebank/noonan+normal/resize_112'
 lmk_path = 'data/facebank/noonan+normal/lmks_112'
 img2lmk(img_path, lmk_path, in_place=True)
 
@@ -39,3 +39,26 @@ img2lmk(img_path, lmk_path, in_place=True)
 # img_path = 'data/facebank/webface/imgs'
 # no_face_path = 'data/facebank/webface/no_face'
 # mv_no_face_img(record, img_path, no_face_path)
+
+##############################################################################################
+# resize to 112x112 without mtcnn
+##############################################################################################
+# import os
+# from PIL import Image
+
+# raw_dir = 'data/facebank/noonan+normal/raw'
+# resize_dir = 'data/facebank/noonan+normal/resize_112'
+# os.makedirs(resize_dir, exist_ok=True)
+
+# for f in os.listdir(raw_dir):
+#     img = Image.open(raw_dir + os.sep + f)
+#     sz = img.size
+#     if sz[0] > sz[1]:
+#         diff = sz[0] - sz[1]
+#         left = diff // 2
+#         img.crop((left, 0, sz[0] - (diff - diff // 2), sz[1])).resize((112, 112)).save(resize_dir + os.sep + f)
+#     elif sz[0] < sz[1]:
+#         diff = sz[1] - sz[0]
+#         # high = diff // 2
+#         img.crop((0, diff, sz[0], sz[1])).resize((112, 112)).save(resize_dir + os.sep + f)
+#     # resize_img = Image.open(raw_dir + os.sep + f).resize((112, 112)).save(resize_dir + os.sep + f)
