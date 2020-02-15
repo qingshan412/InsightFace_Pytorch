@@ -95,20 +95,20 @@ if __name__ == '__main__':
             for name in names_considered:
                 train_set[name], test_set[name] = data_dict[name][train_index], data_dict[name][test_index]
 
-            # # remove previous data 
-            # prev = glob.glob(str(train_dir) + '/*/*')
-            # for p in prev:
-            #     os.remove(p)
-            # prev = glob.glob(str(test_dir) + '/*/*')
-            # for p in prev:
-            #     os.remove(p)
-            # # save trains to conf.facebank_path/args.dataset_dir/'train' and 
-            # # tests to conf.data_path/'facebank'/args.dataset_dir/'test'
-            # for name in names_considered:
-            #     for i in range(train_index.size):
-            #         shutil.copy(train_set[name][i], train_set[name][i].replace('raw', 'train/' + name))
-            #     for i in range(test_index.size):
-            #         shutil.copy(test_set[name][i], test_set[name][i].replace('raw', 'test/' + name))
+            # remove previous data 
+            prev = glob.glob(str(train_dir) + '/*/*')
+            for p in prev:
+                os.remove(p)
+            prev = glob.glob(str(test_dir) + '/*/*')
+            for p in prev:
+                os.remove(p)
+            # save trains to conf.facebank_path/args.dataset_dir/'train' and 
+            # tests to conf.data_path/'facebank'/args.dataset_dir/'test'
+            for name in names_considered:
+                for i in range(train_index.size):
+                    shutil.copy(train_set[name][i], train_set[name][i].replace('raw', 'train/' + name))
+                for i in range(test_index.size):
+                    shutil.copy(test_set[name][i], test_set[name][i].replace('raw', 'test/' + name))
             
             print(fold_idx)
             print('datasets ready')
