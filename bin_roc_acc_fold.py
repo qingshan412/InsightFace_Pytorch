@@ -61,20 +61,19 @@ if __name__ == '__main__':
     else:
         kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
 
-    threshold_array = np.arange(0.2, 1.6, 0.1)
-    for threshold in threshold_array:
-        learner.threshold = threshold #+ 1.0
-        
+    # threshold_array = np.arange(0.2, 1.6, 0.1)
+    noonan_weights = [i * 0.1 for i in range(11)]
+    for noonan_weight in noonan_weights:
         if conf.device.type == 'cpu': # conf.device.type = 'cpu' for CRC01/02 
             learner.load_state(conf, 'mobilefacenet.pth', True, True)
             # learner.load_state(conf, 'cpu_final.pth', True, True)
         else:
             learner.load_state(conf, 'final.pth', True, True)
         learner.model.eval()
-        print('learner loaded for threshold', threshold)
+        print('learner loaded')
         
         # mkdir for folder containing verification results
-        th = 'th_' + str(threshold).replace('.', '_')
+        th = 'nw_' + '{:.2f}'.format(threshold).replace('.', '_')
         verify_type = 'verify'
         if args.tta:
             verify_type += '_tta'
@@ -87,7 +86,7 @@ if __name__ == '__main__':
         # count for roc-auc
         counts = {}
         for name in names_considered:
-            counts[name] = [0, 0, 0] # #false, #true, #false_positive
+            counts[name] = [0, 0, 0] # #false, #true_positive, #false_positive
             
         for fold_idx, (train_index, test_index) in enumerate(kf.split(data_dict[names_considered[0]])):
             train_set = {}
@@ -116,8 +115,14 @@ if __name__ == '__main__':
             # prepare_facebank
             targets, names = prepare_facebank(conf, learner.model, mtcnn, tta = args.tta)
             print('facebank updated')
-            print(names)
-            exit(0)
+            
+            if ('noonan' in names[1]) and ('normal' in names[2]):
+                weights = [noonan_weight, 1 - noonan_weight]
+            elif ('noonan' in names[2]) and ('normal' in names[1]):
+                weights = [1 - noonan_weight, noonan_weight]
+            else:
+                print('something wrong with names:', names)
+                exit(0)
 
             # folder for 1 fold
             # verify_fold = str(fold_idx)
@@ -138,7 +143,7 @@ if __name__ == '__main__':
                     bboxes = bboxes[:,:-1] #shape:[10,4],only keep 10 highest possibiity faces
                     bboxes = bboxes.astype(int)
                     bboxes = bboxes + [-1,-1,1,1] # personal choice    
-                    results, score = learner.infer(conf, faces, targets, args.tta)
+                    results, score = learner.binfer(conf, faces, targets, weights, args.tta)
                     for idx,bbox in enumerate(bboxes):
                         pred_name = names[results[idx] + 1]
                         frame = draw_box_name(bbox, pred_name + '_{:.2f}'.format(score[idx]), frame)
