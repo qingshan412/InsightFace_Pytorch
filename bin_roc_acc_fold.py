@@ -73,7 +73,7 @@ if __name__ == '__main__':
         print('learner loaded')
         
         # mkdir for folder containing verification results
-        th = 'nw_' + '{:.2f}'.format(threshold).replace('.', '_')
+        th = 'nw_' + '{:.2f}'.format(noonan_weight).replace('.', '_')
         verify_type = 'verify'
         if args.tta:
             verify_type += '_tta'
@@ -179,7 +179,7 @@ if __name__ == '__main__':
     plt.plot([0, 1], [0, 1], 'k--', lw=2)
     # plt.xlim([0.0, 1.0])
     # plt.ylim([0.0, 1.05])
-    plt.title('ROC Threshold:{}-{}'.format(threshold_array[0], threshold_array[-1]))
+    plt.title('ROC noonan_weights:{}-{}'.format(noonan_weights[0], noonan_weights[-1]))
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
     plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left')
@@ -190,14 +190,14 @@ if __name__ == '__main__':
     for i in range(len(names_considered)):
         name = names_considered[i]
         if i%2 != 1:
-            plt.plot(threshold_array, accuracy[name], label=name+' accuracy curve',
+            plt.plot(noonan_weights, accuracy[name], label=name+' accuracy curve',
                      color=colors[i], linewidth=4)
         else:
-            plt.plot(threshold_array, accuracy[name], label=name+' accuracy curve',
+            plt.plot(noonan_weights, accuracy[name], label=name+' accuracy curve',
                      color=colors[i], linestyle=':', linewidth=4)
     
     plt.ylim([0.0, 1.05])
-    plt.xlabel('Threshold')
+    plt.xlabel('Noonan_weights')
     plt.ylabel('Accuracy')
     plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left')
     plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/accuracy.png')
