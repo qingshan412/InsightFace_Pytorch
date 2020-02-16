@@ -116,8 +116,6 @@ if __name__ == '__main__':
             # prepare_facebank
             targets, names = prepare_facebank(conf, learner.model, mtcnn, tta = args.tta)
             print('facebank updated')
-            print(names)
-            exit(0)
 
             # folder for 1 fold
             # verify_fold = str(fold_idx)
