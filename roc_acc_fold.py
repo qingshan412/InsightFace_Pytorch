@@ -124,6 +124,8 @@ if __name__ == '__main__':
                 verify_fold_dir.mkdir(parents=True)
             
             for path in test_dir.iterdir():
+                print(path)
+                print(path.iterdir())
                 for fil in path.iterdir():
                     print(fil)
                     orig_name = ''.join([i for i in fil.name.strip().split('.')[0] if not i.isdigit()])
