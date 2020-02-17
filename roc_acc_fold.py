@@ -47,9 +47,9 @@ if __name__ == '__main__':
         verify_type += '_tta'
     if args.use_shuffled_kfold:
         verify_type += '_shuffled'
-    conf.facebank_path = conf.facebank_path/args.dataset_dir/verify_type/'train'
-    train_dir = conf.facebank_path
+    train_dir = conf.facebank_path/args.dataset_dir/verify_type/'train'
     test_dir = conf.data_path/'facebank'/args.dataset_dir/verify_type/'test'
+    conf.facebank_path = train_dir
     # prepare folders
     for name in names_considered:
         os.makedirs(str(train_dir) + '/' + name, exist_ok=True)
