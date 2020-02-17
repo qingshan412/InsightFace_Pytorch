@@ -125,7 +125,7 @@ if __name__ == '__main__':
             
             for path in test_dir.iterdir():
                 for fil in path.iterdir():
-                    # print(fil)
+                    print(fil)
                     orig_name = ''.join([i for i in fil.name.strip().split('.')[0] if not i.isdigit()])
                     if orig_name not in names_considered:
                         print("Un-considered name:", fil.name)
