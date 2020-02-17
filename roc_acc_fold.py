@@ -51,7 +51,6 @@ if __name__ == '__main__':
     train_dir = conf.facebank_path/args.dataset_dir/verify_type/'train'
     test_dir = conf.data_path/'facebank'/args.dataset_dir/verify_type/'test'
     conf.facebank_path = train_dir
-
     for name in names_considered:
         os.makedirs(str(train_dir) + '/' + name, exist_ok=True)
         os.makedirs(str(test_dir) + '/' + name, exist_ok=True)
