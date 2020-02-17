@@ -181,7 +181,7 @@ if __name__ == '__main__':
     plt.plot([0, 1], [0, 1], 'k--', lw=2)
     # plt.xlim([0.0, 1.0])
     # plt.ylim([0.0, 1.05])
-    plt.title('ROC noonan_weights:{}-{}'.format(noonan_weights[0], noonan_weights[-1]))
+    plt.title('ROC noonan_weights:{:.2f}-{:.2f}'.format(noonan_weights[0], noonan_weights[-1]))
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
     plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left')
