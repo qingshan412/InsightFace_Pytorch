@@ -74,7 +74,7 @@ if __name__ == '__main__':
         print('learner loaded for threshold', threshold)
         
         # mkdir for folder containing verification results
-        th = 'th_' + str(threshold).replace('.', '_')
+        th = 'th_' + '{:.2f}'.format(threshold).replace('.', '_')
         verify_type = 'verify'
         if args.tta:
             verify_type += '_tta'
@@ -172,7 +172,7 @@ if __name__ == '__main__':
     plt.plot([0, 1], [0, 1], 'k--', lw=2)
     # plt.xlim([0.0, 1.0])
     # plt.ylim([0.0, 1.05])
-    plt.title('ROC Threshold:{}-{}'.format(threshold_array[0], threshold_array[-1]))
+    plt.title('ROC Threshold:{:.2f}-{:.2f}'.format(threshold_array[0], threshold_array[-1]))
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
     plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left')
