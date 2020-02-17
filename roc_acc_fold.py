@@ -42,9 +42,14 @@ if __name__ == '__main__':
         fp_tp[name] = [[], []] # fpr_list, tpr_list
         accuracy[name] = []
     
-    conf.facebank_path = conf.facebank_path/args.dataset_dir/'train'
+    verify_type = 'verify'
+    if args.tta:
+        verify_type += '_tta'
+    if args.use_shuffled_kfold:
+        verify_type += '_shuffled'
+    conf.facebank_path = conf.facebank_path/args.dataset_dir/verify_type/'train'
     train_dir = conf.facebank_path
-    test_dir = conf.data_path/'facebank'/args.dataset_dir/'test'
+    test_dir = conf.data_path/'facebank'/args.dataset_dir/verify_type/'test'
     # prepare folders
     for name in names_considered:
         os.makedirs(str(train_dir) + '/' + name, exist_ok=True)
@@ -75,11 +80,6 @@ if __name__ == '__main__':
         
         # mkdir for folder containing verification results
         th = 'th_' + '{:.2f}'.format(threshold).replace('.', '_')
-        verify_type = 'verify'
-        if args.tta:
-            verify_type += '_tta'
-        if args.use_shuffled_kfold:
-            verify_type += '_shuffled'
         verify_dir = conf.data_path/'facebank'/args.dataset_dir/verify_type/th
         if not verify_dir.is_dir():
             verify_dir.mkdir(parents=True)
