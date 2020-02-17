@@ -116,7 +116,7 @@ if __name__ == '__main__':
             targets, names = prepare_facebank(conf, learner.model, mtcnn, tta = args.tta)
             print('facebank updated')
             print(names)
-            exit(0)
+            # exit(0)
             
             if ('noonan' in names[1]) and ('normal' in names[2]):
                 weights = [noonan_weight, 1 - noonan_weight]
