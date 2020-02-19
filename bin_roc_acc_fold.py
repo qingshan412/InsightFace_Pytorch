@@ -67,7 +67,7 @@ if __name__ == '__main__':
         kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
 
     # threshold_array = np.arange(0.2, 1.6, 0.1)
-    noonan_weights = [i * 0.1 for i in range(11)]
+    noonan_weights = [i * 0.05 + 0.5 for i in range(11)]
     for noonan_weight in noonan_weights:
         if conf.device.type == 'cpu': # conf.device.type = 'cpu' for CRC01/02 
             learner.load_state(conf, 'mobilefacenet.pth', True, True)
