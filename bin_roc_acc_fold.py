@@ -173,6 +173,10 @@ if __name__ == '__main__':
         fp = np.array(fp_tp[name][0])
         tp = np.array(fp_tp[name][1])
         idxs = np.argsort(fp)
+        print(name)
+        print('false positive:', fp)
+        print('true positive:', tp)
+        print('idxs:', idxs)
         if i%2 != 1:
             plt.plot(fp[idxs], tp[idxs], label=name+' ROC curve', color=colors[i])#, linewidth=4)
         else:
