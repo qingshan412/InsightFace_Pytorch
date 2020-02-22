@@ -58,7 +58,7 @@ if __name__ == '__main__':
     # collect raw data
     data_dict = {}
     for name in names_considered:
-        data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'raw') + '/' + name + '*'))
+        data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'resize_112') + '/' + name + '*'))
 
     # init kfold
     if args.use_shuffled_kfold:
@@ -106,9 +106,9 @@ if __name__ == '__main__':
             # tests to conf.data_path/'facebank'/args.dataset_dir/'test'
             for name in names_considered:
                 for i in range(train_index.size):
-                    shutil.copy(train_set[name][i], train_set[name][i].replace('raw', verify_type + '/train/' + name))
+                    shutil.copy(train_set[name][i], train_set[name][i].replace('resize_112', verify_type + '/train/' + name))
                 for i in range(test_index.size):
-                    shutil.copy(test_set[name][i], test_set[name][i].replace('raw', verify_type+ '/test/' + name))
+                    shutil.copy(test_set[name][i], test_set[name][i].replace('resize_112', verify_type+ '/test/' + name))
             
             print(fold_idx)
             print('datasets ready')
@@ -134,7 +134,8 @@ if __name__ == '__main__':
                         continue
                     frame = cv2.imread(str(fil))
                     image = Image.fromarray(frame)
-                    bboxes, faces = mtcnn.align_multi(image, conf.face_limit, conf.min_face_size)
+                    faces = [image,]
+                    bboxes, _ = mtcnn.align_multi(image, conf.face_limit, conf.min_face_size)
                     bboxes = bboxes[:,:-1] #shape:[10,4],only keep 10 highest possibiity faces
                     bboxes = bboxes.astype(int)
                     bboxes = bboxes + [-1,-1,1,1] # personal choice    
