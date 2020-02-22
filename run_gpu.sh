@@ -9,7 +9,10 @@
 
 module load pytorch
 
-python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES > data/facebank/roc_resize_112
+python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -s > data/facebank/roc_s_resize_112
+python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -tta > data/facebank/roc_tta_resize_112
+python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -s -tta > data/facebank/roc_s_tta_resize_112
+# python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES > data/facebank/roc_resize_112
 # python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -s > data/facebank/roc_s_0
 # python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -tta > data/facebank/roc_tta_0
 # python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -s -tta > data/facebank/roc_s_tta_0
