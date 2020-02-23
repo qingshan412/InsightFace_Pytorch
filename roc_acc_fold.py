@@ -137,6 +137,7 @@ if __name__ == '__main__':
                     faces = [image,]
                     bboxes, _ = mtcnn.align_multi(image, conf.face_limit, conf.min_face_size)
                     bboxes = bboxes[:,:-1] #shape:[10,4],only keep 10 highest possibiity faces
+                    print('bboxes shape:', bboxes.shape)
                     bboxes = bboxes.astype(int)
                     bboxes = bboxes + [-1,-1,1,1] # personal choice    
                     results, score = learner.infer(conf, faces, targets, args.tta)
