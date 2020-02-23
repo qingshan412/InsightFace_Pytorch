@@ -125,7 +125,6 @@ if __name__ == '__main__':
             
             for path in test_dir.iterdir():
                 print(path)
-                print(path.iterdir())
                 for fil in path.iterdir():
                     print(fil)
                     orig_name = ''.join([i for i in fil.name.strip().split('.')[0] if not i.isdigit()])
@@ -151,6 +150,7 @@ if __name__ == '__main__':
                             if pred_name in names_considered:
                                 counts[pred_name][2] += 1
                     cv2.imwrite(str(verify_fold_dir/fil.name), frame)
+                    print('save image to', str(verify_fold_dir/fil.name))
 
         print(counts)
         for name in names_considered:
