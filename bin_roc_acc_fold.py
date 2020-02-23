@@ -126,11 +126,10 @@ if __name__ == '__main__':
                 print('something wrong with names:', names)
                 exit(0)
 
-            # folder for 1 fold
-            # verify_fold = str(fold_idx)
-            verify_fold_dir = verify_dir/str(fold_idx)
-            if not verify_fold_dir.is_dir():
-                verify_fold_dir.mkdir(parents=True)
+            # # folder for 1 fold
+            # verify_fold_dir = verify_dir/str(fold_idx)
+            # if not verify_fold_dir.is_dir():
+            #     verify_fold_dir.mkdir(parents=True)
             
             for path in test_dir.iterdir():
                 for fil in path.iterdir():
