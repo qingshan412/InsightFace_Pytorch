@@ -9,4 +9,5 @@
 
 module load pytorch
 
-python bin_roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES > data/facebank/bin_0
+python bin_roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -s > data/facebank/bin_s_0
+# python bin_roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES > data/facebank/bin_0
