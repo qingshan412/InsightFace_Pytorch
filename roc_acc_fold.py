@@ -149,7 +149,7 @@ if __name__ == '__main__':
                             counts[orig_name][0] += 1
                             if pred_name in names_considered:
                                 counts[pred_name][2] += 1
-                    # cv2.imwrite(str(verify_fold_dir/fil.name), frame)
+                    cv2.imwrite(str(verify_fold_dir/fil.name), frame)
 
         print(counts)
         for name in names_considered:
