@@ -151,7 +151,7 @@ if __name__ == '__main__':
                                 counts[pred_name][2] += 1
                     cv2.imwrite(str(verify_fold_dir/fil.name), frame)
                     print('save image to', str(verify_fold_dir/fil.name))
-                    exit(0)
+                    # exit(0)
 
         print(counts)
         for name in names_considered:
