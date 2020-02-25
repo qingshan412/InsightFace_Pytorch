@@ -117,11 +117,10 @@ if __name__ == '__main__':
             targets, names = prepare_facebank(conf, learner.model, mtcnn, tta = args.tta)
             print('facebank updated')
 
-            # folder for 1 fold
-            # verify_fold = str(fold_idx)
-            verify_fold_dir = verify_dir/str(fold_idx)
-            if not verify_fold_dir.is_dir():
-                verify_fold_dir.mkdir(parents=True)
+            # # folder for 1 fold
+            # verify_fold_dir = verify_dir/str(fold_idx)
+            # if not verify_fold_dir.is_dir():
+            #     verify_fold_dir.mkdir(parents=True)
             
             for path in test_dir.iterdir():
                 print(path)
@@ -149,9 +148,8 @@ if __name__ == '__main__':
                             counts[orig_name][0] += 1
                             if pred_name in names_considered:
                                 counts[pred_name][2] += 1
-                    cv2.imwrite(str(verify_fold_dir/fil.name), frame)
-                    print('save image to', str(verify_fold_dir/fil.name))
-                    # exit(0)
+                    # cv2.imwrite(str(verify_fold_dir/fil.name), frame)
+                    # print('save image to', str(verify_fold_dir/fil.name))
 
         print(counts)
         for name in names_considered:
