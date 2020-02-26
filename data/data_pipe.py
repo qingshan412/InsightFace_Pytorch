@@ -202,6 +202,47 @@ def mv_no_face_img(record, orig_path, no_face_path):
                 os.makedirs(no_img_dir, exist_ok=True)
                 shutil.move(img_path, no_img_path)
 
+def cg_lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predictor_68_face_landmarks.dat'):
+    detector = dlib.get_frontal_face_detector()
+    predictor = dlib.shape_predictor(predictor_path)
+    print('predictor loaded')
+    
+    if 'webface' in img_path:
+        data_path = os.path.join(img_path, '*', '*.jpg')
+    else:
+        data_path = os.path.join(img_path, '*.jpg')
+    
+    img_names = []
+    lmks = []
+
+    for f in glob.glob(data_path):
+        lmk_f = f.replace(img_path, lmk_path)
+        img_names.append(lmk_f.split(os.sep)[-1])
+        lmk_dir = os.sep.join(lmk_f.split(os.sep)[:-1])
+        # print(lmk_dir)
+        os.makedirs(lmk_dir, exist_ok=True)
+
+        img = dlib.load_rgb_image(f)
+        # Ask the detector to find the bounding boxes of each face. The 0 in the
+        # second argument indicates that we should upsample the image 0 time. Usually, 
+        # it's set to 1 to make everything bigger and allow us to detect more faces.
+        dets = detector(img, 0)
+
+        if len(dets) != 1:
+            print("Processing file: {}".format(f))
+            print("Number of faces detected: {}".format(len(dets)))
+            continue
+        rec = [dets[0].left(), dets[0].top(), dets[0].right(), dets[0].bottom()]
+
+        shape = predictor(img, dets[0])
+        points = [(p.x, p.y) for p in shape.parts()]
+
+        lmks.append(points)
+
+    np.save(lmk_dir + os.sep + 'img_names.npy', np.array(img_names))
+    np.save(lmk_dir + os.sep + 'lmks.npy', np.array(lmks))
+
+
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
 #         self.imgs = bcolz.carray(rootdir = imgs_bcolz)
