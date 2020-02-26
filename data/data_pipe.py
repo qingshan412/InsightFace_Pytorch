@@ -217,7 +217,7 @@ def cg_lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predicto
 
     for f in glob.glob(data_path):
         lmk_f = f.replace(img_path, lmk_path)
-        img_names.append(lmk_f.split(os.sep)[-1])
+        
         lmk_dir = os.sep.join(lmk_f.split(os.sep)[:-1])
         # print(lmk_dir)
         os.makedirs(lmk_dir, exist_ok=True)
@@ -237,6 +237,7 @@ def cg_lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predicto
         shape = predictor(img, dets[0])
         points = [(p.x, p.y) for p in shape.parts()]
 
+        img_names.append(lmk_f.split(os.sep)[-1])
         lmks.append(points)
 
     np.save(lmk_dir + os.sep + 'img_names.npy', np.array(img_names))
