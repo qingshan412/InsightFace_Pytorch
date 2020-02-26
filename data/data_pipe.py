@@ -202,7 +202,7 @@ def mv_no_face_img(record, orig_path, no_face_path):
                 os.makedirs(no_img_dir, exist_ok=True)
                 shutil.move(img_path, no_img_path)
 
-def cg_lmk(img_path, lmk_path, rpredictor_path='data/lmk_predictor/shape_predictor_68_face_landmarks.dat'):
+def cg_lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predictor_68_face_landmarks.dat'):
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor(predictor_path)
     print('predictor loaded')
