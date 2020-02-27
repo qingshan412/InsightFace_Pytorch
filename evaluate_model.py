@@ -22,13 +22,13 @@
 ##############################################################################################
 # get landmarks from faces
 ##############################################################################################
-# from data.data_pipe import img2lmk
+from data.data_pipe import img2lmk
 
-# # img_path = 'data/facebank/webface/imgs'
-# # lmk_path = 'data/facebank/webface/lmks'
-# img_path = 'data/facebank/noonan+normal/resize_112'
-# lmk_path = 'data/facebank/noonan+normal/lmks_112'
-# img2lmk(img_path, lmk_path, in_place=False)
+# img_path = 'data/facebank/webface/imgs'
+# lmk_path = 'data/facebank/webface/lmks'
+img_path = 'data/facebank/noonan+normal/raw_112'
+lmk_path = 'data/facebank/noonan+normal/lmks_112_raw'
+img2lmk(img_path, lmk_path, in_place=False)
 
 ##############################################################################################
 # remove faces where landmarks cannot be detected
@@ -43,8 +43,8 @@
 ##############################################################################################
 # change lanmarks according to noonan faces
 ##############################################################################################
-from data.data_pipe import cg_lmk
+# from data.data_pipe import cg_lmk
 
-img_path = 'data/facebank/noonan+normal/resize_112'
-lmk_path = 'data/facebank/noonan+normal/cg_112'
-cg_lmk(img_path, lmk_path)
+# img_path = 'data/facebank/noonan+normal/resize_112'
+# lmk_path = 'data/facebank/noonan+normal/cg_112'
+# cg_lmk(img_path, lmk_path)
