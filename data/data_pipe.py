@@ -235,10 +235,45 @@ def cg_lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predicto
         rec = [dets[0].left(), dets[0].top(), dets[0].right(), dets[0].bottom()]
 
         shape = predictor(img, dets[0])
-        points = [(p.x, p.y) for p in shape.parts()]
+        points = np.array([(p.x, p.y) for p in shape.parts()])
+
+        move = np.zeros(points.shape)
+        # move 16-68 down
+        move[17:, 1] = int((points[8, 1] - points[57, 1]) * 0.3)
+        # move 37-48 apart and change 37,46
+        move[36:43, 0] = -int((points[42, 0] - points[39, 0]) * 0.1)
+        move[43:49, 0] = int((points[42, 0] - points[39, 0]) * 0.1)
+        move[36, 1] = 1 
+        move[45, 1] = 1
+        # move 28-31 shorter and closer to 32-36
+        move[27:32, 1] = np.ceil((points[33, 1] - points[30, 1]) * 0.2)
+        move[29, 1] = round((points[30, 1] - points[29, 1]) * 0.1)
+        move[28, 1] = round((points[30, 1] - points[28, 1]) * 0.1)
+        move[27, 1] = np.ceil((points[30, 1] - points[27, 1]) * 0.1)
+        # move 32-26 wider
+        move[34, 0] = 1
+        move[35, 0] = np.ceil((points[35, 0] - points[33, 0]) * 0.1)
+        move[32, 0] = -1
+        move[31, 0] = -np.ceil((points[33, 0] - points[31, 0]) * 0.1)
+        # move 49,61,65,55 lower
+        move[48, 1] = np.ceil((points[59, 1] - points[49, 1]) * 0.1)
+        move[60, 1] = int((points[67, 1] - points[61, 1]) * 0.1)
+        move[54, 1] = np.ceil((points[55, 1] - points[53, 1]) * 0.1)
+        move[64, 1] = int((points[65, 1] - points[63, 1]) * 0.1)
+        
+
+        new_points = points + move
+
+        lmk_img = np.ones(img.shape) * img.mean()
+        lmk_img = Image.fromarray(lmk_img.astype('uint8'))
+        lmk_draw = ImageDraw.Draw(lmk_img)
+        lmk_draw.rectangle(rec, outline='black') #'black'
+        lmk_draw.point(new_points, fill='white') #'white'
+        del lmk_draw
+        lmk_img.save(lmk_f)
 
         img_names.append(lmk_f.split(os.sep)[-1])
-        lmks.append(points)
+        lmks.append(new_points)
 
     np.save(lmk_dir + os.sep + 'img_names.npy', np.array(img_names))
     np.save(lmk_dir + os.sep + 'lmks.npy', np.array(lmks))
