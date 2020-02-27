@@ -236,6 +236,7 @@ def cg_lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predicto
 
         shape = predictor(img, dets[0])
         points = np.array([(p.x, p.y) for p in shape.parts()])
+        print(points.shape)
 
         move = np.zeros(points.shape)
         # move 16-68 down
@@ -263,12 +264,13 @@ def cg_lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predicto
         
 
         new_points = points + move
+        print(new_points.shape)
 
         lmk_img = np.ones(img.shape) * img.mean()
         lmk_img = Image.fromarray(lmk_img.astype('uint8'))
         lmk_draw = ImageDraw.Draw(lmk_img)
         lmk_draw.rectangle(rec, outline='black') #'black'
-        lmk_draw.point(new_points, fill='white') #'white'
+        lmk_draw.point(points, fill='white') #'white'
         del lmk_draw
         lmk_img.save(lmk_f)
 
