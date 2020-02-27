@@ -235,8 +235,7 @@ def cg_lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predicto
         rec = [dets[0].left(), dets[0].top(), dets[0].right(), dets[0].bottom()]
 
         shape = predictor(img, dets[0])
-        points = [(p.x, p.y) for p in shape.parts()]
-        # points = np.array([(p.x, p.y) for p in shape.parts()])
+        points = np.array([(p.x, p.y) for p in shape.parts()])
         # print(points.shape)
 
         # move = np.zeros(points.shape)
