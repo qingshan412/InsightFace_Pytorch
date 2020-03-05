@@ -3,6 +3,7 @@ import argparse
 from pathlib import Path
 from config import get_config
 
+import matplotlib.pyplot as plt
 from sklearn.model_selection import KFold
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, plot_roc_curve
@@ -21,6 +22,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     conf = get_config(False, args)
+    print('config ready')
     
     names_considered = args.names_considered.strip().split(',')
     fp_tp = {}
@@ -38,6 +40,7 @@ if __name__ == '__main__':
         verify_type += '_shuffled'
     save_dir = conf.facebank_path/args.dataset_dir/verify_type
     os.makedirs(str(save_dir), exist_ok=True)
+    print('folder ready')
 
     # collect raw data
     data_dict = {}
