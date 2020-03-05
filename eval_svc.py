@@ -64,17 +64,14 @@ if __name__ == '__main__':
         for name in names_considered:
             train_set[name], test_set[name] = data_dict[name][train_index], data_dict[name][test_index]
             # transform images to numpy arrays
-            print('train_set:')
             for i in train_set[name]:
-                print(i)
                 X_train.append(np.asarray(Image.open(i)).flatten())
                 y_train.append(0 if names_considered[0] in i else 1) # binary
-            print('test_set:')
             for i in test_set[name]:
-                print(i)
                 X_test.append(np.asarray(Image.open(i)).flatten())
                 y_test.append(0 if names_considered[0] in i else 1) # binary
-        
+        print('train_set:', X_train, y_train)
+        print('test_set:', X_test, y_test)
         X_train = np.array(X_train)
         y_train = np.array(y_train)
         X_test = np.array(X_test)
