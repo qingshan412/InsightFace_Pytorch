@@ -67,12 +67,12 @@ if __name__ == '__main__':
             print('train_set:')
             for i in train_set[name]:
                 print(i)
-                X_train.append(np.asarray(Image.open(i)))
+                X_train.append(np.asarray(Image.open(i)).flatten())
                 y_train.append(0 if names_considered[0] in i else 1) # binary
             print('test_set:')
             for i in test_set[name]:
                 print(i)
-                X_test.append(np.asarray(Image.open(i)))
+                X_test.append(np.asarray(Image.open(i)).flatten())
                 y_test.append(0 if names_considered[0] in i else 1) # binary
         
         X_train = np.array(X_train)
