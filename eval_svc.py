@@ -6,7 +6,7 @@ from config import get_config
 import matplotlib.pyplot as plt
 from sklearn.model_selection import KFold
 from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score, plot_roc_curve
+from sklearn.metrics import accuracy_score, roc_curve
 import os
 import numpy as np
 
@@ -87,9 +87,21 @@ if __name__ == '__main__':
         clf = SVC(kernel=args.kernel,gamma='auto')
         clf.fit(X_train, y_train)
 
-        #accury + ROC
+        # accury + ROC
         y_pred = clf.predict(X_test)
         accuracy = accuracy_score(y_test, y_pred)
         print('accuracy:', accuracy)
-        plot_roc_curve(clf, X_test, y_test)
+        # plot_roc_curve(clf, X_test, y_test) # not yet available function
+        pos_label = clf.classes_[1]
+        fpr, tpr, _ = roc_curve(y_test, y_pred, pos_label=pos_label)
+        roc_auc = auc(fpr, tpr)
+        fig, ax = plt.subplots()
+        name = fold_idx + '_fold'
+        line_kwargs = {
+            'label': "{} (AUC = {:0.2f})".format(name, self.roc_auc)
+        }
+        line = ax.plot(fpr, tpr, **line_kwargs)[0]
+        ax.set_xlabel("False Positive Rate")
+        ax.set_ylabel("True Positive Rate")
+        ax.legend(loc='lower right')
         plt.savefig(str(save_dir) + os.sep + fold_idx + '_fold.png')
