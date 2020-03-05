@@ -27,6 +27,7 @@ if __name__ == '__main__':
     print('config ready...')
     
     names_considered = args.names_considered.strip().split(',')
+    print(names_considered)
     fp_tp = {}
     accuracy = {}
     for name in names_considered:
