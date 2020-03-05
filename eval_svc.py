@@ -2,12 +2,11 @@ from PIL import Image
 import argparse
 from pathlib import Path
 from config import get_config
-from utils import load_facebank, draw_box_name, prepare_facebank
 
 from sklearn.model_selection import KFold
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, plot_roc_curve
-import os, glob, shutil
+import os
 import numpy as np
 
 
