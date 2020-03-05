@@ -23,7 +23,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     conf = get_config(False, args)
-    print('config ready')
+    print('config ready...')
     
     names_considered = args.names_considered.strip().split(',')
     fp_tp = {}
@@ -34,14 +34,12 @@ if __name__ == '__main__':
     
     # prepare folders
     raw_dir = 'raw_112'
-    verify_type = 'svm'
-    if args.tta:
-        verify_type += '_tta'
+    verify_type = 'svm_' + args.kernel
     if args.use_shuffled_kfold:
         verify_type += '_shuffled'
     save_dir = conf.facebank_path/args.dataset_dir/verify_type
     os.makedirs(str(save_dir), exist_ok=True)
-    print('folder ready')
+    print('folder ready...')
 
     # collect raw data
     data_dict = {}
@@ -82,7 +80,7 @@ if __name__ == '__main__':
         y_test = np.array(y_test)
         
         print(fold_idx)
-        print('datasets ready')
+        print('datasets ready...')
 
         # SVM classification
         clf = SVC(kernel=args.kernel,gamma='auto')
