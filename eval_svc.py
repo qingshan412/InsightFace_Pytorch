@@ -27,7 +27,6 @@ if __name__ == '__main__':
     print('config ready...')
     
     names_considered = args.names_considered.strip().split(',')
-    print(names_considered)
     fp_tp = {}
     accuracy = {}
     for name in names_considered:
@@ -67,10 +66,10 @@ if __name__ == '__main__':
             # transform images to numpy arrays
             for i in train_set[name]:
                 X_train.append(np.asarray(Image.open(i)).flatten())
-                y_train.append(0 if names_considered[0] in i else 1) # binary
+                y_train.append(0 if names_considered[0] in i.strip().split(os.sep)[-1] else 1) # binary
             for i in test_set[name]:
                 X_test.append(np.asarray(Image.open(i)).flatten())
-                y_test.append(0 if names_considered[0] in i else 1) # binary
+                y_test.append(0 if names_considered[0] in i.strip().split(os.sep)[-1] else 1) # binary
         print('train_set:', X_train, y_train)
         print('test_set:', X_test, y_test)
         X_train = np.array(X_train)
