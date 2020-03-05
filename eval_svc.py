@@ -27,11 +27,9 @@ if __name__ == '__main__':
     print('config ready...')
     
     names_considered = args.names_considered.strip().split(',')
-    fp_tp = {}
-    accuracy = {}
-    for name in names_considered:
-        fp_tp[name] = [[], []] # fpr_list, tpr_list
-        accuracy[name] = []
+    accuracy = []
+    # for name in names_considered:
+    #     accuracy[name] = []
     
     # prepare folders
     raw_dir = 'raw_112'
@@ -86,8 +84,9 @@ if __name__ == '__main__':
 
         # accury + ROC
         y_pred = clf.predict(X_test)
-        accuracy = accuracy_score(y_test, y_pred)
-        print('accuracy:', accuracy)
+        acc = accuracy_score(y_test, y_pred)
+        accuracy.append(acc)
+        print('accuracy:', acc)
         # plot_roc_curve(clf, X_test, y_test) # not yet available function
         pos_label = clf.classes_[1]
         fpr, tpr, _ = roc_curve(y_test, y_pred, pos_label=pos_label)
@@ -95,10 +94,12 @@ if __name__ == '__main__':
         fig, ax = plt.subplots()
         name = str(fold_idx) + '_fold'
         line_kwargs = {
-            'label': "{} (AUC = {:0.2f})".format(name, self.roc_auc)
+            'label': "{} (AUC = {:0.2f})".format(name, roc_auc)
         }
         line = ax.plot(fpr, tpr, **line_kwargs)[0]
         ax.set_xlabel("False Positive Rate")
         ax.set_ylabel("True Positive Rate")
         ax.legend(loc='lower right')
         plt.savefig(str(save_dir) + os.sep + name + '.png')
+
+    print('average accuracy:', np.mean(np.array(accuracy)))
