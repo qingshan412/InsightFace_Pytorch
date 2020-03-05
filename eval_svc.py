@@ -93,7 +93,7 @@ if __name__ == '__main__':
         fpr, tpr, _ = roc_curve(y_test, y_pred, pos_label=pos_label)
         roc_auc = auc(fpr, tpr)
         fig, ax = plt.subplots()
-        name = fold_idx + '_fold'
+        name = str(fold_idx) + '_fold'
         line_kwargs = {
             'label': "{} (AUC = {:0.2f})".format(name, self.roc_auc)
         }
@@ -101,4 +101,4 @@ if __name__ == '__main__':
         ax.set_xlabel("False Positive Rate")
         ax.set_ylabel("True Positive Rate")
         ax.legend(loc='lower right')
-        plt.savefig(str(save_dir) + os.sep + fold_idx + '_fold.png')
+        plt.savefig(str(save_dir) + os.sep + name + '.png')
