@@ -6,7 +6,7 @@ from config import get_config
 import matplotlib.pyplot as plt
 from sklearn.model_selection import KFold
 from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score, roc_curve
+from sklearn.metrics import accuracy_score, roc_curve, auc
 import os, glob
 import numpy as np
 
@@ -70,8 +70,8 @@ if __name__ == '__main__':
             for i in test_set[name]:
                 X_test.append(np.asarray(Image.open(i)).flatten())
                 y_test.append(0 if names_considered[0] in i.strip().split(os.sep)[-1] else 1) # binary
-        print('train_set:', X_train, y_train)
-        print('test_set:', X_test, y_test)
+        # print('train_set:', X_train, y_train)
+        # print('test_set:', X_test, y_test)
         X_train = np.array(X_train)
         y_train = np.array(y_train)
         X_test = np.array(X_test)
