@@ -13,11 +13,12 @@ import numpy as np
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='for evaluation of svc')
+    parser.add_argument("-ds", "--dataset_dir", help="where to get data", default="noonan+normal", type=str)
+    parser.add_argument("-g", "--gpu_id", help="gpu id to use", default="", type=str)
     parser.add_argument("-k", "--kfold", help="returns the number of splitting iterations in the cross-validator.", 
                         default=10, type=int)
     parser.add_argument("-n", "--names_considered", help="names for different types considered, separated by commas", 
                         default="normal,noonan", type=str)
-    parser.add_argument("-g", "--gpu_id", help="gpu id to use", default="", type=str)
     parser.add_argument("-r", "--kernel", help="kernel name to use", default="rbf", type=str)
     parser.add_argument("-s", "--use_shuffled_kfold", help="whether to use shuffled kfold.", action="store_true")
     args = parser.parse_args()
