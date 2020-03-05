@@ -17,6 +17,7 @@ if __name__ == '__main__':
                         default=10, type=int)
     parser.add_argument("-n", "--names_considered", help="names for different types considered, separated by commas", 
                         default="normal,noonan", type=str)
+    parser.add_argument("-g", "--gpu_id", help="gpu id to use", default="", type=str)
     parser.add_argument("-r", "--kernel", help="kernel name to use", default="rbf", type=str)
     parser.add_argument("-s", "--use_shuffled_kfold", help="whether to use shuffled kfold.", action="store_true")
     args = parser.parse_args()
