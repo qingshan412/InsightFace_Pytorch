@@ -80,8 +80,8 @@ if __name__ == '__main__':
         print('datasets ready...')
 
         # SVM classification
-        # clf = SVC(kernel=args.kernel,gamma='auto')
-        clf = MLPClassifier()
+        clf = SVC(kernel=args.kernel,gamma='auto')
+        # clf = MLPClassifier()
         clf.fit(X_train, y_train)
 
         # accury + ROC
