@@ -6,6 +6,7 @@ from config import get_config
 import matplotlib.pyplot as plt
 from sklearn.model_selection import KFold
 from sklearn.svm import SVC
+from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score, roc_curve, auc
 import os, glob
 import numpy as np
@@ -79,7 +80,8 @@ if __name__ == '__main__':
         print('datasets ready...')
 
         # SVM classification
-        clf = SVC(kernel=args.kernel,gamma='auto')
+        # clf = SVC(kernel=args.kernel,gamma='auto')
+        clf = MLPClassifier()
         clf.fit(X_train, y_train)
 
         # accury + ROC
