@@ -33,7 +33,7 @@ if __name__ == '__main__':
     #     accuracy[name] = []
     
     # prepare folders
-    raw_dir = 'raw_112'
+    raw_dir = 'resize_112'
     verify_type = 'svm_' + args.kernel
     if args.use_shuffled_kfold:
         verify_type += '_shuffled'
