@@ -45,6 +45,6 @@
 ##############################################################################################
 from data.data_pipe import cg_lmk
 
-img_path = 'data/facebank/noonan+normal/raw_112'
-lmk_path = 'data/facebank/noonan+normal/cg_112_raw'
+img_path = 'data/facebank/noonan+normal/resize_112'
+lmk_path = 'data/facebank/noonan+normal/cg_112_resize'
 cg_lmk(img_path, lmk_path)
