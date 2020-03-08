@@ -117,17 +117,21 @@ if __name__ == '__main__':
                                 test_set[name][i].replace(raw_dir, verify_type+ '/test/' + name))
             
             if args.additional_data_dir:
+                full_additional_dir = conf.data_path/'facebank'/args.dataset_dir/args.additional_data_dir
+                add_data = glob.glob(str(full_additional_dir) + os.sep + '*.png')
                 print('additional:', args.additional_data_dir)
                 for name in names_considered:
-                    if name in args.additional_data_dir:
-                        print('additional used:', name)
-                        full_additional_dir = conf.data_path/'facebank'/args.dataset_dir/args.additional_data_dir
-                        for img_f in glob.glob(str(full_additional_dir) + os.sep + '*.png'):
+                    for img_f in add_data:
+                        if name in img_f.strip().split(os.sep)[-1]:
+                            print('source:', img_f)
+                            print('copy to:', img_f.replace(args.additional_data_dir, 
+                                                            verify_type + '/train/' + name))
                             shutil.copy(img_f, img_f.replace(args.additional_data_dir, 
                                                             verify_type + '/train/' + name))
             
             print(fold_idx)
             print('datasets ready')
+            exit(0)
 
             # prepare_facebank
             targets, names = prepare_facebank(conf, learner.model, mtcnn, tta = args.tta)
