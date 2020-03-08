@@ -266,7 +266,7 @@ def cg_lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predicto
         
         if 'noonan' in f.strip().split(os.sep)[-1]:
             move = -move
-            print('reverse move:', f)
+            # print('reverse move:', f)
 
         new_points = [(p[0], p[1]) for p in (points + move)]
         
