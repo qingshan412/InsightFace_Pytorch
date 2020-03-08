@@ -54,6 +54,6 @@
 ##############################################################################################
 from data.data_pipe import get_vague_faces
 
-source_path = '../pytorch-CycleGAN-and-pix2pix/results/fr_aligned_basic_b4_pix2pix_b6_resize/test_latest/images'
-save_path = 'data/facebank/noonan+normal/fake_resize'
+source_path = '../pytorch-CycleGAN-and-pix2pix/results/fr_aligned_basic_b4_pix2pix_b6_raw/test_latest/images'
+save_path = 'data/facebank/noonan+normal/fake_raw'
 get_vague_faces(source_path, save_path)
