@@ -128,7 +128,6 @@ if __name__ == '__main__':
             
             print(fold_idx)
             print('datasets ready')
-            exit(0)
 
             # prepare_facebank
             targets, names = prepare_facebank(conf, learner.model, mtcnn, tta = args.tta)
