@@ -282,6 +282,18 @@ def cg_lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predicto
     np.save(lmk_dir + os.sep + 'img_names.npy', np.array(img_names))
     np.save(lmk_dir + os.sep + 'lmks.npy', np.array(lmks))
 
+def get_vague_faces(source_path, save_path):
+    os.makedirs(save_path, exist_ok=True)
+    fake_images = [item for item in os.listdir(source_path) if ('fake_B' in item and 'normal' in item)]
+    mtcnn = MTCNN()
+    for img in fake_images:
+        bboxes, _ = mtcnn.align_multi(Image.open(source_path + os.sep + img), 1, 30)
+        # the last two params: conf.face_limit, conf.min_face_size
+        if bboxes.shape[0] != 1:
+            print(img + ':', bboxes.shape)
+        else:
+            shutil.copy(source_path + os.sep + img, save_path + os.sep + img)
+
 
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
