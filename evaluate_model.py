@@ -43,17 +43,17 @@
 ##############################################################################################
 # change lanmarks according to noonan faces
 ##############################################################################################
-# from data.data_pipe import cg_lmk
+from data.data_pipe import cg_lmk
 
-# img_path = 'data/facebank/noonan+normal/raw_112'
-# lmk_path = 'data/facebank/noonan+normal/cg_112_raw'
-# cg_lmk(img_path, lmk_path)
+img_path = 'data/facebank/noonan+normal/raw_112'
+lmk_path = 'data/facebank/noonan+normal/cg_112_raw'
+cg_lmk(img_path, lmk_path)
 
 ##############################################################################################
 # get fake images that can be recognized by mtcnn
 ##############################################################################################
-from data.data_pipe import get_vague_faces
+# from data.data_pipe import get_vague_faces
 
-source_path = '../pytorch-CycleGAN-and-pix2pix/results/fr_aligned_basic_b4_pix2pix_b6_resize/test_latest/images'
-save_path = 'data/facebank/noonan+normal/fake_resize'
-get_vague_faces(source_path, save_path)
+# source_path = '../pytorch-CycleGAN-and-pix2pix/results/fr_aligned_basic_b4_pix2pix_b6_resize/test_latest/images'
+# save_path = 'data/facebank/noonan+normal/fake_resize'
+# get_vague_faces(source_path, save_path)
