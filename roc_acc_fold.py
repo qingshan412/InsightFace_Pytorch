@@ -26,6 +26,8 @@ if __name__ == '__main__':
     parser.add_argument("-g", "--gpu_id", help="gpu id to use", default="", type=str)
     parser.add_argument("-s", "--use_shuffled_kfold", help="whether to use shuffled kfold.", action="store_true")
     parser.add_argument("-tta", "--tta", help="whether test time augmentation",action="store_true")
+    parser.add_argument("-a", "--additional_data_dir", help="where to get the additional data", 
+                        default="", type=str)
     args = parser.parse_args()
 
     conf = get_config(False)
@@ -59,7 +61,8 @@ if __name__ == '__main__':
     # collect raw data
     data_dict = {}
     for name in names_considered:
-        data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/raw_dir) + '/' + name + '*'))
+        data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/raw_dir) + 
+                                            '/' + name + '*'))
 
     # init kfold
     if args.use_shuffled_kfold:
@@ -67,7 +70,7 @@ if __name__ == '__main__':
     else:
         kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
 
-    threshold_array = np.arange(0.2, 1.6, 0.1)
+    threshold_array = np.arange(1.5, 1.6, 0.2)
     for threshold in threshold_array:
         learner.threshold = threshold #+ 1.0
         
@@ -107,12 +110,25 @@ if __name__ == '__main__':
             # tests to conf.data_path/'facebank'/args.dataset_dir/'test'
             for name in names_considered:
                 for i in range(train_index.size):
-                    shutil.copy(train_set[name][i], train_set[name][i].replace(raw_dir, verify_type + '/train/' + name))
+                    shutil.copy(train_set[name][i], 
+                                train_set[name][i].replace(raw_dir, verify_type + '/train/' + name))
                 for i in range(test_index.size):
-                    shutil.copy(test_set[name][i], test_set[name][i].replace(raw_dir, verify_type+ '/test/' + name))
+                    shutil.copy(test_set[name][i], 
+                                test_set[name][i].replace(raw_dir, verify_type+ '/test/' + name))
+            
+            if args.additional_data_dir:
+                print('additional:', args.additional_data_dir)
+                for name in names_considered:
+                    if name in args.additional_data_dir:
+                        print('additional used:', name)
+                        full_additional_dir = conf.data_path/'facebank'/args.dataset_dir/args.additional_data_dir
+                        for img_f in glob.glob(str(full_additional_dir) + os.sep + '*.png'):
+                            shutil.copy(img_f, img_f.replace(args.additional_data_dir, 
+                                                            verify_type + '/train/' + name))
             
             print(fold_idx)
             print('datasets ready')
+            exit(0)
 
             # prepare_facebank
             targets, names = prepare_facebank(conf, learner.model, mtcnn, tta = args.tta)
@@ -160,28 +176,25 @@ if __name__ == '__main__':
             accuracy[name].append(counts[name][1] / (counts[name][0] + counts[name][1]))
         
     # plots
-    #(area = {0:0.2f})'.format(roc_auc[name]),
     colors = list(mcolors.TABLEAU_COLORS)
     plt.figure()
-    for i in range(len(names_considered)):
-        name = names_considered[i]
-        fp = np.array(fp_tp[name][0])
-        tp = np.array(fp_tp[name][1])
-        idxs = np.argsort(fp)
-        if i%2 != 1:
-            plt.plot(fp[idxs], tp[idxs], label=name+' ROC curve', color=colors[i])#, linewidth=4)
-        else:
-            plt.plot(fp[idxs], tp[idxs], label=name+' ROC curve', color=colors[i], linestyle=':')#, linewidth=4)
+    # for i in range(len(names_considered)):
+    #     name = names_considered[i]
+    #     fp = np.array(fp_tp[name][0])
+    #     tp = np.array(fp_tp[name][1])
+    #     idxs = np.argsort(fp)
+    #     if i%2 != 1:
+    #         plt.plot(fp[idxs], tp[idxs], label=name+' ROC curve', color=colors[i])#, linewidth=4)
+    #     else:
+    #         plt.plot(fp[idxs], tp[idxs], label=name+' ROC curve', color=colors[i], linestyle=':')#, linewidth=4)
     
-    plt.plot([0, 1], [0, 1], 'k--', lw=2)
-    # plt.xlim([0.0, 1.0])
-    # plt.ylim([0.0, 1.05])
-    plt.title('ROC Threshold:{:.2f}-{:.2f}'.format(threshold_array[0], threshold_array[-1]))
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left')
-    plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/fp_tp.png')
-    plt.close()
+    # plt.plot([0, 1], [0, 1], 'k--', lw=2)
+    # plt.title('ROC Threshold:{:.2f}-{:.2f}'.format(threshold_array[0], threshold_array[-1]))
+    # plt.xlabel('False Positive Rate')
+    # plt.ylabel('True Positive Rate')
+    # plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left')
+    # plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/fp_tp.png')
+    # plt.close()
 
     plt.figure()
     for i in range(len(names_considered)):
@@ -199,4 +212,3 @@ if __name__ == '__main__':
     plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left')
     plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/accuracy.png')
     plt.close()
-    
