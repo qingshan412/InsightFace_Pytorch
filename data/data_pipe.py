@@ -264,6 +264,8 @@ def cg_lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predicto
         move[54, 1] += np.ceil(positive_num(points[55, 1] - points[53, 1]) * 0.1)
         move[64, 1] += int(positive_num(points[65, 1] - points[63, 1]) * 0.1)
         
+        if 'noonan' in f.strip().split(os.sep)[-1]:
+            move = -move
 
         new_points = [(p[0], p[1]) for p in (points + move)]
         
@@ -284,7 +286,7 @@ def cg_lmk(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_predicto
 
 def get_vague_faces(source_path, save_path):
     os.makedirs(save_path, exist_ok=True)
-    fake_images = [item for item in os.listdir(source_path) if ('fake_B' in item and 'normal' in item)]
+    fake_images = [item for item in os.listdir(source_path) if 'fake_B' in item]
     mtcnn = MTCNN()
     for img in fake_images:
         bboxes, _ = mtcnn.align_multi(Image.open(source_path + os.sep + img), 1, 30)
