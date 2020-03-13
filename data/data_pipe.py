@@ -14,9 +14,17 @@ from tqdm import tqdm
 
 from itertools import combinations
 from mtcnn import MTCNN
-import os, glob, dlib, shutil
+import os, glob, dlib, shutil, random
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+
+IMG_EXTENSIONS = [
+    '.jpg', '.JPG', '.jpeg', '.JPEG',
+    '.png', '.PNG', '.ppm', '.PPM', '.bmp', '.BMP'
+]
+
+def is_image_file(filename):
+    return any(filename.endswith(extension) for extension in IMG_EXTENSIONS)
 
 def de_preprocess(tensor):
     return tensor*0.5 + 0.5
@@ -297,6 +305,19 @@ def get_vague_faces(source_path, save_path):
         else:
             shutil.copy(source_path + os.sep + img, save_path + os.sep + img)
 
+def select_webfaces(dir='data/facebank/webface/trainA', num=100):
+    random.seed(666)
+    images = []
+    for root, _, fnames in sorted(os.walk(dir)): 
+        for fname in fnames:
+            if is_image_file(fname):
+                path = os.path.join(root, fname)
+                images.append(path)
+    selected = random.sample(images, num)
+    for f in selected:
+        shutil.copy(f, 'data/facebank/webface+noonan/trainA/' + f.strip().split('/')[-1])
+        shutil.copy(f.replace('trainA', 'trainB'), 
+                    'data/facebank/webface+noonan/trainB/' + f.strip().split('/')[-1])
 
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
