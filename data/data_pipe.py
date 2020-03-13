@@ -315,9 +315,9 @@ def select_webfaces(dir='data/facebank/webface/trainA', num=100):
                 images.append(path)
     selected = random.sample(images, num)
     for f in selected:
-        shutil.copy(f, 'data/facebank/webface+noonan/trainA/' + f.strip().split('/')[-1])
+        shutil.copy(f, 'data/facebank/webface+children/trainA/' + f.strip().split('/')[-1])
         shutil.copy(f.replace('trainA', 'trainB'), 
-                    'data/facebank/webface+noonan/trainB/' + f.strip().split('/')[-1])
+                    'data/facebank/webface+children/trainB/' + f.strip().split('/')[-1])
 
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
