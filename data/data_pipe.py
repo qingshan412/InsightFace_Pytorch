@@ -298,6 +298,7 @@ def get_vague_faces(source_path, save_path):
     fake_images = [item for item in os.listdir(source_path) if 'fake_B' in item]
     mtcnn = MTCNN()
     for img in fake_images:
+        print('processing:', img)
         bboxes, _ = mtcnn.align_multi(Image.open(source_path + os.sep + img), 1, 30)
         # the last two params: conf.face_limit, conf.min_face_size
         if bboxes.shape[0] != 1:
