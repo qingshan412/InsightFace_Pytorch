@@ -51,7 +51,7 @@ class MTCNN():
             two float numpy arrays of shapes [n_boxes, 4] and [n_boxes, 10],
             bounding boxes and facial landmarks.
         """
-        print('entering detect_faces...')
+
         # BUILD AN IMAGE PYRAMID
         width, height = image.size
         min_length = min(height, width)
@@ -97,7 +97,6 @@ class MTCNN():
 
             bounding_boxes = convert_to_square(bounding_boxes)
             bounding_boxes[:, 0:4] = np.round(bounding_boxes[:, 0:4])
-            print('stage 1:', bounding_boxes.shape)
 
             # STAGE 2
 
@@ -119,12 +118,12 @@ class MTCNN():
             bounding_boxes = convert_to_square(bounding_boxes)
             bounding_boxes[:, 0:4] = np.round(bounding_boxes[:, 0:4])
 
-            print('stage 2:', bounding_boxes.shape)
             # STAGE 3
 
             img_boxes = get_image_boxes(bounding_boxes, image, size=48)
             if len(img_boxes) == 0: 
                 print('here!')
+                print(bounding_boxes.shape)
                 return [], []
             img_boxes = torch.FloatTensor(img_boxes).to(device)
             output = self.onet(img_boxes)
@@ -149,7 +148,5 @@ class MTCNN():
             keep = nms(bounding_boxes, nms_thresholds[2], mode='min')
             bounding_boxes = bounding_boxes[keep]
             landmarks = landmarks[keep]
-            print('before return:', bounding_boxes.shape)
-
 
         return bounding_boxes, landmarks
