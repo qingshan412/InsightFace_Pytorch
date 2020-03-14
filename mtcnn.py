@@ -51,7 +51,7 @@ class MTCNN():
             two float numpy arrays of shapes [n_boxes, 4] and [n_boxes, 10],
             bounding boxes and facial landmarks.
         """
-
+        print('entering detect_faces...')
         # BUILD AN IMAGE PYRAMID
         width, height = image.size
         min_length = min(height, width)
@@ -84,7 +84,7 @@ class MTCNN():
             for s in scales:
                 boxes = run_first_stage(image, self.pnet, scale=s, threshold=thresholds[0])
                 bounding_boxes.append(boxes)
-
+            print('entering scales...')
             # collect boxes (and offsets, and scores) from different scales
             bounding_boxes = [i for i in bounding_boxes if i is not None]
             bounding_boxes = np.vstack(bounding_boxes)
