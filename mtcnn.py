@@ -51,7 +51,7 @@ class MTCNN():
             two float numpy arrays of shapes [n_boxes, 4] and [n_boxes, 10],
             bounding boxes and facial landmarks.
         """
-        print('entering detect_faces...')
+
         # BUILD AN IMAGE PYRAMID
         width, height = image.size
         min_length = min(height, width)
