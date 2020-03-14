@@ -54,13 +54,13 @@
 ##############################################################################################
 from data.data_pipe import get_vague_faces
 
-sources = ['raw_10', 'resize_10', 'raw_resize_10']
+sources = ['raw_15', 'resize_15', 'raw_resize_15']
 models = ['fr_adult_pix2pix_transfer_b6_25_1layer_fe', 'fr_adult_pix2pix_transfer_b6_25_2layer',
           'fr_adult_pix2pix_transfer_b6_25_1layer_pool5_DG']
 
 for source in sources:
     for model in models:
         print('processing ' + source + ' on ' + model + '...')
-        source_path = '../pytorch-CycleGAN-and-pix2pix/results/' + source + '/' + model + '/test_10/images'
+        source_path = '../pytorch-CycleGAN-and-pix2pix/results/' + source + '/' + model + '/test_15/images'
         save_path = 'data/facebank/noonan+normal/fake_' + source + '_' + model
         get_vague_faces(source_path, save_path)
