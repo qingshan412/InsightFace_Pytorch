@@ -124,6 +124,7 @@ class MTCNN():
             if len(img_boxes) == 0: 
                 print('here!')
                 print(bounding_boxes.shape)
+                print(img_boxes.shape)
                 return [], []
             img_boxes = torch.FloatTensor(img_boxes).to(device)
             output = self.onet(img_boxes)
