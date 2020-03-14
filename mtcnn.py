@@ -97,6 +97,7 @@ class MTCNN():
 
             bounding_boxes = convert_to_square(bounding_boxes)
             bounding_boxes[:, 0:4] = np.round(bounding_boxes[:, 0:4])
+            print('stage 1:', bounding_boxes.shape)
 
             # STAGE 2
 
