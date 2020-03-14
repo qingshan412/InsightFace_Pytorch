@@ -9,16 +9,20 @@
 
 module load pytorch
 
-python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -s -a "fake_raw" > data/facebank/roc_raw_112_s_a_raw
-python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -tta -a "fake_raw" > data/facebank/roc_raw_112_tta_a_raw
-python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -s -tta \
-    -a "fake_raw" > data/facebank/roc_raw_112_s_tta_a_raw
-# python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -a "fake_raw" > data/facebank/roc_raw_112_a_raw
-
 python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -a "fake_resize" > data/facebank/roc_raw_112_a_resize
 python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -s -a "fake_resize" > data/facebank/roc_raw_112_s_a_resize
 python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -tta -a "fake_resize" > data/facebank/roc_raw_112_tta_a_resize
-python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -s -tta -a "fake_resize" > data/facebank/roc_raw_112_s_tta_a_resize
+
+# python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -s -a "fake_raw" > data/facebank/roc_raw_112_s_a_raw
+# python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -tta -a "fake_raw" > data/facebank/roc_raw_112_tta_a_raw
+# python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -s -tta \
+#     -a "fake_raw" > data/facebank/roc_raw_112_s_tta_a_raw
+# python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -a "fake_raw" > data/facebank/roc_raw_112_a_raw
+
+# python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -a "fake_resize" > data/facebank/roc_raw_112_a_resize
+# python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -s -a "fake_resize" > data/facebank/roc_raw_112_s_a_resize
+# python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -tta -a "fake_resize" > data/facebank/roc_raw_112_tta_a_resize
+# python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -s -tta -a "fake_resize" > data/facebank/roc_raw_112_s_tta_a_resize
 
 # python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -a "fake_noonan_resize" > data/facebank/roc_raw_112_a_noonan_resize
 # python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -s \
