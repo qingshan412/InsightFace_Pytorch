@@ -74,11 +74,13 @@
 ##############################################################################################
 from data.data_pipe import get_train_dataset_gan, img2lmk
 
+print('get images from mtcnn...')
 imgs_folder = 'data/facebank/noonan+normal/raw'
 target_size = 112 + 5
 target_folder = 'data/facebank/noonan+normal/mtcnn_' + str(target_size)
 get_train_dataset_gan(imgs_folder, target_folder, target_size)
 
+print('get landmarks...')
 img_path = target_folder
 lmk_path = 'data/facebank/noonan+normal/lmks_mtcnn_' + str(target_size)
 img2lmk(img_path, lmk_path, in_place=False)
