@@ -78,7 +78,7 @@ print('get images from mtcnn...')
 imgs_folder = 'data/facebank/noonan+normal/raw'
 target_size = 112 + 5
 target_folder = 'data/facebank/noonan+normal/mtcnn_' + str(target_size)
-get_train_dataset_gan(imgs_folder, target_folder, target_size)
+get_train_dataset_gan(imgs_folder, target_folder, (target_size, target_size))
 
 print('get landmarks...')
 img_path = target_folder
