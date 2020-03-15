@@ -52,19 +52,29 @@
 ##############################################################################################
 # get fake images that can be recognized by mtcnn
 ##############################################################################################
-from data.data_pipe import get_vague_faces
+# from data.data_pipe import get_vague_faces
 
-sources = ['raw', 'resize']
-epochs = ['20', 'latest']
-# sources = ['raw_15', 'resize_15', 'raw_resize_15']
-models = ['fr_adult_pix2pix_transfer_b6_25_1layer_fe', 'fr_adult_pix2pix_transfer_b6_25_2layer',
-          'fr_adult_pix2pix_transfer_b6_25_1layer_pool5_DG']
+# sources = ['raw', 'resize']
+# epochs = ['20', 'latest']
+# # sources = ['raw_15', 'resize_15', 'raw_resize_15']
+# models = ['fr_adult_pix2pix_transfer_b6_25_1layer_fe', 'fr_adult_pix2pix_transfer_b6_25_2layer',
+#           'fr_adult_pix2pix_transfer_b6_25_1layer_pool5_DG']
 
-for e in epochs:
-    for source in sources:
-        for model in models:
-            print('processing ' + source + '_' + e + ' on ' + model + '...')
-            source_path = ('../pytorch-CycleGAN-and-pix2pix/results/' + source + '_' + e + '/' + 
-                            model + '/test_' + e + '/images')
-            save_path = 'data/facebank/noonan+normal/fake_' + source + '_' + e + '_' + model
-            get_vague_faces(source_path, save_path)
+# for e in epochs:
+#     for source in sources:
+#         for model in models:
+#             print('processing ' + source + '_' + e + ' on ' + model + '...')
+#             source_path = ('../pytorch-CycleGAN-and-pix2pix/results/' + source + '_' + e + '/' + 
+#                             model + '/test_' + e + '/images')
+#             save_path = 'data/facebank/noonan+normal/fake_' + source + '_' + e + '_' + model
+#             get_vague_faces(source_path, save_path)
+
+##############################################################################################
+# generate images for data augmentation in gan
+##############################################################################################
+from data.data_pipe import get_train_dataset_gan
+
+imgs_folder = 'data/facebank/noonan+normal/raw'
+target_size = 112 + 5
+target_folder = 'data/facebank/noonan+normal/mtcnn_' + str(target_size)
+get_train_dataset_gan(imgs_folder, target_folder, target_size):
