@@ -15,11 +15,11 @@ do
     do
         for Model in 'fr_adult_pix2pix_transfer_b6_25_1layer_fe' 'fr_adult_pix2pix_transfer_b6_25_2layer' 'fr_adult_pix2pix_transfer_b6_25_1layer_pool5_DG'
         do
-            python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -a fake_${Type}_${Epoch}_${Model} \
+            python roc_acc_fold.py -g 0 -a fake_${Type}_${Epoch}_${Model} \
             > data/facebank/roc_${Type}_${Epoch}_${Model}
-            python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -s -a fake_${Type}_${Epoch}_${Model} \
+            python roc_acc_fold.py -g 0 -s -a fake_${Type}_${Epoch}_${Model} \
             > data/facebank/roc_${Type}_${Epoch}_${Model}_s
-            python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -tta -a fake_${Type}_${Epoch}_${Model} \
+            python roc_acc_fold.py -g 0 -tta -a fake_${Type}_${Epoch}_${Model} \
             > data/facebank/roc_${Type}_${Epoch}_${Model}_tta
         done
     done
