@@ -25,6 +25,22 @@ do
     done
 done
 
+# for Epoch in 10 15
+# do
+#     for Type in 'raw' 'resize' 'raw_resize'
+#     do
+#         for Model in '1layer_fe' '2layer' '1layer_pool5_DG'
+#         do
+#             echo ${Type}_${Epoch}_${Model}
+#             tail -n 3 roc_${Type}_${Epoch}_fr_adult_pix2pix_transfer_b6_25_${Model}
+#             echo ${Type}_${Epoch}_${Model}_s
+#             tail -n 3 roc_${Type}_${Epoch}_fr_adult_pix2pix_transfer_b6_25_${Model}_s
+#             echo echo ${Type}_${Epoch}_${Model}_tta
+#             tail -n 3 roc_${Type}_${Epoch}_fr_adult_pix2pix_transfer_b6_25_${Model}_tta
+#         done
+#     done
+# done
+
 # python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -s -a "fake_raw" > data/facebank/roc_raw_112_s_a_raw
 # python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -tta -a "fake_raw" > data/facebank/roc_raw_112_tta_a_raw
 # python roc_acc_fold.py -g $CUDA_VISIBLE_DEVICES -s -tta \
