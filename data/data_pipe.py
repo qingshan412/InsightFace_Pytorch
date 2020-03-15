@@ -320,7 +320,7 @@ def select_webfaces(dir='data/facebank/webface/trainA', num=100):
                     'data/facebank/webface+children/trainB/' + f.strip().split('/')[-1])
 
 
-def get_train_dataset_gan(imgs_folder, target_folder):
+def get_train_dataset_gan(imgs_folder, target_folder, target_size):
     os.makedirs(target_folder, exist_ok=True)
     imgs=[]
     for root, _, fnames in sorted(os.walk(imgs_folder)): 
@@ -330,7 +330,7 @@ def get_train_dataset_gan(imgs_folder, target_folder):
                 imgs.append((path, fname))
     mtcnn = MTCNN()
     for img in imgs:
-        new_img = mtcnn.align(Image.open(img[0]), target_size=(112+5,112+5))
+        new_img = mtcnn.align(Image.open(img[0]), target_size)
         new_img.save(target_folder + os.sep + img[1])
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
