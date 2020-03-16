@@ -104,6 +104,9 @@
 ##############################################################################################
 # merge A B as aligned data
 ##############################################################################################
+import os
+from PIL import Image
+
 Adir = 'data/facebank/LAG_y_fine/trainA'
 Bdir = 'data/facebank/LAG_y_fine/trainB'
 ABdir = 'data/facebank/LAG_y_fine/train'
