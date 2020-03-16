@@ -52,11 +52,11 @@
 ##############################################################################################
 # get fake images that can be recognized by mtcnn
 ##############################################################################################
-from data.data_pipe import get_vague_faces
+# from data.data_pipe import get_vague_faces
 
-source_path = '../pytorch-CycleGAN-and-pix2pix/results/fr_aug_pix2pix_transfer_b6_100_2layer/test_latest/images'
-save_path = 'data/facebank/noonan+normal/fake_fr_aug_pix2pix_transfer_b6_100_2layer'
-get_vague_faces(source_path, save_path)
+# source_path = '../pytorch-CycleGAN-and-pix2pix/results/fr_aug_pix2pix_transfer_b6_100_2layer/test_latest/images'
+# save_path = 'data/facebank/noonan+normal/fake_fr_aug_pix2pix_transfer_b6_100_2layer'
+# get_vague_faces(source_path, save_path)
 
 # sources = ['raw', 'resize']
 # epochs = ['20', 'latest']
@@ -88,3 +88,12 @@ get_vague_faces(source_path, save_path)
 # img_path = target_folder
 # lmk_path = 'data/facebank/noonan+normal/lmks_mtcnn_' + str(target_size)
 # img2lmk(img_path, lmk_path, in_place=False)
+
+##############################################################################################
+# get_lag_y_data
+##############################################################################################
+from data.data_pipe import get_lag_y_data
+
+lag_data = 'data/facebank/LAGdataset_200'
+lag_y_data = 'data/facebank/LAG_y'
+get_lag_y_data(lag_data, lag_y_data)

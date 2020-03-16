@@ -319,7 +319,6 @@ def select_webfaces(dir='data/facebank/webface/trainA', num=100):
         shutil.copy(f.replace('trainA', 'trainB'), 
                     'data/facebank/webface+children/trainB/' + f.strip().split('/')[-1])
 
-
 def get_train_dataset_gan(imgs_folder, target_folder, target_size):
     os.makedirs(target_folder, exist_ok=True)
     imgs=[]
@@ -332,6 +331,19 @@ def get_train_dataset_gan(imgs_folder, target_folder, target_size):
     for img in imgs:
         new_img = mtcnn.align(Image.open(img[0]), target_size)
         new_img.save(target_folder + os.sep + img[1])
+
+def get_lag_y_data(lag_data, lag_y_data):
+    os.makedirs(lag_y_data, exist_ok=True)
+    names = os.listdir(lag_data)
+    for name in names:
+        y_folder = lag_data + os.sep + name + os.sep + 'y'
+        if os.path.isdir(y_folder):
+            imgs = os.listdir(y_folder)
+            for i in range(len(imgs)):
+                shutil.copy(y_folder + os.sep + imgs[i], 
+                            lag_y_data + os.sep + name + '_' + i + imgs[i].strip().split('.')[-1])
+
+
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
 #         self.imgs = bcolz.carray(rootdir = imgs_bcolz)
