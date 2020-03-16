@@ -11,7 +11,7 @@ module load pytorch
 
 for Epoch in 20 latest
 do
-    for Type in 'raw' 'resize'# 'raw_resize'
+    for Type in 'raw' 'resize' # 'raw_resize'
     do
         for Model in 'fr_adult_pix2pix_transfer_b6_25_1layer_fe' 'fr_adult_pix2pix_transfer_b6_25_2layer' 'fr_adult_pix2pix_transfer_b6_25_1layer_pool5_DG'
         do
@@ -25,9 +25,11 @@ do
     done
 done
 
-# for Epoch in 10 15
+#10 15
+#'raw_resize'
+# for Epoch in 20 latest
 # do
-#     for Type in 'raw' 'resize' 'raw_resize'
+#     for Type in 'raw' 'resize'
 #     do
 #         for Model in '1layer_fe' '2layer' '1layer_pool5_DG'
 #         do
