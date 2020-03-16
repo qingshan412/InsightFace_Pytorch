@@ -54,7 +54,7 @@
 ##############################################################################################
 from data.data_pipe import get_vague_faces
 
-source_path = ('../pytorch-CycleGAN-and-pix2pix/results/fr_aug_pix2pix_transfer_b6_100_2layer/test_latest/images')
+source_path = '../pytorch-CycleGAN-and-pix2pix/results/fr_aug_pix2pix_transfer_b6_100_2layer/test_latest/images'
 save_path = 'data/facebank/noonan+normal/fake_fr_aug_pix2pix_transfer_b6_100_2layer'
 get_vague_faces(source_path, save_path)
 
