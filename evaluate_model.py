@@ -76,24 +76,27 @@
 ##############################################################################################
 # generate images for data augmentation in gan
 ##############################################################################################
-# from data.data_pipe import get_train_dataset_gan, img2lmk
+from data.data_pipe import get_train_dataset_gan, img2lmk
 
-# print('get images from mtcnn...')
+print('get images from mtcnn...')
+imgs_folder = 'data/facebank/LAG_y_fine/orig'
 # imgs_folder = 'data/facebank/noonan+normal/raw'
-# target_size = 112 + 5
+target_size = 112 + 5
+target_folder = 'data/facebank/LAG_y_fine/mtcnn_' + str(target_size)
 # target_folder = 'data/facebank/noonan+normal/mtcnn_' + str(target_size)
-# get_train_dataset_gan(imgs_folder, target_folder, (target_size, target_size))
+get_train_dataset_gan(imgs_folder, target_folder, (target_size, target_size))
 
-# print('get landmarks...')
-# img_path = target_folder
+print('get landmarks...')
+img_path = target_folder
+lmk_path = 'data/facebank/LAG_y_fine/lmks_mtcnn_' + str(target_size)
 # lmk_path = 'data/facebank/noonan+normal/lmks_mtcnn_' + str(target_size)
-# img2lmk(img_path, lmk_path, in_place=False)
+img2lmk(img_path, lmk_path, in_place=False)
 
 ##############################################################################################
 # get_lag_y_data
 ##############################################################################################
-from data.data_pipe import get_lag_y_data
+# from data.data_pipe import get_lag_y_data
 
-lag_data = 'data/facebank/LAGdataset_200'
-lag_y_data = 'data/facebank/LAG_y'
-get_lag_y_data(lag_data, lag_y_data)
+# lag_data = 'data/facebank/LAGdataset_200'
+# lag_y_data = 'data/facebank/LAG_y'
+# get_lag_y_data(lag_data, lag_y_data)
