@@ -54,14 +54,16 @@
 ##############################################################################################
 from data.data_pipe import get_vague_faces
 
+records = ['raw_fr_lag_aug_pix2pix_transfer_b6_100_2layer', 'fr_lag_aug_pix2pix_transfer_b6_100_2layer',
+            'fr_lag_pix2pix_transfer_b6_100_2layer']
+for rec in records:
+    source_path = '../pytorch-CycleGAN-and-pix2pix/results/' + rec + '/test_latest/images'
+    save_path = 'data/facebank/noonan+normal/fake_' + rec
+    get_vague_faces(source_path, save_path)
+
 # source_path = '../pytorch-CycleGAN-and-pix2pix/results/fr_aug_pix2pix_transfer_b6_100_2layer/test_latest/images'
 # save_path = 'data/facebank/noonan+normal/fake_fr_aug_pix2pix_transfer_b6_100_2layer'
-source_path = '../pytorch-CycleGAN-and-pix2pix/results/fr_lag_aug_pix2pix_transfer_b6_100_2layer/test_latest/images'
-save_path = 'data/facebank/noonan+normal/fake_fr_lag_aug_pix2pix_transfer_b6_100_2layer'
-get_vague_faces(source_path, save_path)
-source_path = '../pytorch-CycleGAN-and-pix2pix/results/fr_lag_pix2pix_transfer_b6_100_2layer/test_latest/images'
-save_path = 'data/facebank/noonan+normal/fake_fr_lag_pix2pix_transfer_b6_100_2layer'
-get_vague_faces(source_path, save_path)
+# get_vague_faces(source_path, save_path)
 
 # sources = ['raw', 'resize']
 # epochs = ['20', 'latest']
