@@ -149,6 +149,8 @@ def img2lmk(img_path, lmk_path, in_place=False, predictor_path='data/lmk_predict
     
     if 'webface' in img_path:
         data_path = os.path.join(img_path, '*', '*.jpg')
+    elif 'LAG' in img_path:
+        data_path = os.path.join(img_path, '*.png')
     else:
         data_path = os.path.join(img_path, '*.jpg')
     
