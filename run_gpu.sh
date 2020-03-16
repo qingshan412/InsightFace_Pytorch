@@ -9,21 +9,23 @@
 
 module load pytorch
 
-for Epoch in 20 latest
-do
-    for Type in 'raw' 'resize' # 'raw_resize'
-    do
-        for Model in 'fr_adult_pix2pix_transfer_b6_25_1layer_fe' 'fr_adult_pix2pix_transfer_b6_25_2layer' 'fr_adult_pix2pix_transfer_b6_25_1layer_pool5_DG'
-        do
-            python roc_acc_fold.py -g 0 -a fake_${Type}_${Epoch}_${Model} \
-            > data/facebank/roc_${Type}_${Epoch}_${Model}
-            python roc_acc_fold.py -g 0 -s -a fake_${Type}_${Epoch}_${Model} \
-            > data/facebank/roc_${Type}_${Epoch}_${Model}_s
-            python roc_acc_fold.py -g 0 -tta -a fake_${Type}_${Epoch}_${Model} \
-            > data/facebank/roc_${Type}_${Epoch}_${Model}_tta
-        done
-    done
-done
+python roc_acc_fold.py -g 0 -s -a fake_fr_aug_pix2pix_transfer_b6_100_2layer > data/facebank/roc_aug_100_2layer_s
+
+# for Epoch in 20 latest
+# do
+#     for Type in 'raw' 'resize' # 'raw_resize'
+#     do
+#         for Model in 'fr_adult_pix2pix_transfer_b6_25_1layer_fe' 'fr_adult_pix2pix_transfer_b6_25_2layer' 'fr_adult_pix2pix_transfer_b6_25_1layer_pool5_DG'
+#         do
+#             python roc_acc_fold.py -g 0 -a fake_${Type}_${Epoch}_${Model} \
+#             > data/facebank/roc_${Type}_${Epoch}_${Model}
+#             python roc_acc_fold.py -g 0 -s -a fake_${Type}_${Epoch}_${Model} \
+#             > data/facebank/roc_${Type}_${Epoch}_${Model}_s
+#             python roc_acc_fold.py -g 0 -tta -a fake_${Type}_${Epoch}_${Model} \
+#             > data/facebank/roc_${Type}_${Epoch}_${Model}_tta
+#         done
+#     done
+# done
 
 #10 15
 #'raw_resize'
