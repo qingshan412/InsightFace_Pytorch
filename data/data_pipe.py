@@ -341,7 +341,7 @@ def get_lag_y_data(lag_data, lag_y_data):
             imgs = os.listdir(y_folder)
             for i in range(len(imgs)):
                 shutil.copy(y_folder + os.sep + imgs[i], 
-                            lag_y_data + os.sep + name + '_' + i + imgs[i].strip().split('.')[-1])
+                            lag_y_data + os.sep + name + '_' + str(i) + '.' + imgs[i].strip().split('.')[-1])
 
 
 # class train_dataset(Dataset):
