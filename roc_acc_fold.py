@@ -66,11 +66,11 @@ if __name__ == '__main__':
 
     # collect and split raw data
     data_dict = {}
-    fold_idx = {}
+    idx_gen = {}
     for name in names_considered:
         data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/raw_dir) + 
                                             '/' + name + '*'))
-        fold_idx[name] = kf.split(data_dict[name])
+        idx_gen[name] = kf.split(data_dict[name])
 
     # threshold_array = np.arange(1.5, 1.6, 0.2)
     # for threshold in threshold_array:
@@ -101,7 +101,7 @@ if __name__ == '__main__':
         train_set = {}
         test_set = {}
         for name in names_considered:
-            (train_index, test_index) = next(fold_idx[name])
+            (train_index, test_index) = next(idx_gen[name])
             train_set[name], test_set[name] = data_dict[name][train_index], data_dict[name][test_index]
 
         # remove previous data 
