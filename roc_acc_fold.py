@@ -114,10 +114,10 @@ if __name__ == '__main__':
         # save trains to conf.facebank_path/args.dataset_dir/'train' and 
         # tests to conf.data_path/'facebank'/args.dataset_dir/'test'
         for name in names_considered:
-            for i in range(train_index.size):
+            for i in range(len(train_set[name])):
                 shutil.copy(train_set[name][i], 
                             train_set[name][i].replace(raw_dir, verify_type + '/train/' + name))
-            for i in range(test_index.size):
+            for i in range(len(test_set[name])):
                 shutil.copy(test_set[name][i], 
                             test_set[name][i].replace(raw_dir, verify_type+ '/test/' + name))
         
