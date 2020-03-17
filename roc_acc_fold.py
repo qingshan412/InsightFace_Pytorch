@@ -70,9 +70,8 @@ if __name__ == '__main__':
     for name in names_considered:
         data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/raw_dir) + 
                                             '/' + name + '*'))
-        print(data_dict[name])
         idx_gen[name] = kf.split(data_dict[name])
-    exit(0)
+
     # threshold_array = np.arange(1.5, 1.6, 0.2)
     # for threshold in threshold_array:
     threshold = 1.6
