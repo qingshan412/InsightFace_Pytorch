@@ -92,7 +92,7 @@ print('get images from mtcnn...')
 imgs_folder = 'data/facebank/distinct/orig'
 # imgs_folder = 'data/facebank/LAG_y_fine/orig'
 # imgs_folder = 'data/facebank/noonan+normal/raw'
-target_size = 112 #+ 5
+target_size = 112 + 5
 target_folder = 'data/facebank/distinct/mtcnn_' + str(target_size)
 # target_folder = 'data/facebank/LAG_y_fine/mtcnn_' + str(target_size)
 # target_folder = 'data/facebank/noonan+normal/mtcnn_' + str(target_size)
