@@ -74,7 +74,8 @@ if __name__ == '__main__':
 
     # threshold_array = np.arange(1.5, 1.6, 0.2)
     # for threshold in threshold_array:
-    learner.threshold = 1.6 #threshold #+ 1.0
+    threshold = 1.6
+    learner.threshold = threshold #+ 1.0
     
     if conf.device.type == 'cpu': # conf.device.type = 'cpu' for CRC01/02 
         learner.load_state(conf, 'mobilefacenet.pth', True, True)
