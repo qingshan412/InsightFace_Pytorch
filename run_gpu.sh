@@ -11,7 +11,8 @@ module load pytorch
 
 # for Model in raw_fr_lag_aug_pix2pix_transfer_b6_100_2layer fr_lag_aug_pix2pix_transfer_b6_100_2layer fr_lag_pix2pix_transfer_b6_100_2layer
 # do
-Model=fr_lag_aug_pix2pix_transfer_b6_500_2layer
+# Model=fr_lag_aug_pix2pix_transfer_b6_500_2layer
+Model=fr_mix_aug_pix2pix_transfer_b6_500_DG
 echo "processing ${Model}..."
 python roc_acc_fold.py -g 0 -a fake_${Model} > data/facebank/roc_${Model}
 python roc_acc_fold.py -g 0 -s -a fake_${Model} > data/facebank/roc_${Model}_s
