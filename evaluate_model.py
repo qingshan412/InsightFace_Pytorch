@@ -55,7 +55,8 @@
 from data.data_pipe import get_vague_faces
 
 records = ['raw_fr_lag_aug_pix2pix_transfer_b6_100_2layer', 'fr_lag_aug_pix2pix_transfer_b6_100_2layer',
-            'fr_lag_pix2pix_transfer_b6_100_2layer', 'fr_lag_aug_pix2pix_transfer_b6_500_2layer']
+            'fr_lag_pix2pix_transfer_b6_100_2layer', 'fr_lag_aug_pix2pix_transfer_b6_500_2layer', 
+            'fr_mix_aug_pix2pix_transfer_b6_500_DG']
 # for rec in records:
 rec = records[-1]
 print('processing', rec)
