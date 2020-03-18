@@ -127,10 +127,12 @@ if __name__ == '__main__':
             for name in names_considered:
                 for img_f in add_data:
                     if name in img_f.strip().split(os.sep)[-1]:
-                        # print('source:', img_f)
+                        print('source:', img_f)
+                        print('copy to:', img_f.replace(str(full_additional_dir), 
+                                                        train_dir + os.sep + name))
                         # print('copy to:', img_f.replace(args.additional_data_dir, 
                         #                                 verify_type + '/train/' + name))
-                        shutil.copy(img_f, img_f.replace(args.additional_data_dir, 
+                        shutil.copy(img_f, img_f.replace(str(full_additional_dir), 
                                                         train_dir + os.sep + name))
         
         print(fold_idx)
