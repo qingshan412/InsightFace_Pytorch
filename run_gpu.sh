@@ -28,10 +28,15 @@ module load pytorch
 
 for Model in raw_fr_lag_aug_pix2pix_transfer_b6_100_2layer fr_lag_aug_pix2pix_transfer_b6_100_2layer fr_lag_pix2pix_transfer_b6_100_2layer fr_lag_aug_pix2pix_transfer_b6_500_2layer fr_mix_aug_pix2pix_transfer_b6_500_DG
 do
-    echo "processing ${Model}..."
+    echo "${Model}"
     python roc_acc_fold.py -d distinct -g 0 -a fake_${Model} > data/facebank/roc_dist_${Model}
+    tail -n 2 data/facebank/roc_dist_${Model}
+    echo "${Model}_s"
     python roc_acc_fold.py -d distinct -g 0 -s -a fake_${Model} > data/facebank/roc_dist_${Model}_s
+    tail -n 2 data/facebank/roc_dist_${Model}_s
+    echo "${Model}_s"
     python roc_acc_fold.py -d distinct -g 0 -tta -a fake_${Model} > data/facebank/roc_dist_${Model}_tta
+    tail -n 2 data/facebank/roc_dist_${Model}_tta
 done
 
 # python roc_acc_fold.py -g 0 -s -a fake_fr_aug_pix2pix_transfer_b6_100_2layer > data/facebank/roc_aug_100_2layer_s
