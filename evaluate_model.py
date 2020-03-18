@@ -52,17 +52,17 @@
 ##############################################################################################
 # get fake images that can be recognized by mtcnn
 ##############################################################################################
-# from data.data_pipe import get_vague_faces
+from data.data_pipe import get_vague_faces
 
-# records = ['raw_fr_lag_aug_pix2pix_transfer_b6_100_2layer', 'fr_lag_aug_pix2pix_transfer_b6_100_2layer',
-#             'fr_lag_pix2pix_transfer_b6_100_2layer', 'fr_lag_aug_pix2pix_transfer_b6_500_2layer', 
-#             'fr_mix_aug_pix2pix_transfer_b6_500_DG']
-# # for rec in records:
-# rec = records[-1]
-# print('processing', rec)
-# source_path = '../pytorch-CycleGAN-and-pix2pix/results/' + rec + '/test_latest/images'
-# save_path = 'data/facebank/noonan+normal/fake_' + rec
-# get_vague_faces(source_path, save_path)
+records = ['raw_fr_lag_aug_pix2pix_transfer_b6_100_2layer', 'fr_lag_aug_pix2pix_transfer_b6_100_2layer',
+            'fr_lag_pix2pix_transfer_b6_100_2layer', 'fr_lag_aug_pix2pix_transfer_b6_500_2layer', 
+            'fr_mix_aug_pix2pix_transfer_b6_500_DG', 'fr_mix_pix2pix_transfer_b6_500_DG']
+# for rec in records:
+rec = records[-1]
+print('processing', rec)
+source_path = '../pytorch-CycleGAN-and-pix2pix/results/' + rec + '/test_latest/images'
+save_path = 'data/facebank/noonan+normal/fake_' + rec
+get_vague_faces(source_path, save_path)
 
 # source_path = '../pytorch-CycleGAN-and-pix2pix/results/fr_aug_pix2pix_transfer_b6_100_2layer/test_latest/images'
 # save_path = 'data/facebank/noonan+normal/fake_fr_aug_pix2pix_transfer_b6_100_2layer'

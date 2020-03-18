@@ -121,6 +121,7 @@ if __name__ == '__main__':
                             test_set[name][i].replace(raw_dir, verify_type + '/test/' + name))
         
         if args.additional_data_dir:
+            fake_dict = {'noonan':'normal', 'normal':'noonan'}
             full_additional_dir = conf.data_path/'facebank'/'noonan+normal'/args.additional_data_dir
             add_data = glob.glob(str(full_additional_dir) + os.sep + '*.png')
             print('additional:', args.additional_data_dir, len(add_data))
@@ -133,7 +134,7 @@ if __name__ == '__main__':
                         # print('copy to:', img_f.replace(args.additional_data_dir, 
                         #                                 verify_type + '/train/' + name))
                         shutil.copy(img_f, img_f.replace(str(full_additional_dir), 
-                                                        str(train_dir) + os.sep + name))
+                                                        str(train_dir) + os.sep + fake_dict[name]))
         
         print(fold_idx)
         print('datasets ready')
