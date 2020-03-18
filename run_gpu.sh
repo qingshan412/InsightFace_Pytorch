@@ -26,7 +26,7 @@ module load pytorch
 # done
 
 
-for Model in raw_fr_lag_aug_pix2pix_transfer_b6_100_2layer fr_lag_aug_pix2pix_transfer_b6_100_2layer fr_lag_pix2pix_transfer_b6_100_2layer fr_lag_aug_pix2pix_transfer_b6_500_2layer fr_mix_aug_pix2pix_transfer_b6_500_DG
+for Model in raw_fr_lag_aug_pix2pix_transfer_b6_100_2layer fr_lag_aug_pix2pix_transfer_b6_100_2layer fr_lag_pix2pix_transfer_b6_100_2layer fr_lag_aug_pix2pix_transfer_b6_500_2layer fr_mix_aug_pix2pix_transfer_b6_500_DG fr_mix_pix2pix_transfer_b6_500_DG
 do
     echo "${Model}"
     python roc_acc_fold.py -d distinct -g 0 -a fake_${Model} > data/facebank/roc_dist_${Model}
