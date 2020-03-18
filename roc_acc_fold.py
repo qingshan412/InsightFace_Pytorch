@@ -129,11 +129,11 @@ if __name__ == '__main__':
                     if name in img_f.strip().split(os.sep)[-1]:
                         print('source:', img_f)
                         print('copy to:', img_f.replace(str(full_additional_dir), 
-                                                        train_dir + os.sep + name))
+                                                        str(train_dir) + os.sep + name))
                         # print('copy to:', img_f.replace(args.additional_data_dir, 
                         #                                 verify_type + '/train/' + name))
                         shutil.copy(img_f, img_f.replace(str(full_additional_dir), 
-                                                        train_dir + os.sep + name))
+                                                        str(train_dir) + os.sep + name))
         
         print(fold_idx)
         print('datasets ready')
