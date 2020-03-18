@@ -74,6 +74,11 @@ if __name__ == '__main__':
 
     # threshold_array = np.arange(1.5, 1.6, 0.2)
     # for threshold in threshold_array:
+    # mkdir for folder containing verification results
+    # th = 'th_' + '{:.2f}'.format(threshold).replace('.', '_')
+    # verify_dir = conf.data_path/'facebank'/args.dataset_dir/verify_type/th
+    # if not verify_dir.is_dir():
+    #     verify_dir.mkdir(parents=True)
     threshold = 1.6
     learner.threshold = threshold #+ 1.0
     
@@ -84,12 +89,6 @@ if __name__ == '__main__':
         learner.load_state(conf, 'final.pth', True, True)
     learner.model.eval()
     print('learner loaded for threshold', threshold)
-    
-    # mkdir for folder containing verification results
-    th = 'th_' + '{:.2f}'.format(threshold).replace('.', '_')
-    verify_dir = conf.data_path/'facebank'/args.dataset_dir/verify_type/th
-    if not verify_dir.is_dir():
-        verify_dir.mkdir(parents=True)
     
     # count for roc-auc
     counts = {}
@@ -119,7 +118,7 @@ if __name__ == '__main__':
                             train_set[name][i].replace(raw_dir, verify_type + '/train/' + name))
             for i in range(len(test_set[name])):
                 shutil.copy(test_set[name][i], 
-                            test_set[name][i].replace(raw_dir, verify_type+ '/test/' + name))
+                            test_set[name][i].replace(raw_dir, verify_type + '/test/' + name))
         
         if args.additional_data_dir:
             full_additional_dir = conf.data_path/'facebank'/'noonan+normal'/args.additional_data_dir
@@ -132,7 +131,7 @@ if __name__ == '__main__':
                         # print('copy to:', img_f.replace(args.additional_data_dir, 
                         #                                 verify_type + '/train/' + name))
                         shutil.copy(img_f, img_f.replace(args.additional_data_dir, 
-                                                        verify_type + '/train/' + name))
+                                                        verify_type + '/train/a_' + name))
         
         print(fold_idx)
         print('datasets ready')
