@@ -131,7 +131,7 @@ if __name__ == '__main__':
                         # print('copy to:', img_f.replace(args.additional_data_dir, 
                         #                                 verify_type + '/train/' + name))
                         shutil.copy(img_f, img_f.replace(args.additional_data_dir, 
-                                                        verify_type + '/train/a_' + name))
+                                                        train_dir + os.sep + name))
         
         print(fold_idx)
         print('datasets ready')
