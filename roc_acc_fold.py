@@ -122,9 +122,9 @@ if __name__ == '__main__':
                             test_set[name][i].replace(raw_dir, verify_type+ '/test/' + name))
         
         if args.additional_data_dir:
-            full_additional_dir = conf.data_path/'facebank'/args.dataset_dir/args.additional_data_dir
+            full_additional_dir = conf.data_path/'facebank'/'noonan+normal'/args.additional_data_dir
             add_data = glob.glob(str(full_additional_dir) + os.sep + '*.png')
-            # print('additional:', args.additional_data_dir)
+            # print('additional:', args.additionals_data_dir)
             for name in names_considered:
                 for img_f in add_data:
                     if name in img_f.strip().split(os.sep)[-1]:
