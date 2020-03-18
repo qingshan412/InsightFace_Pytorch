@@ -124,8 +124,7 @@ if __name__ == '__main__':
         if args.additional_data_dir:
             full_additional_dir = conf.data_path/'facebank'/'noonan+normal'/args.additional_data_dir
             add_data = glob.glob(str(full_additional_dir) + os.sep + '*.png')
-            print('additional:', args.additional_data_dir)
-            print(len(add_data))
+            print('additional:', args.additional_data_dir, len(add_data))
             for name in names_considered:
                 for img_f in add_data:
                     if name in img_f.strip().split(os.sep)[-1]:
