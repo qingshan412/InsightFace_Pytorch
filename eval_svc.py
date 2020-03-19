@@ -49,6 +49,7 @@ if __name__ == '__main__':
 
     # collect raw data
     data_dict = {}
+    idx_gen = {}
     if 'npy' in raw_dir:
         label_dict = {'normal': 0, 'noonan': 1}
         names_npy = np.load(str(conf.data_path/'facebank'/args.dataset_dir/raw_dir/'img_names.npy'))
