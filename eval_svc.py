@@ -41,6 +41,12 @@ if __name__ == '__main__':
     os.makedirs(str(save_dir), exist_ok=True)
     print('folder ready...')
 
+    # init kfold
+    if args.use_shuffled_kfold:
+        kf = KFold(n_splits=args.kfold, shuffle=True, random_state=6)
+    else:
+        kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
+
     # collect raw data
     data_dict = {}
     if 'npy' in raw_dir:
@@ -56,12 +62,6 @@ if __name__ == '__main__':
             data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/raw_dir) + 
                                         '/' + name + '*'))
             idx_gen[name] = kf.split(data_dict[name])
-
-    # init kfold
-    if args.use_shuffled_kfold:
-        kf = KFold(n_splits=args.kfold, shuffle=True, random_state=6)
-    else:
-        kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
             
     for fold_idx in range(args.kfold):
         train_set = {}
