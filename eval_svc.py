@@ -43,8 +43,19 @@ if __name__ == '__main__':
 
     # collect raw data
     data_dict = {}
-    for name in names_considered:
-        data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/raw_dir) + '/' + name + '*'))
+    if 'npy' in raw_dir:
+        label_dict = {'normal': 0, 'noonan': 1}
+        names_npy = np.load(str(conf.data_path/'facebank'/args.dataset_dir/raw_dir/'img_names.npy'))
+        labels_npy = np.array([1 if 'noonan' in item else 0 for item in names_npy])
+        lmks_npy = np.load(str(conf.data_path/'facebank'/args.dataset_dir/raw_dir/'lmks.npy'))
+        for name in names_considered:
+            data_dict[name] = lmks_npy[np.where(labels_npy==label_dict[name])]
+            idx_gen[name] = kf.split(data_dict[name])
+    else:
+        for name in names_considered:
+            data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/raw_dir) + 
+                                        '/' + name + '*'))
+            idx_gen[name] = kf.split(data_dict[name])
 
     # init kfold
     if args.use_shuffled_kfold:
@@ -52,6 +63,34 @@ if __name__ == '__main__':
     else:
         kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
             
+    for fold_idx in range(args.kfold):
+        train_set = {}
+        test_set = {}
+        # sklearn style input
+        X_train = []
+        y_train = []
+        X_test = []
+        y_test = []
+        for name in names_considered:
+            (train_index, test_index) = next(idx_gen[name])
+            train_set[name], test_set[name] = data_dict[name][train_index], data_dict[name][test_index]
+            if 'npy' in raw_dir:
+                # transform to numpy arrays
+                for i in train_set[name]:
+                    X_train.append(i.flatten())
+                    y_train.append(1 if 'noonan' in name else 0) # binary
+                for i in test_set[name]:
+                    X_test.append(i.flatten())
+                    y_test.append(1 if 'noonan' in name else 0) # binary
+            else:
+                # transform images to numpy arrays
+                for i in train_set[name]:
+                    X_train.append(np.asarray(Image.open(i)).flatten())
+                    y_train.append(0 if names_considered[0] in i.strip().split(os.sep)[-1] else 1) # binary
+                for i in test_set[name]:
+                    X_test.append(np.asarray(Image.open(i)).flatten())
+                    y_test.append(0 if names_considered[0] in i.strip().split(os.sep)[-1] else 1) # binary
+        
     for fold_idx, (train_index, test_index) in enumerate(kf.split(data_dict[names_considered[0]])):
         train_set = {}
         test_set = {}
