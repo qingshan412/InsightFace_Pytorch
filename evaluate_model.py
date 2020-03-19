@@ -131,3 +131,11 @@ get_vague_faces(source_path, save_path)
 #     ab.paste(a, box=(0,0))
 #     ab.paste(b, box=(a.size[0],0))
 #     ab.save(ABdir + os.sep + name)
+##############################################################################################
+# get lmks as np array
+##############################################################################################
+# from data.data_pipe import img2lmk_np
+
+# img_path = 'data/facebank/distinct/raw_112'
+# lmk_path = 'data/facebank/distinct/npy'
+# img2lmk_np(img_path, lmk_path)
