@@ -114,11 +114,23 @@ if __name__ == '__main__':
         # tests to conf.data_path/'facebank'/args.dataset_dir/'test'
         for name in names_considered:
             for i in range(len(train_set[name])):
-                shutil.copy(train_set[name][i], 
-                            train_set[name][i].replace(raw_dir, verify_type + '/train/' + name))
+                if 'devided' in args.dataset_dir:
+                    for img in os.listdir(train_set[name][i]):
+                        shutil.copy(train_set[name][i] + os.sep + img, 
+                                    ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
+                                        '/' + verify_type + '/train/' + name + os.sep + img))
+                else:
+                    shutil.copy(train_set[name][i], 
+                                train_set[name][i].replace(raw_dir, verify_type + '/train/' + name))
             for i in range(len(test_set[name])):
-                shutil.copy(test_set[name][i], 
-                            test_set[name][i].replace(raw_dir, verify_type + '/test/' + name))
+                if 'devided' in args.dataset_dir:
+                    for img in os.listdir(test_set[name][i]):
+                        shutil.copy(test_set[name][i] + os.sep + img, 
+                                    ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
+                                        '/' + verify_type + '/test/' + name + os.sep + img))
+                else:
+                    shutil.copy(test_set[name][i], 
+                                test_set[name][i].replace(raw_dir, verify_type + '/test/' + name))
         
         if args.additional_data_dir:
             fake_dict = {'noonan':'normal', 'normal':'noonan'}
