@@ -163,6 +163,8 @@ if __name__ == '__main__':
         #     verify_fold_dir.mkdir(parents=True)
         
         for path in test_dir.iterdir():
+            if path.is_file():
+                continue
             print(path)
             for fil in path.iterdir():
                 print(fil)
