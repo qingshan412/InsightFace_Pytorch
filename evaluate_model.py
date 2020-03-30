@@ -62,7 +62,7 @@ records = ['raw_fr_lag_aug_pix2pix_transfer_b6_100_2layer', 'fr_lag_aug_pix2pix_
             'fr_mix_aug_pix2pix_transfer_b6_2000_D2G', 'fr_mix_pix2pix_transfer_b6_2000_D2G']
 # for rec in records:
 # rec = records[-1]
-new_recs = rec[-3:]
+new_recs = records[-3:]
 for rec in new_recs:
     print('processing', rec)
     source_path = '../pytorch-CycleGAN-and-pix2pix/results/' + rec + '/test_latest/images'
