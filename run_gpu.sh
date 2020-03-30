@@ -9,23 +9,30 @@
 
 module load pytorch
 
-Epoch=latest
 
-for Type in 'raw' 'resize' 'raw_resize'
+for Model in fr_mix_aug_pix2pix_transfer_b6_100_full fr_mix_aug_pix2pix_transfer_b6_2000_D2G fr_mix_pix2pix_transfer_b6_2000_D2G
 do
-    for Model in 'fr_adult_pix2pix_transfer_b6_25_1layer_fe' 'fr_adult_pix2pix_transfer_b6_25_2layer' 'fr_adult_pix2pix_transfer_b6_25_1layer_pool5_DG'
-    do
-        python roc_acc_fold.py -d distinct -g 0 -a fake_${Type}_${Epoch}_${Model} \
-        > data/facebank/roc_dist_${Type}_${Epoch}_${Model}
-        tail -n 1 data/facebank/roc_dist_${Type}_${Epoch}_${Model}
-        python roc_acc_fold.py -d distinct -g 0 -s -a fake_${Type}_${Epoch}_${Model} \
-        > data/facebank/roc_dist_${Type}_${Epoch}_${Model}_s
-        tail -n 1 data/facebank/roc_dist_${Type}_${Epoch}_${Model}_s
-        python roc_acc_fold.py -d distinct -g 0 -tta -a fake_${Type}_${Epoch}_${Model} \
-        > data/facebank/roc_dist_${Type}_${Epoch}_${Model}_tta
-        tail -n 1 data/facebank/roc_dist_${Type}_${Epoch}_${Model}_tta
-    done
+    python roc_acc_fold.py -d distinct -g 0 -a fake_${Model} > data/facebank/roc_dist_${Model}
+    python roc_acc_fold.py -d distinct -g 0 -s -a fake_${Model} > data/facebank/roc_dist_${Model}_s
+    python roc_acc_fold.py -d distinct -g 0 -tta -a fake_${Model} > data/facebank/roc_dist_${Model}_tta
 done
+# Epoch=latest
+
+# for Type in 'raw' 'resize' 'raw_resize'
+# do
+#     for Model in 'fr_adult_pix2pix_transfer_b6_25_1layer_fe' 'fr_adult_pix2pix_transfer_b6_25_2layer' 'fr_adult_pix2pix_transfer_b6_25_1layer_pool5_DG'
+#     do
+#         python roc_acc_fold.py -d distinct -g 0 -a fake_${Type}_${Epoch}_${Model} \
+#         > data/facebank/roc_dist_${Type}_${Epoch}_${Model}
+#         tail -n 1 data/facebank/roc_dist_${Type}_${Epoch}_${Model}
+#         python roc_acc_fold.py -d distinct -g 0 -s -a fake_${Type}_${Epoch}_${Model} \
+#         > data/facebank/roc_dist_${Type}_${Epoch}_${Model}_s
+#         tail -n 1 data/facebank/roc_dist_${Type}_${Epoch}_${Model}_s
+#         python roc_acc_fold.py -d distinct -g 0 -tta -a fake_${Type}_${Epoch}_${Model} \
+#         > data/facebank/roc_dist_${Type}_${Epoch}_${Model}_tta
+#         tail -n 1 data/facebank/roc_dist_${Type}_${Epoch}_${Model}_tta
+#     done
+# done
 
 
 # for Epoch in 20 latest
