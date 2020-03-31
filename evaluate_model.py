@@ -98,20 +98,20 @@ imgs_folder = 'data/facebank/divided/orig'
 # imgs_folder = 'data/facebank/distinct/orig'
 # imgs_folder = 'data/facebank/LAG_y_fine/orig'
 # imgs_folder = 'data/facebank/noonan+normal/raw'
-target_size = 112 + 5
+target_size = 112 #+ 5
 target_folder = 'data/facebank/divided/mtcnn_' + str(target_size)
 # target_folder = 'data/facebank/distinct/mtcnn_' + str(target_size)
 # target_folder = 'data/facebank/LAG_y_fine/mtcnn_' + str(target_size)
 # target_folder = 'data/facebank/noonan+normal/mtcnn_' + str(target_size)
 get_train_dataset_gan(imgs_folder, target_folder, (target_size, target_size))
 
-print('get landmarks...')
-img_path = target_folder
-lmk_path = 'data/facebank/divided/lmks_mtcnn_' + str(target_size)
-# lmk_path = 'data/facebank/distinct/lmks_mtcnn_' + str(target_size)
-# lmk_path = 'data/facebank/LAG_y_fine/lmks_mtcnn_' + str(target_size)
-# lmk_path = 'data/facebank/noonan+normal/lmks_mtcnn_' + str(target_size)
-img2lmk(img_path, lmk_path, in_place=False)
+# print('get landmarks...')
+# img_path = target_folder
+# lmk_path = 'data/facebank/divided/lmks_mtcnn_' + str(target_size)
+# # lmk_path = 'data/facebank/distinct/lmks_mtcnn_' + str(target_size)
+# # lmk_path = 'data/facebank/LAG_y_fine/lmks_mtcnn_' + str(target_size)
+# # lmk_path = 'data/facebank/noonan+normal/lmks_mtcnn_' + str(target_size)
+# img2lmk(img_path, lmk_path, in_place=False)
 
 ##############################################################################################
 # get_lag_y_data
