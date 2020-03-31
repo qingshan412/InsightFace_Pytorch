@@ -52,22 +52,22 @@
 ##############################################################################################
 # get fake images that can be recognized by mtcnn
 ##############################################################################################
-from data.data_pipe import get_vague_faces
+# from data.data_pipe import get_vague_faces
 
-records = ['raw_fr_lag_aug_pix2pix_transfer_b6_100_2layer', 'fr_lag_aug_pix2pix_transfer_b6_100_2layer',
-            'fr_lag_pix2pix_transfer_b6_100_2layer', 'fr_lag_aug_pix2pix_transfer_b6_500_2layer', 
-            'fr_mix_aug_pix2pix_transfer_b6_500_DG', 'fr_mix_pix2pix_transfer_b6_500_DG', 
-            'fr_mix_aug_pix2pix_transfer_b6_2000_DG', 'fr_mix_pix2pix_transfer_b6_2000_DG',
-            'fr_mix_aug_pix2pix_transfer_b6_100_pool5_full', 'fr_mix_aug_pix2pix_transfer_b6_100_full',
-            'fr_mix_aug_pix2pix_transfer_b6_2000_D2G', 'fr_mix_pix2pix_transfer_b6_2000_D2G']
-# for rec in records:
-# rec = records[-1]
-new_recs = records[-3:]
-for rec in new_recs:
-    print('processing', rec)
-    source_path = '../pytorch-CycleGAN-and-pix2pix/results/' + rec + '/test_latest/images'
-    save_path = 'data/facebank/noonan+normal/fake_' + rec
-    get_vague_faces(source_path, save_path)
+# records = ['raw_fr_lag_aug_pix2pix_transfer_b6_100_2layer', 'fr_lag_aug_pix2pix_transfer_b6_100_2layer',
+#             'fr_lag_pix2pix_transfer_b6_100_2layer', 'fr_lag_aug_pix2pix_transfer_b6_500_2layer', 
+#             'fr_mix_aug_pix2pix_transfer_b6_500_DG', 'fr_mix_pix2pix_transfer_b6_500_DG', 
+#             'fr_mix_aug_pix2pix_transfer_b6_2000_DG', 'fr_mix_pix2pix_transfer_b6_2000_DG',
+#             'fr_mix_aug_pix2pix_transfer_b6_100_pool5_full', 'fr_mix_aug_pix2pix_transfer_b6_100_full',
+#             'fr_mix_aug_pix2pix_transfer_b6_2000_D2G', 'fr_mix_pix2pix_transfer_b6_2000_D2G']
+# # for rec in records:
+# # rec = records[-1]
+# new_recs = records[-3:]
+# for rec in new_recs:
+#     print('processing', rec)
+#     source_path = '../pytorch-CycleGAN-and-pix2pix/results/' + rec + '/test_latest/images'
+#     save_path = 'data/facebank/noonan+normal/fake_' + rec
+#     get_vague_faces(source_path, save_path)
 
 # source_path = '../pytorch-CycleGAN-and-pix2pix/results/fr_aug_pix2pix_transfer_b6_100_2layer/test_latest/images'
 # save_path = 'data/facebank/noonan+normal/fake_fr_aug_pix2pix_transfer_b6_100_2layer'
@@ -91,24 +91,27 @@ for rec in new_recs:
 ##############################################################################################
 # generate images for data augmentation in gan
 ##############################################################################################
-# from data.data_pipe import get_train_dataset_gan, img2lmk
+from data.data_pipe import get_train_dataset_gan, img2lmk
 
-# print('get images from mtcnn...')
+print('get images from mtcnn...')
+imgs_folder = 'data/facebank/divided/orig'
 # imgs_folder = 'data/facebank/distinct/orig'
-# # imgs_folder = 'data/facebank/LAG_y_fine/orig'
-# # imgs_folder = 'data/facebank/noonan+normal/raw'
-# target_size = 112 + 5
+# imgs_folder = 'data/facebank/LAG_y_fine/orig'
+# imgs_folder = 'data/facebank/noonan+normal/raw'
+target_size = 112 + 5
+target_folder = 'data/facebank/divided/mtcnn_' + str(target_size)
 # target_folder = 'data/facebank/distinct/mtcnn_' + str(target_size)
-# # target_folder = 'data/facebank/LAG_y_fine/mtcnn_' + str(target_size)
-# # target_folder = 'data/facebank/noonan+normal/mtcnn_' + str(target_size)
-# get_train_dataset_gan(imgs_folder, target_folder, (target_size, target_size))
+# target_folder = 'data/facebank/LAG_y_fine/mtcnn_' + str(target_size)
+# target_folder = 'data/facebank/noonan+normal/mtcnn_' + str(target_size)
+get_train_dataset_gan(imgs_folder, target_folder, (target_size, target_size))
 
-# print('get landmarks...')
-# img_path = target_folder
+print('get landmarks...')
+img_path = target_folder
+lmk_path = 'data/facebank/divided/lmks_mtcnn_' + str(target_size)
 # lmk_path = 'data/facebank/distinct/lmks_mtcnn_' + str(target_size)
-# # lmk_path = 'data/facebank/LAG_y_fine/lmks_mtcnn_' + str(target_size)
-# # lmk_path = 'data/facebank/noonan+normal/lmks_mtcnn_' + str(target_size)
-# img2lmk(img_path, lmk_path, in_place=False)
+# lmk_path = 'data/facebank/LAG_y_fine/lmks_mtcnn_' + str(target_size)
+# lmk_path = 'data/facebank/noonan+normal/lmks_mtcnn_' + str(target_size)
+img2lmk(img_path, lmk_path, in_place=False)
 
 ##############################################################################################
 # get_lag_y_data
