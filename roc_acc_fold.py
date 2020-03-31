@@ -114,8 +114,8 @@ if __name__ == '__main__':
         # tests to conf.data_path/'facebank'/args.dataset_dir/'test'
         for name in names_considered:
             for i in range(len(train_set[name])):
-                print(args.dataset_dir)
-                print('divided' in args.dataset_dir)
+                # print(args.dataset_dir)
+                # print('divided' in args.dataset_dir)
                 if 'divided' in args.dataset_dir:
                     for img in os.listdir(train_set[name][i]):
                         shutil.copy(train_set[name][i] + os.sep + img, 
