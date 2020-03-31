@@ -16,6 +16,7 @@ do
     python roc_acc_fold.py -d distinct -g 0 -s -a fake_${Model} > data/facebank/roc_dist_${Model}_s
     python roc_acc_fold.py -d distinct -g 0 -tta -a fake_${Model} > data/facebank/roc_dist_${Model}_tta
 done
+
 # Epoch=latest
 
 # for Type in 'raw' 'resize' 'raw_resize'
