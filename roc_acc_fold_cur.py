@@ -222,7 +222,7 @@ if __name__ == '__main__':
     print(relative_scores)
 
     # Compute ROC curve and ROC area for noonan
-    fpr, tpr, _ = roc_curve(score_names, relative_scores)
+    fpr, tpr, _ = roc_curve(score_names, scores_np[:, noonan_idx])#relative_scores
     roc_auc = auc(fpr, tpr)
 
     # plots
