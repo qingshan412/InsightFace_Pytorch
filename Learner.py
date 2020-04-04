@@ -275,7 +275,7 @@ class face_learner(object):
         
         diff = source_embs.unsqueeze(-1) - target_embs.transpose(1,0).unsqueeze(0)
         dist = torch.sum(torch.pow(diff, 2), dim=1) * torch.tensor(weights)
-        return dist
+        return dist.numpy()
         # minimum, min_idx = torch.min(dist, dim=1)
         # min_idx[minimum > self.threshold] = -1 # if no match, set idx to -1
         # return min_idx, minimum 

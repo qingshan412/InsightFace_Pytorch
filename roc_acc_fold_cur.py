@@ -90,10 +90,12 @@ if __name__ == '__main__':
     learner.model.eval()
     print('learner loaded for threshold', threshold)
     
-    # count for roc-auc
-    counts = {}
-    for name in names_considered:
-        counts[name] = [0, 0, 0] # #false, #true, #false_positive
+    # # count for roc-auc
+    # counts = {}
+    # for name in names_considered:
+    #     counts[name] = [0, 0, 0] # #false, #true, #false_positive
+    score_names = []
+    scores = []
         
     # for fold_idx, (train_index, test_index) in enumerate(kf.split(data_dict[names_considered[0]])):
     for fold_idx in range(args.kfold):
@@ -168,6 +170,7 @@ if __name__ == '__main__':
             print(path)
             for fil in path.iterdir():
                 print(fil)
+                score_names.append(fil)
                 orig_name = ''.join([i for i in fil.name.strip().split('.')[0] if not i.isdigit()])
                 if orig_name not in names_considered:
                     print("Un-considered name:", fil.name)
@@ -180,20 +183,24 @@ if __name__ == '__main__':
                 # print('bboxes shape:', bboxes.shape)
                 bboxes = bboxes.astype(int)
                 bboxes = bboxes + [-1,-1,1,1] # personal choice    
-                results, score = learner.binfer(conf, faces, targets, args.tta)
-                for idx,bbox in enumerate(bboxes):
-                    pred_name = names[results[idx] + 1]
-                    frame = draw_box_name(bbox, pred_name + '_{:.2f}'.format(score[idx]), frame)
-                    if pred_name in fil.name:
-                        counts[orig_name][1] += 1
-                    else:
-                        counts[orig_name][0] += 1
-                        if pred_name in names_considered:
-                            counts[pred_name][2] += 1
+                score = learner.binfer(conf, faces, targets, args.tta)
+                scores.append(score)
+                # for idx,bbox in enumerate(bboxes):
+                #     pred_name = names[results[idx] + 1]
+                #     frame = draw_box_name(bbox, pred_name + '_{:.2f}'.format(score[idx]), frame)
+                #     if pred_name in fil.name:
+                #         counts[orig_name][1] += 1
+                #     else:
+                #         counts[orig_name][0] += 1
+                #         if pred_name in names_considered:
+                #             counts[pred_name][2] += 1
                 # cv2.imwrite(str(verify_fold_dir/fil.name), frame)
                 # print('save image to', str(verify_fold_dir/fil.name))
 
-    print(counts)
+    # print(counts)
+    scores_np = np.array(scores)
+    print('score_np:')
+    print(scores_np)
 
     # for name in names_considered:
     #     # positive = counts[name][1] + counts[name][2]
