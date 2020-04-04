@@ -238,7 +238,8 @@ if __name__ == '__main__':
     plt.ylabel('True Positive Rate')
     plt.title('Receiver operating characteristic example')
     plt.legend(loc="lower right")
-    plt.show()
+    plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/fp_tp.png')
+    # plt.show()
     
     # plt.figure()
     # for i in range(len(names_considered)):
