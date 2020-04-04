@@ -9,6 +9,7 @@ from mtcnn import MTCNN
 from Learner import face_learner
 from utils import load_facebank, draw_box_name, prepare_facebank
 
+from sklearn.metrics import roc_curve, auc
 from sklearn.model_selection import KFold
 import os, glob, shutil
 import numpy as np
@@ -157,6 +158,16 @@ if __name__ == '__main__':
 
         # prepare_facebank
         targets, names = prepare_facebank(conf, learner.model, mtcnn, tta = args.tta)
+        print('names_classes:', names)
+        if ('noonan' in names[1]) and ('normal' in names[2]):
+            noonan_idx = 0
+            names_idx = {'noonan': 0, 'normal': 1}
+        elif ('noonan' in names[2]) and ('normal' in names[1]):
+            noonan_idx = 1
+            names_idx = {'noonan':1, 'normal':0}
+        else:
+            print('something wrong with names:', names)
+            exit(0)
         print('facebank updated')
 
         # # folder for 1 fold
@@ -170,8 +181,11 @@ if __name__ == '__main__':
             print(path)
             for fil in path.iterdir():
                 print(fil)
-                score_names.append(fil)
                 orig_name = ''.join([i for i in fil.name.strip().split('.')[0] if not i.isdigit()])
+                if 'noonan' in orig_name:
+                    score_names.append(names_idx['noonan'])
+                else:
+                    score_names.append(names_idx['normal'])
                 if orig_name not in names_considered:
                     print("Un-considered name:", fil.name)
                     continue
@@ -196,21 +210,35 @@ if __name__ == '__main__':
                 #             counts[pred_name][2] += 1
                 # cv2.imwrite(str(verify_fold_dir/fil.name), frame)
                 # print('save image to', str(verify_fold_dir/fil.name))
-        print(np.squeeze(np.array(scores)))
-        exit(0)
+        # print(np.squeeze(np.array(scores)))
+        # exit(0)
     # print(counts)
-    scores_np = np.array(scores)
-    print('score_np:')
-    print(scores_np)
+    score_names = np.array(score_names)
+    scores_np = np.squeeze(np.array(scores))
+    relative_scores = scores_np[:, noonan_idx] / (scores_np[:, 0] + scores_np[:, 1])
+    print('score_names:')
+    print(score_names)
+    print('scores_np:')
+    print(relative_scores)
 
-    # for name in names_considered:
-    #     # positive = counts[name][1] + counts[name][2]
-    #     fp_tp[name][0].append(counts[name][1] / 52.) # total condition positive 52
-    #     fp_tp[name][1].append(counts[name][2] / (52. * 1.)) # total condition negative 52 x 1
-    #     accuracy[name].append(counts[name][1] / (counts[name][0] + counts[name][1]))
-        
-    # # plots
-    # colors = list(mcolors.TABLEAU_COLORS)
+    # Compute ROC curve and ROC area for noonan
+    fpr, tpr, _ = roc_curve(score_names, relative_scores)
+    roc_auc = auc(fpr, tpr)
+
+    # plots
+    plt.figure()
+    colors = list(mcolors.TABLEAU_COLORS)
+    lw = 2
+    plt.plot(fpr, tpr, color='darkorange',
+            lw=lw, label='ROC curve (area = %0.2f)' % roc_auc[2])
+    plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('Receiver operating characteristic example')
+    plt.legend(loc="lower right")
+    plt.show()
     
     # plt.figure()
     # for i in range(len(names_considered)):
