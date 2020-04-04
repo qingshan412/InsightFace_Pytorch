@@ -79,8 +79,8 @@ if __name__ == '__main__':
     # verify_dir = conf.data_path/'facebank'/args.dataset_dir/verify_type/th
     # if not verify_dir.is_dir():
     #     verify_dir.mkdir(parents=True)
-    threshold = 1.6
-    learner.threshold = threshold #+ 1.0
+    # threshold = 1.6
+    # learner.threshold = threshold #+ 1.0
     
     if conf.device.type == 'cpu': # conf.device.type = 'cpu' for CRC01/02 
         learner.load_state(conf, 'mobilefacenet.pth', True, True)
@@ -88,7 +88,7 @@ if __name__ == '__main__':
     else:
         learner.load_state(conf, 'final.pth', True, True)
     learner.model.eval()
-    print('learner loaded for threshold', threshold)
+    print('learner loaded.')
     
     # # count for roc-auc
     # counts = {}
