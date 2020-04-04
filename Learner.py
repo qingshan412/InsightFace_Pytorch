@@ -255,7 +255,7 @@ class face_learner(object):
 
     def binfer(self, conf, faces, target_embs, weights=[0.5, 0.5], tta=False):
         '''
-        infer as binary classification
+        return raw scores for every class 
         faces : list of PIL Image
         target_embs : [n, 512] computed embeddings of faces in facebank
         names : recorded names of faces in facebank
