@@ -253,13 +253,12 @@ class face_learner(object):
         min_idx[minimum > self.threshold] = -1 # if no match, set idx to -1
         return min_idx, minimum 
 
-    def binfer(self, conf, faces, target_embs, weights=[0.5, 0.5], tta=False):
+    def binfer(self, conf, faces, target_embs, tta=False):
         '''
         return raw scores for every class 
         faces : list of PIL Image
         target_embs : [n, 512] computed embeddings of faces in facebank
         names : recorded names of faces in facebank
-        weights: used to calculate weighted distance for binary classification
         tta : test time augmentation (hfilp, that's all)
         '''
         embs = []
@@ -274,9 +273,9 @@ class face_learner(object):
         source_embs = torch.cat(embs)
         
         diff = source_embs.unsqueeze(-1) - target_embs.transpose(1,0).unsqueeze(0)
-        dist = torch.sum(torch.pow(diff, 2), dim=1) * torch.tensor(weights)
+        dist = torch.sum(torch.pow(diff, 2), dim=1)
         print(dist)
-        return dist.detach().numpy()
+        return dist.numpy()
         # minimum, min_idx = torch.min(dist, dim=1)
         # min_idx[minimum > self.threshold] = -1 # if no match, set idx to -1
         # return min_idx, minimum 
