@@ -72,8 +72,8 @@ if __name__ == '__main__':
                                             '/' + name + '*'))
         idx_gen[name] = kf.split(data_dict[name])
     
-    threshold = 1.6
-    learner.threshold = threshold #+ 1.0
+    # threshold = 1.6
+    # learner.threshold = threshold #+ 1.0
     
     if conf.device.type == 'cpu': # conf.device.type = 'cpu' for CRC01/02 
         learner.load_state(conf, 'mobilefacenet.pth', True, True)
@@ -81,7 +81,7 @@ if __name__ == '__main__':
     else:
         learner.load_state(conf, 'final.pth', True, True)
     learner.model.eval()
-    print('learner loaded for threshold', threshold)
+    print('learner loaded.')
 
     # threshold_array = np.arange(0.2, 1.6, 0.1)
     noonan_weights = [i * 0.05 + 0.3 for i in range(11)]
