@@ -196,7 +196,7 @@ if __name__ == '__main__':
                 #             counts[pred_name][2] += 1
                 # cv2.imwrite(str(verify_fold_dir/fil.name), frame)
                 # print('save image to', str(verify_fold_dir/fil.name))
-        print(scores_np)
+        print(np.array(scores))
         exit(0)
     # print(counts)
     scores_np = np.array(scores)
