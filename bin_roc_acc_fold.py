@@ -26,6 +26,8 @@ if __name__ == '__main__':
     parser.add_argument("-g", "--gpu_id", help="gpu id to use", default="", type=str)
     parser.add_argument("-s", "--use_shuffled_kfold", help="whether to use shuffled kfold.", action="store_true")
     parser.add_argument("-tta", "--tta", help="whether test time augmentation",action="store_true")
+    parser.add_argument("-a", "--additional_data_dir", help="where to get the additional data", 
+                        default="", type=str)
     args = parser.parse_args()
 
     conf = get_config(False)
@@ -43,6 +45,7 @@ if __name__ == '__main__':
         accuracy[name] = []
     
     # prepare folders
+    raw_dir = 'raw_112'
     verify_type = 'bin_verify'
     if args.tta:
         verify_type += '_tta'
@@ -55,16 +58,30 @@ if __name__ == '__main__':
         os.makedirs(str(train_dir) + '/' + name, exist_ok=True)
         os.makedirs(str(test_dir) + '/' + name, exist_ok=True)
     
-    # collect raw data
-    data_dict = {}
-    for name in names_considered:
-        data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/'raw') + '/' + name + '*'))
-
     # init kfold
     if args.use_shuffled_kfold:
         kf = KFold(n_splits=args.kfold, shuffle=True, random_state=6)
     else:
         kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
+
+    # collect and split raw data
+    data_dict = {}
+    idx_gen = {}
+    for name in names_considered:
+        data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/raw_dir) + 
+                                            '/' + name + '*'))
+        idx_gen[name] = kf.split(data_dict[name])
+    
+    threshold = 1.6
+    learner.threshold = threshold #+ 1.0
+    
+    if conf.device.type == 'cpu': # conf.device.type = 'cpu' for CRC01/02 
+        learner.load_state(conf, 'mobilefacenet.pth', True, True)
+        # learner.load_state(conf, 'cpu_final.pth', True, True)
+    else:
+        learner.load_state(conf, 'final.pth', True, True)
+    learner.model.eval()
+    print('learner loaded for threshold', threshold)
 
     # threshold_array = np.arange(0.2, 1.6, 0.1)
     noonan_weights = [i * 0.05 + 0.3 for i in range(11)]
@@ -92,6 +109,7 @@ if __name__ == '__main__':
             train_set = {}
             test_set = {}
             for name in names_considered:
+                (train_index, test_index) = next(idx_gen[name])
                 train_set[name], test_set[name] = data_dict[name][train_index], data_dict[name][test_index]
 
             # remove previous data 
@@ -104,10 +122,42 @@ if __name__ == '__main__':
             # save trains to conf.facebank_path/args.dataset_dir/'train' and 
             # tests to conf.data_path/'facebank'/args.dataset_dir/'test'
             for name in names_considered:
-                for i in range(train_index.size):
-                    shutil.copy(train_set[name][i], train_set[name][i].replace('raw', verify_type + '/train/' + name))
-                for i in range(test_index.size):
-                    shutil.copy(test_set[name][i], test_set[name][i].replace('raw', verify_type + '/test/' + name))
+                for i in range(len(train_set[name])):
+                    # print(args.dataset_dir)
+                    # print('divided' in args.dataset_dir)
+                    if 'divided' in args.dataset_dir:
+                        for img in os.listdir(train_set[name][i]):
+                            shutil.copy(train_set[name][i] + os.sep + img, 
+                                        ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
+                                            '/' + verify_type + '/train/' + name + os.sep + img))
+                    else:
+                        shutil.copy(train_set[name][i], 
+                                    train_set[name][i].replace(raw_dir, verify_type + '/train/' + name))
+                for i in range(len(test_set[name])):
+                    if 'divided' in args.dataset_dir:
+                        for img in os.listdir(test_set[name][i]):
+                            shutil.copy(test_set[name][i] + os.sep + img, 
+                                        ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
+                                            '/' + verify_type + '/test/' + name + os.sep + img))
+                    else:
+                        shutil.copy(test_set[name][i], 
+                                    test_set[name][i].replace(raw_dir, verify_type + '/test/' + name))
+
+            if args.additional_data_dir:
+                fake_dict = {'noonan':'normal', 'normal':'noonan'}
+                full_additional_dir = conf.data_path/'facebank'/'noonan+normal'/args.additional_data_dir
+                add_data = glob.glob(str(full_additional_dir) + os.sep + '*.png')
+                print('additional:', args.additional_data_dir, len(add_data))
+                for name in names_considered:
+                    for img_f in add_data:
+                        if name in img_f.strip().split(os.sep)[-1]:
+                            print('source:', img_f)
+                            print('copy to:', img_f.replace(str(full_additional_dir), 
+                                                            str(train_dir) + os.sep + fake_dict[name]))
+                            # print('copy to:', img_f.replace(args.additional_data_dir, 
+                            #                                 verify_type + '/train/' + name))
+                            shutil.copy(img_f, img_f.replace(str(full_additional_dir), 
+                                                            str(train_dir) + os.sep + fake_dict[name]))
             
             print(fold_idx)
             print('datasets ready')
@@ -132,6 +182,9 @@ if __name__ == '__main__':
             #     verify_fold_dir.mkdir(parents=True)
             
             for path in test_dir.iterdir():
+                if path.is_file():
+                    continue
+                print(path)
                 for fil in path.iterdir():
                     # print(fil)
                     orig_name = ''.join([i for i in fil.name.strip().split('.')[0] if not i.isdigit()])
@@ -140,7 +193,8 @@ if __name__ == '__main__':
                         continue
                     frame = cv2.imread(str(fil))
                     image = Image.fromarray(frame)
-                    bboxes, faces = mtcnn.align_multi(image, conf.face_limit, conf.min_face_size)
+                    faces = [image,]
+                    bboxes, _ = mtcnn.align_multi(image, conf.face_limit, conf.min_face_size)
                     bboxes = bboxes[:,:-1] #shape:[10,4],only keep 10 highest possibiity faces
                     bboxes = bboxes.astype(int)
                     bboxes = bboxes + [-1,-1,1,1] # personal choice    
