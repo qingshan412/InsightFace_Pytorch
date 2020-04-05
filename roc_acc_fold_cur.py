@@ -259,7 +259,7 @@ if __name__ == '__main__':
     plt.ylabel('Precision')
     plt.ylim([0.0, 1.05])
     plt.xlim([0.0, 1.0])
-    plt.title('Average precision score ({}): AP={0:0.2f}'.format(exp_name, average_precision))
+    plt.title('Average precision score ({}): AP={:0.2f}'.format(exp_name, average_precision))
     plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/pr.png')
     # plt.figure()
     # for i in range(len(names_considered)):
