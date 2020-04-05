@@ -401,7 +401,7 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
 
     colors = list(mcolors.TABLEAU_COLORS)
     color_size = len(colors)
-    linestyles = ['', ':', '-.']
+    linestyles = ['-', ':', '-.']
     lw = 2
     plt.figure()
     plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
@@ -417,7 +417,7 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
     plt.title('ROC Curves')
-    plt.legend(bbox_to_anchor=(1.04, 1))#loc='upper right', 
+    plt.legend(bbox_to_anchor=(1.04, 1), borderaxespad=0)#loc='upper right', 
     plt.savefig(rec_path + os.sep + '/fp_tp.png')
 
 # class train_dataset(Dataset):
