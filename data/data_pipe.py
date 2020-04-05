@@ -407,7 +407,7 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
     plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
 
     base = 15
-    for ii in range(15): #names.shape[0]
+    for ii in range(3): #names.shape[0]
         i = base + ii
         fpr, tpr, _ = roc_curve(labels[i], scores[i])#scores_np[:, noonan_idx]
         roc_auc = auc(fpr, tpr)
@@ -423,6 +423,22 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
     # plt.legend(bbox_to_anchor=(1.04, 1), borderaxespad=0)#, ncol=2)#loc='upper right', 
     # plt.subplots_adjust(right=0.5, top=0.6)
     plt.savefig(rec_path + os.sep + '/fp_tp.png')
+
+    plt.figure()
+    base = 0
+    for ii in range(3): #names.shape[0]
+        i = base + ii
+        precision, recall, _ = precision_recall_curve(labels[i], scores[i])
+        average_precision = average_precision_score(labels[i], scores[i])
+        plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, linestyle=linestyles[i//color_size],
+                    label='{} (AP={:0.2f})'.format(names[i], average_precision))
+    
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.ylim([0.0, 1.05])
+    plt.xlim([0.0, 1.0])
+    plt.title('PR Curves')
+    plt.savefig(rec_path + os.sep + '/pr.png')
 
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
