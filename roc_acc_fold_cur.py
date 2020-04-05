@@ -239,6 +239,7 @@ if __name__ == '__main__':
 
     # plots
     plt.figure()
+    # colors = list(mcolors.TABLEAU_COLORS)
     lw = 2
     plt.plot(fpr, tpr, color='darkorange',
             lw=lw, label='ROC curve (area = %0.2f)' % roc_auc)
