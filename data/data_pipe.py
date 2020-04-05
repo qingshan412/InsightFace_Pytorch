@@ -417,7 +417,7 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
     plt.title('ROC Curves')
-    plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05))
+    plt.legend(bbox_to_anchor=(1.04, 1))#loc='upper right', 
     plt.savefig(rec_path + os.sep + '/fp_tp.png')
 
 # class train_dataset(Dataset):
