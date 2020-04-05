@@ -438,6 +438,7 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
     plt.ylim([0.0, 1.05])
     plt.xlim([0.0, 1.0])
     plt.title('PR Curves')
+    plt.legend(loc="lower left")
     plt.savefig(rec_path + os.sep + '/pr.png')
 
 # class train_dataset(Dataset):
