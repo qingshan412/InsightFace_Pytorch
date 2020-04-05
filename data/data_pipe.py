@@ -392,10 +392,10 @@ def img2lmk_np(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_pred
     np.save(lmk_path + os.sep + 'img_names.npy', np.array(img_names))
     np.save(lmk_path + os.sep + 'lmks.npy', np.array(lmks))
 
-def merge_plt(data_name, rec_path='data/facebank/plt_recs'):
+def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
     names = np.load(rec_path + os.sep + 'names.npy')
-    labels = np.load(rec_path + os.sep + 'labels.npy')
-    scores = np.load(rec_path + os.sep + 'scores.npy')
+    labels = np.load(rec_path + os.sep + 'labels.npy', allow_pickle=True)
+    scores = np.load(rec_path + os.sep + 'scores.npy', allow_pickle=True)
 
     colors = list(mcolors.TABLEAU_COLORS)
     lw = 2
