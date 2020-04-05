@@ -39,11 +39,15 @@ if __name__ == '__main__':
     learner = face_learner(conf, inference=True)
     
     names_considered = args.names_considered.strip().split(',')
-    fp_tp = {}
-    accuracy = {}
-    for name in names_considered:
-        fp_tp[name] = [[], []] # fpr_list, tpr_list
-        accuracy[name] = []
+
+    exp_name = args.dataset_dir
+    if args.additional_data_dir:
+        exp_name += ('_' + args.additional_data_dir)
+    if args.use_shuffled_kfold:
+        exp_name += '_s'
+    if args.tta:
+        exp_name += '_tta'
+    
     
     # prepare folders
     raw_dir = 'raw_112'
@@ -137,7 +141,11 @@ if __name__ == '__main__':
                     shutil.copy(test_set[name][i], 
                                 test_set[name][i].replace(raw_dir, verify_type + '/test/' + name))
         
+        
+
         if args.additional_data_dir:
+            exp_name = '{}_{}_{}'.format(args.dataset_dir, verify_type[7:], args.additional_data_dir)
+
             fake_dict = {'noonan':'normal', 'normal':'noonan'}
             full_additional_dir = conf.data_path/'facebank'/'noonan+normal'/args.additional_data_dir
             add_data = glob.glob(str(full_additional_dir) + os.sep + '*.png')
@@ -228,6 +236,8 @@ if __name__ == '__main__':
     # For PR curve
     precision, recall, _ = precision_recall_curve(score_names, relative_scores)
     average_precision = average_precision_score(score_names, relative_scores)
+
+    
 
     # plots
     plt.figure()
