@@ -400,6 +400,8 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
     scores = np.load(rec_path + os.sep + 'scores.npy', allow_pickle=True)
 
     colors = list(mcolors.TABLEAU_COLORS)
+    color_size = len(colors)
+    linestyles = ['-', ':', '*']
     lw = 2
     plt.figure()
     plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
@@ -407,7 +409,8 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
     for i in range(names.shape[0]):
         fpr, tpr, _ = roc_curve(labels[i], scores[i])#scores_np[:, noonan_idx]
         roc_auc = auc(fpr, tpr)
-        plt.plot(fpr, tpr, color=colors[i], lw=lw, label='{} (area = {:0.2f})'.format(names[i], roc_auc))
+        plt.plot(fpr, tpr, color=colors[i%color_size], lw=lw, linestyle=linestyles[i//color_size], 
+                    label='{} (area = {:0.2f})'.format(names[i], roc_auc))
     
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
