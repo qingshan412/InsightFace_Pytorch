@@ -425,7 +425,7 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
     plt.savefig(rec_path + os.sep + '/fp_tp.png')
 
     plt.figure()
-    base = 0
+    base = 15
     for ii in range(15): #names.shape[0]
         i = base + ii
         precision, recall, _ = precision_recall_curve(labels[i], scores[i])
