@@ -17,6 +17,7 @@ from mtcnn import MTCNN
 import os, glob, dlib, shutil, random
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+import matplotlib.colors as mcolors
 
 IMG_EXTENSIONS = [
     '.jpg', '.JPG', '.jpeg', '.JPEG',
