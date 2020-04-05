@@ -426,7 +426,7 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
 
     plt.figure()
     base = 15
-    for ii in range(15): #names.shape[0]
+    for ii in range(3): #names.shape[0]
         i = base + ii
         precision, recall, _ = precision_recall_curve(labels[i], scores[i])
         average_precision = average_precision_score(labels[i], scores[i])
