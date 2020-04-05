@@ -392,6 +392,10 @@ def img2lmk_np(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_pred
     np.save(lmk_path + os.sep + 'img_names.npy', np.array(img_names))
     np.save(lmk_path + os.sep + 'lmks.npy', np.array(lmks))
 
+def merge_plt(data_name, rec_path='data/facebank/plt_recs'):
+    file_names = [item for item in os.listdir(rec_path) if data_name in item]
+    colors = list(mcolors.TABLEAU_COLORS)
+
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
 #         self.imgs = bcolz.carray(rootdir = imgs_bcolz)
