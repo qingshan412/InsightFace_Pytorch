@@ -144,8 +144,6 @@ if __name__ == '__main__':
         
 
         if args.additional_data_dir:
-            exp_name = '{}_{}_{}'.format(args.dataset_dir, verify_type[7:], args.additional_data_dir)
-
             fake_dict = {'noonan':'normal', 'normal':'noonan'}
             full_additional_dir = conf.data_path/'facebank'/'noonan+normal'/args.additional_data_dir
             add_data = glob.glob(str(full_additional_dir) + os.sep + '*.png')
@@ -250,7 +248,7 @@ if __name__ == '__main__':
     plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
-    plt.title('ROC_{}_{}'.format(args.dataset_dir, verify_type))
+    plt.title('ROC_{}'.format(exp_name))
     plt.legend(loc="lower right")
     plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/fp_tp.png')
     # plt.show()
@@ -261,7 +259,7 @@ if __name__ == '__main__':
     plt.ylabel('Precision')
     plt.ylim([0.0, 1.05])
     plt.xlim([0.0, 1.0])
-    plt.title('Average precision score ({}_{}): AP={0:0.2f}'.format(args.dataset_dir, verify_type, average_precision))
+    plt.title('Average precision score ({}): AP={0:0.2f}'.format(exp_name, average_precision))
     plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/pr.png')
     # plt.figure()
     # for i in range(len(names_considered)):
