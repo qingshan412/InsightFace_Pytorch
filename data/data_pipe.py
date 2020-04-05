@@ -406,7 +406,9 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
     plt.figure()
     plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
 
-    for i in range(15):#names.shape[0]
+    base = 15
+    for ii in range(15): #names.shape[0]
+        i = base + ii
         fpr, tpr, _ = roc_curve(labels[i], scores[i])#scores_np[:, noonan_idx]
         roc_auc = auc(fpr, tpr)
         plt.plot(fpr, tpr, color=colors[i%color_size], lw=lw, linestyle=linestyles[i//color_size], 
