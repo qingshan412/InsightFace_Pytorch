@@ -9,7 +9,7 @@ from mtcnn import MTCNN
 from Learner import face_learner
 from utils import load_facebank, draw_box_name, prepare_facebank
 
-from sklearn.metrics import roc_curve, auc
+from sklearn.metrics import roc_curve, auc, precision_recall_curve, average_precision_score
 from sklearn.model_selection import KFold
 import os, glob, shutil
 import numpy as np
@@ -225,6 +225,10 @@ if __name__ == '__main__':
     fpr, tpr, _ = roc_curve(score_names, relative_scores)#scores_np[:, noonan_idx]
     roc_auc = auc(fpr, tpr)
 
+    # For PR curve
+    precision, recall, _ = precision_recall_curve(score_names, relative_scores)
+    average_precision = average_precision_score(score_names, relative_scores)
+
     # plots
     plt.figure()
     colors = list(mcolors.TABLEAU_COLORS)
@@ -240,7 +244,16 @@ if __name__ == '__main__':
     plt.legend(loc="lower right")
     plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/fp_tp.png')
     # plt.show()
-    
+
+    plt.figure()
+    plt.step(recall, precision, where='post')
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.ylim([0.0, 1.05])
+    plt.xlim([0.0, 1.0])
+    plt.title('Average precision score, micro-averaged over all classes: AP={0:0.2f}'.format(average_precision))
+    plt.legend(loc=(0, -.38))
+    plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/pr.png')
     # plt.figure()
     # for i in range(len(names_considered)):
     #     name = names_considered[i]
