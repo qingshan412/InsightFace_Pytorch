@@ -8,13 +8,18 @@
 
 module load python pytorch
 
-python roc_acc_fold_cur.py -d distinct > data/facebank/plt_recs/dist
-python roc_acc_fold_cur.py -d distinct -s > data/facebank/plt_recs/dist_s
-python roc_acc_fold_cur.py -d distinct -tta > data/facebank/plt_recs/dist_tta
-
-python roc_acc_fold_cur.py -d divided > data/facebank/plt_recs/divi
-python roc_acc_fold_cur.py -d divided -s > data/facebank/plt_recs/divi_s
-python roc_acc_fold_cur.py -d divided -tta > data/facebank/plt_recs/divi_tta
+for DataDir in distinct divided
+do
+    python roc_acc_fold_cur.py -d $DataDir > data/facebank/plt_recs/${DataDir}
+    python roc_acc_fold_cur.py -d $DataDir -s > data/facebank/plt_recs/${DataDir}_s
+    python roc_acc_fold_cur.py -d $DataDir -tta > data/facebank/plt_recs/${DataDir}_tta
+    for Model in fr_mix_aug_pix2pix_transfer_b6_500_pool5_full fr_mix_aug_pix2pix_transfer_b6_500_full fr_mix_aug_pix2pix_transfer_b6_100_pool5_full fr_mix_aug_pix2pix_transfer_b6_100_full
+    do
+        python roc_acc_fold_cur.py -d $DataDir -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}
+        python roc_acc_fold_cur.py -d $DataDir -s -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}_s
+        python roc_acc_fold_cur.py -d $DataDir -tta -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}_tta
+    done
+done
 
 # python evaluate_model.py
 
