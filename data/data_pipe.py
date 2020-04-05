@@ -18,6 +18,7 @@ import os, glob, dlib, shutil, random
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import matplotlib.colors as mcolors
+from sklearn.metrics import roc_curve, auc, precision_recall_curve, average_precision_score
 
 IMG_EXTENSIONS = [
     '.jpg', '.JPG', '.jpeg', '.JPEG',
