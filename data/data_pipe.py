@@ -393,8 +393,27 @@ def img2lmk_np(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_pred
     np.save(lmk_path + os.sep + 'lmks.npy', np.array(lmks))
 
 def merge_plt(data_name, rec_path='data/facebank/plt_recs'):
-    file_names = [item for item in os.listdir(rec_path) if data_name in item]
+    names = np.load(rec_path + os.sep + 'names.npy')
+    labels = np.load(rec_path + os.sep + 'labels.npy')
+    scores = np.load(rec_path + os.sep + 'scores.npy')
+
     colors = list(mcolors.TABLEAU_COLORS)
+    lw = 2
+    plt.figure()
+    plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
+
+    for i in range(names.shape[0]):
+        fpr, tpr, _ = roc_curve(labels[i], scores[i])#scores_np[:, noonan_idx]
+        roc_auc = auc(fpr, tpr)
+        plt.plot(fpr, tpr, color=colors[i], lw=lw, label='{} (area = {:0.2f})'.format(names[i], roc_auc))
+    
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('ROC Curves')
+    plt.legend(loc="lower right")
+    plt.savefig(rec_path + os.sep + '/fp_tp.png')
 
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
