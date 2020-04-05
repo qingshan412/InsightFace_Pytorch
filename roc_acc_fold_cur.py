@@ -250,7 +250,7 @@ if __name__ == '__main__':
     plt.ylabel('True Positive Rate')
     plt.title('ROC_{}'.format(exp_name))
     plt.legend(loc="lower right")
-    plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/fp_tp.png')
+    plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/fp_tp_{}.png'.format(exp_name))
     # plt.show()
 
     plt.figure()
@@ -260,7 +260,7 @@ if __name__ == '__main__':
     plt.ylim([0.0, 1.05])
     plt.xlim([0.0, 1.0])
     plt.title('Average precision score ({}): AP={:0.2f}'.format(exp_name, average_precision))
-    plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/pr.png')
+    plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/pr_{}.png'.format(exp_name))
     # plt.figure()
     # for i in range(len(names_considered)):
     #     name = names_considered[i]
