@@ -12,17 +12,32 @@ module load pytorch
 for DataDir in distinct divided
 do
     echo ${DataDir}
-    python roc_acc_fold_cur.py -d ${DataDir} -g 0 > data/facebank/plt_recs/${DataDir}
-    python roc_acc_fold_cur.py -d ${DataDir} -g 0 -s > data/facebank/plt_recs/${DataDir}_s
-    python roc_acc_fold_cur.py -d ${DataDir} -g 0 -tta > data/facebank/plt_recs/${DataDir}_tta
-    for Model in fr_mix_aug_pix2pix_transfer_b6_500_pool5_full fr_mix_aug_pix2pix_transfer_b6_500_full fr_mix_aug_pix2pix_transfer_b6_100_pool5_full fr_mix_aug_pix2pix_transfer_b6_100_full
+    python roc_acc_fold_cur.py -d ${DataDir} > data/facebank/plt_recs/${DataDir}
+    python roc_acc_fold_cur.py -d ${DataDir} -s > data/facebank/plt_recs/${DataDir}_s
+    python roc_acc_fold_cur.py -d ${DataDir} -tta > data/facebank/plt_recs/${DataDir}_tta
+    for Model in mix_aug_500_pool5_full_refine mix_aug_500_full_refine mix_aug_100_pool5_full_refine
     do
         echo ${Model}
-        python roc_acc_fold_cur.py -d ${DataDir} -g 0 -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}
-        python roc_acc_fold_cur.py -d ${DataDir} -g 0 -s -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}_s
-        python roc_acc_fold_cur.py -d ${DataDir} -g 0 -tta -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}_tta
+        python roc_acc_fold_cur.py -d ${DataDir} -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}
+        python roc_acc_fold_cur.py -d ${DataDir} -s -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}_s
+        python roc_acc_fold_cur.py -d ${DataDir} -tta -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}_tta
     done
 done
+
+# for DataDir in distinct divided
+# do
+#     echo ${DataDir}
+#     python roc_acc_fold_cur.py -d ${DataDir} -g 0 > data/facebank/plt_recs/${DataDir}
+#     python roc_acc_fold_cur.py -d ${DataDir} -g 0 -s > data/facebank/plt_recs/${DataDir}_s
+#     python roc_acc_fold_cur.py -d ${DataDir} -g 0 -tta > data/facebank/plt_recs/${DataDir}_tta
+#     for Model in fr_mix_aug_pix2pix_transfer_b6_500_pool5_full fr_mix_aug_pix2pix_transfer_b6_500_full fr_mix_aug_pix2pix_transfer_b6_100_pool5_full fr_mix_aug_pix2pix_transfer_b6_100_full
+#     do
+#         echo ${Model}
+#         python roc_acc_fold_cur.py -d ${DataDir} -g 0 -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}
+#         python roc_acc_fold_cur.py -d ${DataDir} -g 0 -s -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}_s
+#         python roc_acc_fold_cur.py -d ${DataDir} -g 0 -tta -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}_tta
+#     done
+# done
 
 # for Model in fr_mix_aug_pix2pix_transfer_b6_100_full fr_mix_aug_pix2pix_transfer_b6_2000_D2G fr_mix_pix2pix_transfer_b6_2000_D2G
 # do
