@@ -20,6 +20,8 @@ do
     done
 done
 
+python evaluate_model.py
+
 # for DataDir in distinct divided
 # do
 #     echo ${DataDir}
