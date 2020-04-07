@@ -227,9 +227,11 @@ if __name__ == '__main__':
     print('scores_np:')
     print(relative_scores)
 
-    data_names = np.append(np.load(os.path.join(args.stored_data_dir, 'names.npy')), np.array([args.dataset_dir]))
-    data_labels = np.append(np.load(os.path.join(args.stored_data_dir, 'labels.npy'), allow_pickle=True), score_names)
-    data_scores = np.append(np.load(os.path.join(args.stored_data_dir, 'scores.npy'), allow_pickle=True), relative_scores)
+    data_names = np.append(np.load(os.path.join(args.stored_data_dir, 'names.npy')), np.array([exp_name]))
+    data_labels = np.load(os.path.join(args.stored_data_dir, 'labels.npy'), allow_pickle=True)
+    data_labels = np.delete(np.append(data_labels, np.array([score_names, np.array([])])), -1, axis=0) # to add as an object
+    data_scores = np.load(os.path.join(args.stored_data_dir, 'scores.npy'), allow_pickle=True)
+    data_scores = np.delete(np.append(data_scores, np.array([relative_scores, np.array([])])), -1, axis=0) # to add as an object
     np.save(os.path.join(args.stored_data_dir, 'names.npy'), data_names)
     np.save(os.path.join(args.stored_data_dir, 'labels.npy'), data_labels)
     np.save(os.path.join(args.stored_data_dir, 'scores.npy'), data_scores)
