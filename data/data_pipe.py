@@ -422,11 +422,11 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
     plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
-    plt.title('ROC Curves (refine)')
+    plt.title('ROC Curves (refine2)')
     plt.legend(loc="lower right")
     # plt.legend(bbox_to_anchor=(1.04, 1), borderaxespad=0)#, ncol=2)#loc='upper right', 
     # plt.subplots_adjust(right=0.5, top=0.6)
-    plt.savefig(rec_path + os.sep + '/fp_tp_refine.png')
+    plt.savefig(rec_path + os.sep + '/fp_tp_refine2.png')
 
     plt.figure()
     for i in work_idx: #names.shape[0]
@@ -439,9 +439,9 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
     plt.ylabel('Precision')
     plt.ylim([0.0, 1.05])
     plt.xlim([0.0, 1.0])
-    plt.title('PR Curves refine')
+    plt.title('PR Curves refine2')
     plt.legend(loc="lower left")
-    plt.savefig(rec_path + os.sep + '/pr_refine.png')
+    plt.savefig(rec_path + os.sep + '/pr_refine2.png')
 
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
