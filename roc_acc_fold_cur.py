@@ -31,7 +31,7 @@ if __name__ == '__main__':
                         default="", type=str)
     args = parser.parse_args()
 
-    conf = get_config(False)
+    conf = get_config(False, args)
 
     mtcnn = MTCNN()
     print('mtcnn loaded')
@@ -91,7 +91,7 @@ if __name__ == '__main__':
         learner.load_state(conf, 'mobilefacenet.pth', True, True)
         # learner.load_state(conf, 'cpu_final.pth', True, True)
     else:
-        learner.load_state(conf, 'final.pth', True, True)
+        learner.load_state(conf, 'mobilefacenet.pth', True, True)
     learner.model.eval()
     print('learner loaded.')
     
