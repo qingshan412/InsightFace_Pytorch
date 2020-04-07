@@ -11,7 +11,7 @@ module load pytorch
 
 for DataDir in distinct divided
 do
-    for Model in mix_aug_500_pool5_full_refine mix_aug_500_full_refine mix_aug_100_pool5_full_refine
+    for Model in mix_aug_500_pool5_full_refine2 mix_aug_500_full_refine2 mix_aug_100_pool5_full_refine2
     do
         echo ${Model}
         python roc_acc_fold_cur.py -d ${DataDir} -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}
