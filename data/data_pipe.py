@@ -401,14 +401,18 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
 
     colors = list(mcolors.TABLEAU_COLORS)
     color_size = len(colors)
-    linestyles = ['-', ':', '-.']
+    linestyles = ['-', ':', '-.', '--']
     lw = 2
     plt.figure()
     plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
 
-    base = 15
-    for ii in range(3): #names.shape[0]
-        i = base + ii
+    work_idx = [0, 1, 2, 30, 31, 32] 
+    # 0,1,2 basic dist
+    # 0 - 14 all dist
+    # 15,16,17 basic divi
+    # 15 - 29 all divi
+    # 30,31,32 refined data
+    for i in work_idx: #names.shape[0]
         fpr, tpr, _ = roc_curve(labels[i], scores[i])#scores_np[:, noonan_idx]
         roc_auc = auc(fpr, tpr)
         plt.plot(fpr, tpr, color=colors[i%color_size], lw=lw, linestyle=linestyles[i//color_size], 
@@ -418,16 +422,14 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
     plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
-    plt.title('ROC Curves')
+    plt.title('ROC Curves (refine)')
     plt.legend(loc="lower right")
     # plt.legend(bbox_to_anchor=(1.04, 1), borderaxespad=0)#, ncol=2)#loc='upper right', 
     # plt.subplots_adjust(right=0.5, top=0.6)
-    plt.savefig(rec_path + os.sep + '/fp_tp.png')
+    plt.savefig(rec_path + os.sep + '/fp_tp_refine.png')
 
     plt.figure()
-    base = 15
-    for ii in range(3): #names.shape[0]
-        i = base + ii
+    for i in work_idx: #names.shape[0]
         precision, recall, _ = precision_recall_curve(labels[i], scores[i])
         average_precision = average_precision_score(labels[i], scores[i])
         plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, linestyle=linestyles[i//color_size],
@@ -437,9 +439,9 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
     plt.ylabel('Precision')
     plt.ylim([0.0, 1.05])
     plt.xlim([0.0, 1.0])
-    plt.title('PR Curves')
+    plt.title('PR Curves refine')
     plt.legend(loc="lower left")
-    plt.savefig(rec_path + os.sep + '/pr.png')
+    plt.savefig(rec_path + os.sep + '/pr_refine.png')
 
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
