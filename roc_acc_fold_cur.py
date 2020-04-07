@@ -19,7 +19,7 @@ import matplotlib.colors as mcolors
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='for face verification')
     parser.add_argument("-ds", "--dataset_dir", help="where to get data", default="noonan+normal", type=str)
-    # parser.add_argument('-th','--threshold',help='threshold to decide identical faces',default=1.54, type=float)
+    parser.add_argument('-sd','--stored_data_dir',help='where to store data as np arrays',default="data/facebank/plt_recs", type=str)
     parser.add_argument("-k", "--kfold", help="returns the number of splitting iterations in the cross-validator.", 
                         default=10, type=int)
     parser.add_argument("-n", "--names_considered", help="names for different types considered, separated by commas", 
@@ -226,6 +226,13 @@ if __name__ == '__main__':
     print(score_names)
     print('scores_np:')
     print(relative_scores)
+
+    data_names = np.append(np.load(os.path.join(args.stored_data_dir, 'names.npy')), np.array([args.dataset_dir]))
+    data_labels = np.append(np.load(os.path.join(args.stored_data_dir, 'labels.npy'), allow_pickle=True), score_names)
+    data_scores = np.append(np.load(os.path.join(args.stored_data_dir, 'scores.npy'), allow_pickle=True), relative_scores)
+    np.save(os.path.join(args.stored_data_dir, 'names.npy'), data_names)
+    np.save(os.path.join(args.stored_data_dir, 'labels.npy'), data_labels)
+    np.save(os.path.join(args.stored_data_dir, 'scores.npy'), data_scores)
 
     # Compute ROC curve and ROC area for noonan
     fpr, tpr, _ = roc_curve(score_names, relative_scores)#scores_np[:, noonan_idx]
