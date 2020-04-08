@@ -217,7 +217,7 @@ class face_learner(object):
                     # self.board_val('lfw', accuracy, best_threshold, roc_curve_tensor)
                     # accuracy, best_threshold, roc_curve_tensor = self.evaluate(conf, self.cfp_fp, self.cfp_fp_issame)
                     # self.board_val('cfp_fp', accuracy, best_threshold, roc_curve_tensor)
-                    accuracy, best_threshold, roc_curve_tensor = self.evaluate(conf, self.vall_112, self.val_112_issame)
+                    accuracy, best_threshold, roc_curve_tensor = self.evaluate(conf, self.val_112, self.val_112_issame)
                     self.board_val('n+n_val_112', accuracy, best_threshold, roc_curve_tensor)
                     self.model.train()
                 if self.step % self.save_every == 0 and self.step != 0:
