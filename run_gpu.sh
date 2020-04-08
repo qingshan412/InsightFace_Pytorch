@@ -11,16 +11,32 @@ module load pytorch
 
 for DataDir in distinct divided
 do
-    for Model in mix_aug_500_pool5_full_refine2 mix_aug_500_full_refine2 mix_aug_100_pool5_full_refine2
+    echo ${DataDir}
+    python fold_cur_retrain.py -d ${DataDir} -g 0 > data/facebank/plt_recs/retrain_${DataDir}
+    python fold_cur_retrain.py -d ${DataDir} -g 0 -s > data/facebank/plt_recs/retrain_${DataDir}_s
+    python fold_cur_retrain.py -d ${DataDir} -g 0 -tta > data/facebank/plt_recs/retrain_${DataDir}_tta
+    for Model in mix_aug_500_pool5_full mix_aug_500_full mix_aug_100_pool5_full
     do
         echo ${Model}
-        python roc_acc_fold_cur.py -d ${DataDir} -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}
-        python roc_acc_fold_cur.py -d ${DataDir} -s -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}_s
-        python roc_acc_fold_cur.py -d ${DataDir} -tta -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}_tta
+        python fold_cur_retrain.py -d ${DataDir} -g 0 -a fake_${Model} > data/facebank/plt_recs/retrain_${DataDir}_${Model}
+        python fold_cur_retrain.py -d ${DataDir} -g 0 -s -a fake_${Model} > data/facebank/plt_recs/retrain_${DataDir}_${Model}_s
+        python fold_cur_retrain.py -d ${DataDir} -g 0 -tta -a fake_${Model} > data/facebank/plt_recs/retrain_${DataDir}_${Model}_tta
     done
 done
 
 python evaluate_model.py
+
+# for DataDir in distinct divided
+# do
+#     for Model in mix_aug_500_pool5_full_refine2 mix_aug_500_full_refine2 mix_aug_100_pool5_full_refine2
+#     do
+#         echo ${Model}
+#         python roc_acc_fold_cur.py -d ${DataDir} -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}
+#         python roc_acc_fold_cur.py -d ${DataDir} -s -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}_s
+#         python roc_acc_fold_cur.py -d ${DataDir} -tta -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}_tta
+#     done
+# done
+# python evaluate_model.py
 
 # for DataDir in distinct divided
 # do
