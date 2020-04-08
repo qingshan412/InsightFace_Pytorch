@@ -394,8 +394,8 @@ def img2lmk_np(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_pred
     np.save(lmk_path + os.sep + 'img_names.npy', np.array(img_names))
     np.save(lmk_path + os.sep + 'lmks.npy', np.array(lmks))
 
-def merge_plt(exp_name="dist,refine", rec_path='data/facebank/plt_recs'):
-    tmp_idx = [i + 30 for i in range(9)]
+def merge_plt(exp_name="dist,refine2", rec_path='data/facebank/plt_recs'):
+    tmp_idx = [i + 48 for i in range(9)]
     work_idx = [0, 1, 2] + tmp_idx 
     # 0,1,2 basic dist
     # 0 - 14 all dist
@@ -405,7 +405,7 @@ def merge_plt(exp_name="dist,refine", rec_path='data/facebank/plt_recs'):
     # 39 - 47 divi, refine
     # 48 - 56 dist, refine2
     # 57 - 65 divi, refine2
-    
+
     names = np.load(rec_path + os.sep + 'names.npy')
     labels = np.load(rec_path + os.sep + 'labels.npy', allow_pickle=True)
     scores = np.load(rec_path + os.sep + 'scores.npy', allow_pickle=True)
