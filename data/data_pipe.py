@@ -394,7 +394,18 @@ def img2lmk_np(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_pred
     np.save(lmk_path + os.sep + 'img_names.npy', np.array(img_names))
     np.save(lmk_path + os.sep + 'lmks.npy', np.array(lmks))
 
-def merge_plt(exp_name="dist vs divi", rec_path='data/facebank/plt_recs'):
+def merge_plt(exp_name="dist,refine", rec_path='data/facebank/plt_recs'):
+    tmp_idx = [i + 30 for i in range(9)]
+    work_idx = [0, 1, 2] + tmp_idx 
+    # 0,1,2 basic dist
+    # 0 - 14 all dist
+    # 15,16,17 basic divi
+    # 15 - 29 all divi
+    # 30 - 38 dist, refine
+    # 39 - 47 divi, refine
+    # 48 - 56 dist, refine2
+    # 57 - 65 divi, refine2
+    
     names = np.load(rec_path + os.sep + 'names.npy')
     labels = np.load(rec_path + os.sep + 'labels.npy', allow_pickle=True)
     scores = np.load(rec_path + os.sep + 'scores.npy', allow_pickle=True)
@@ -406,13 +417,6 @@ def merge_plt(exp_name="dist vs divi", rec_path='data/facebank/plt_recs'):
     plt.figure()
     plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
 
-    work_idx = [0, 1, 2, 15, 16, 17] 
-    # 0,1,2 basic dist
-    # 0 - 14 all dist
-    # 15,16,17 basic divi
-    # 15 - 29 all divi
-    # 30,31,32 refined data
-    # 33,34,35 refine2 data
     for i in work_idx: #names.shape[0]
         fpr, tpr, _ = roc_curve(labels[i], scores[i])#scores_np[:, noonan_idx]
         roc_auc = auc(fpr, tpr)
