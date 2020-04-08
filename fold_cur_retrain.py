@@ -162,7 +162,7 @@ if __name__ == '__main__':
         print(fold_idx)
         print('datasets ready')
 
-        learner.train(conf, args.epochs)
+        learner.train(conf, args.epochs, exp_name)
         print('learner retrained.')
 
         # prepare_facebank
