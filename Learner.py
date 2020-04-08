@@ -51,7 +51,8 @@ class face_learner(object):
             print(self.optimizer)
             # self.scheduler = optim.lr_scheduler.ReduceLROnPlateau(self.optimizer, patience=40, verbose=True)
 
-            print('optimizers generated')    
+            print('optimizers generated')
+            print(len(self.loader))
             self.board_loss_every = len(self.loader)//10 # originally, 100
             self.evaluate_every = len(self.loader)//10
             self.save_every = len(self.loader)//5
