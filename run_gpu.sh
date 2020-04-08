@@ -24,8 +24,6 @@ do
     done
 done
 
-python evaluate_model.py
-
 # for DataDir in distinct divided
 # do
 #     for Model in mix_aug_500_pool5_full_refine2 mix_aug_500_full_refine2 mix_aug_100_pool5_full_refine2
