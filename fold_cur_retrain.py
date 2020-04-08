@@ -86,17 +86,6 @@ if __name__ == '__main__':
     #     verify_dir.mkdir(parents=True)
     # threshold = 1.6
     # learner.threshold = threshold #+ 1.0
-
-    conf_train = get_config(True, args)
-    learner = face_learner(conf_train)
-    
-    if conf.device.type == 'cpu': # conf.device.type = 'cpu' for CRC01/02 
-        learner.load_state(conf, 'mobilefacenet.pth', True, True)
-        # learner.load_state(conf, 'cpu_final.pth', True, True)
-    else:
-        learner.load_state(conf, 'mobilefacenet.pth', True, True)
-    # learner.model.eval()
-    print('learner loaded.')
     
     # # count for roc-auc
     # counts = {}
@@ -166,7 +155,18 @@ if __name__ == '__main__':
         print(fold_idx)
         print('datasets ready')
 
-        learner.train(conf_train, args.epochs, exp_name)
+        conf_train = get_config(True, args)
+        learner = face_learner(conf_train)
+        
+        if conf.device.type == 'cpu': # conf.device.type = 'cpu' for CRC01/02 
+            learner.load_state(conf, 'mobilefacenet.pth', True, True)
+            # learner.load_state(conf, 'cpu_final.pth', True, True)
+        else:
+            learner.load_state(conf, 'mobilefacenet.pth', True, True)
+        # learner.model.eval()
+        print('learner loaded.')
+
+        learner.train(conf_train, args.epochs, exp_name + str(fold_idx))
         print('learner retrained.')
 
         # prepare_facebank
