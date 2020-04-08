@@ -22,6 +22,7 @@ if __name__ == '__main__':
     parser.add_argument('-sd','--stored_data_dir',help='where to store data as np arrays',default="data/facebank/plt_recs", type=str)
     parser.add_argument("-k", "--kfold", help="returns the number of splitting iterations in the cross-validator.", 
                         default=10, type=int)
+    parser.add_argument("-e", "--epochs", help="training epochs", default=20, type=int)
     parser.add_argument("-n", "--names_considered", help="names for different types considered, separated by commas", 
                         default="normal,noonan", type=str)
     parser.add_argument("-g", "--gpu_id", help="gpu id to use", default="", type=str)
@@ -35,8 +36,6 @@ if __name__ == '__main__':
 
     mtcnn = MTCNN()
     print('mtcnn loaded')
-    
-    learner = face_learner(conf, inference=True)
     
     names_considered = args.names_considered.strip().split(',')
 
@@ -56,8 +55,9 @@ if __name__ == '__main__':
         verify_type += '_tta'
     if args.use_shuffled_kfold:
         verify_type += '_shuffled'
-    train_dir = conf.facebank_path/args.dataset_dir/verify_type/'train'
-    test_dir = conf.data_path/'facebank'/args.dataset_dir/verify_type/'test'
+    # train_dir = conf.facebank_path/args.dataset_dir/verify_type/'train'
+    train_dir = conf.emore_folder/'imgs'
+    test_dir = conf.emore_folder/'test'
     conf.facebank_path = train_dir
     for name in names_considered:
         os.makedirs(str(train_dir) + '/' + name, exist_ok=True)
@@ -86,13 +86,15 @@ if __name__ == '__main__':
     #     verify_dir.mkdir(parents=True)
     # threshold = 1.6
     # learner.threshold = threshold #+ 1.0
+
+    learner = face_learner(conf)
     
     if conf.device.type == 'cpu': # conf.device.type = 'cpu' for CRC01/02 
         learner.load_state(conf, 'mobilefacenet.pth', True, True)
         # learner.load_state(conf, 'cpu_final.pth', True, True)
     else:
         learner.load_state(conf, 'mobilefacenet.pth', True, True)
-    learner.model.eval()
+    # learner.model.eval()
     print('learner loaded.')
     
     # # count for roc-auc
@@ -126,20 +128,19 @@ if __name__ == '__main__':
                 if 'divided' in args.dataset_dir:
                     for img in os.listdir(train_set[name][i]):
                         shutil.copy(train_set[name][i] + os.sep + img, 
-                                    ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
-                                        '/' + verify_type + '/train/' + name + os.sep + img))
+                                    os.path.join(str(train_dir), name, img))
                 else:
                     shutil.copy(train_set[name][i], 
-                                train_set[name][i].replace(raw_dir, verify_type + '/train/' + name))
+                                os.path.join(str(train_dir), name, os.path.basename(train_set[name][i])))
+
             for i in range(len(test_set[name])):
                 if 'divided' in args.dataset_dir:
                     for img in os.listdir(test_set[name][i]):
                         shutil.copy(test_set[name][i] + os.sep + img, 
-                                    ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
-                                        '/' + verify_type + '/test/' + name + os.sep + img))
+                                    os.path.join(str(test_dir), name, img))
                 else:
                     shutil.copy(test_set[name][i], 
-                                test_set[name][i].replace(raw_dir, verify_type + '/test/' + name))
+                                os.path.join(str(test_dir), name, os.path.basename(test_set[name][i])))
         
         
 
@@ -151,16 +152,18 @@ if __name__ == '__main__':
             for name in names_considered:
                 for img_f in add_data:
                     if name in img_f.strip().split(os.sep)[-1]:
-                        print('source:', img_f)
-                        print('copy to:', img_f.replace(str(full_additional_dir), 
-                                                        str(train_dir) + os.sep + fake_dict[name]))
+                        # print('source:', img_f)
+                        # print('copy to:', img_f.replace(str(full_additional_dir), 
+                        #                                 str(train_dir) + os.sep + fake_dict[name]))
                         # print('copy to:', img_f.replace(args.additional_data_dir, 
                         #                                 verify_type + '/train/' + name))
-                        shutil.copy(img_f, img_f.replace(str(full_additional_dir), 
-                                                        str(train_dir) + os.sep + fake_dict[name]))
+                        shutil.copy(img_f, os.path.join(str(train_dir), fake_dict[name], os.path.basename(img_f)))
         
         print(fold_idx)
         print('datasets ready')
+
+        learner.train(conf, args.epochs)
+        print('learner retrained.')
 
         # prepare_facebank
         targets, names = prepare_facebank(conf, learner.model, mtcnn, tta = args.tta)
