@@ -53,8 +53,8 @@ class face_learner(object):
 
             print('optimizers generated')
             print(len(self.loader))
-            self.board_loss_every = len(self.loader)//2 # originally, 100
-            self.evaluate_every = len(self.loader)//2 # originally, 10
+            self.board_loss_every = len(self.loader)//5 # originally, 100
+            self.evaluate_every = len(self.loader)//5 # originally, 10
             self.save_every = len(self.loader)//2 # originally, 5
             print(self.board_loss_every, self.evaluate_every, self.save_every)
             exit(0)
