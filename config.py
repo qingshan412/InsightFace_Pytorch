@@ -27,8 +27,8 @@ def get_config(training = True, args = None):
     conf.vgg_folder = conf.data_path/'faces_vgg_112x112'
     conf.ms1m_folder = conf.data_path/'faces_ms1m_112x112'
     conf.emore_folder = conf.data_path/'faces_emore'
-    conf.batch_size = 100 # irse net depth 50 
-    # conf.batch_size = 200 # mobilefacenet
+    # conf.batch_size = 100 # irse net depth 50 
+    conf.batch_size = 200 # mobilefacenet
 #--------------------Training Config ------------------------    
     if training:        
         conf.log_path = conf.work_path/'log'
@@ -38,8 +38,8 @@ def get_config(training = True, args = None):
         conf.milestones = [12,15,18]
         conf.momentum = 0.9
         conf.pin_memory = True
-        # conf.num_workers = 4 # when batchsize is 200
-        conf.num_workers = 3
+        conf.num_workers = 4 # when batchsize is 200
+        # conf.num_workers = 3 # when batchsize is 100
         conf.ce_loss = CrossEntropyLoss()    
 #--------------------Inference Config ------------------------
     else:
