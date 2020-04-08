@@ -1,4 +1,4 @@
-from data.data_pipe import de_preprocess, get_train_loader, get_val_data
+from data.data_pipe import de_preprocess, get_train_loader, get_val_data, get_val_pair
 from model import Backbone, Arcface, MobileFaceNet, Am_softmax, l2_norm
 from verifacation import evaluate
 import torch
