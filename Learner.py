@@ -55,6 +55,8 @@ class face_learner(object):
             self.board_loss_every = len(self.loader)//10 # originally, 100
             self.evaluate_every = len(self.loader)//10
             self.save_every = len(self.loader)//5
+            print(self.board_loss_every, self.evaluate_every, self.save_every)
+            exit(0)
             # self.agedb_30, self.cfp_fp, self.lfw, self.agedb_30_issame, self.cfp_fp_issame, self.lfw_issame = get_val_data(self.loader.dataset.root.parent)
             self.val_112, self.val_112_issame = get_val_pair(self.loader.dataset.root.parent, 'val_112')
         else:
