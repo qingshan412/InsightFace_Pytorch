@@ -87,7 +87,8 @@ if __name__ == '__main__':
     # threshold = 1.6
     # learner.threshold = threshold #+ 1.0
 
-    learner = face_learner(conf)
+    conf_train = get_config(True, args)
+    learner = face_learner(conf_train)
     
     if conf.device.type == 'cpu': # conf.device.type = 'cpu' for CRC01/02 
         learner.load_state(conf, 'mobilefacenet.pth', True, True)
@@ -162,7 +163,6 @@ if __name__ == '__main__':
         print(fold_idx)
         print('datasets ready')
 
-        conf_train = get_config(True, args)
         learner.train(conf_train, args.epochs, exp_name)
         print('learner retrained.')
 
