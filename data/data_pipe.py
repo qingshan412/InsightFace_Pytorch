@@ -394,7 +394,7 @@ def img2lmk_np(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_pred
     np.save(lmk_path + os.sep + 'img_names.npy', np.array(img_names))
     np.save(lmk_path + os.sep + 'lmks.npy', np.array(lmks))
 
-def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
+def merge_plt(exp_name="dist vs divi", rec_path='data/facebank/plt_recs'):
     names = np.load(rec_path + os.sep + 'names.npy')
     labels = np.load(rec_path + os.sep + 'labels.npy', allow_pickle=True)
     scores = np.load(rec_path + os.sep + 'scores.npy', allow_pickle=True)
@@ -406,7 +406,7 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
     plt.figure()
     plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
 
-    work_idx = [0, 1, 2, 30, 31, 32] 
+    work_idx = [0, 1, 2, 15, 16, 17] 
     # 0,1,2 basic dist
     # 0 - 14 all dist
     # 15,16,17 basic divi
@@ -422,11 +422,11 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
     plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
-    plt.title('ROC Curves (refine2)')
+    plt.title('ROC Curves ({})'.format(exp_name))
     plt.legend(loc="lower right")
     # plt.legend(bbox_to_anchor=(1.04, 1), borderaxespad=0)#, ncol=2)#loc='upper right', 
     # plt.subplots_adjust(right=0.5, top=0.6)
-    plt.savefig(rec_path + os.sep + '/fp_tp_refine2.png')
+    plt.savefig(rec_path + os.sep + '/fp_tp_{}.png'.format(exp_name))
 
     plt.figure()
     for i in work_idx: #names.shape[0]
@@ -439,9 +439,9 @@ def merge_plt(data_name="", rec_path='data/facebank/plt_recs'):
     plt.ylabel('Precision')
     plt.ylim([0.0, 1.05])
     plt.xlim([0.0, 1.0])
-    plt.title('PR Curves refine2')
+    plt.title('PR Curves ({})'.format(exp_name))
     plt.legend(loc="lower left")
-    plt.savefig(rec_path + os.sep + '/pr_refine2.png')
+    plt.savefig(rec_path + os.sep + '/pr_{}.png'.format(exp_name))
 
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
