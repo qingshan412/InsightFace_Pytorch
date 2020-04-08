@@ -394,9 +394,9 @@ def img2lmk_np(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_pred
     np.save(lmk_path + os.sep + 'img_names.npy', np.array(img_names))
     np.save(lmk_path + os.sep + 'lmks.npy', np.array(lmks))
 
-def merge_plt(exp_name="divi,refine2", rec_path='data/facebank/plt_recs'):
-    tmp_idx = [i + 57 for i in range(9)]
-    work_idx = [15, 16, 17] + tmp_idx 
+def merge_plt(exp_name="refine,500", rec_path='data/facebank/plt_recs'):
+    tmp_idx = [15, 16, 17] + [33, 34, 35] + [42, 43, 44]
+    work_idx = [0, 1, 2] + tmp_idx 
     # 0,1,2 basic dist
     # 0 - 14 all dist
     # 15,16,17 basic divi
