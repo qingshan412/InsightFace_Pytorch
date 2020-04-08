@@ -120,9 +120,6 @@ if __name__ == '__main__':
                         shutil.copy(train_set[name][i] + os.sep + img, 
                                     os.path.join(str(train_dir), name, img))
                 else:
-                    print(train_set[name][i])
-                    print(os.path.join(str(train_dir), name, os.path.basename(train_set[name][i])))
-                    exit(0)
                     shutil.copy(train_set[name][i], 
                                 os.path.join(str(train_dir), name, os.path.basename(train_set[name][i])))
 
