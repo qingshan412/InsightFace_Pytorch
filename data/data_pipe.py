@@ -438,8 +438,9 @@ def merge_plt(exp_name="dist,refine2", rec_path='data/facebank/plt_recs'):
     for i in work_idx: #names.shape[0]
         precision, recall, _ = precision_recall_curve(labels[i], scores[i])
         average_precision = average_precision_score(labels[i], scores[i])
-        plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, linestyle=linestyles[i//color_size],
-                    label='{} (AP={:0.2f})'.format(names[i], average_precision))
+        plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, 
+                linestyle=linestyles[(i//color_size)%line_size], 
+                label='{} (AP={:0.2f})'.format(names[i], average_precision))
     
     plt.xlabel('Recall')
     plt.ylabel('Precision')
