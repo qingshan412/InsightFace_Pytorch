@@ -412,6 +412,7 @@ def merge_plt(exp_name="dist vs divi", rec_path='data/facebank/plt_recs'):
     # 15,16,17 basic divi
     # 15 - 29 all divi
     # 30,31,32 refined data
+    # 33,34,35 refine2 data
     for i in work_idx: #names.shape[0]
         fpr, tpr, _ = roc_curve(labels[i], scores[i])#scores_np[:, noonan_idx]
         roc_auc = auc(fpr, tpr)
