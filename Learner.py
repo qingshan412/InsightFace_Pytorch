@@ -56,6 +56,7 @@ class face_learner(object):
             self.evaluate_every = len(self.loader)//10
             self.save_every = len(self.loader)//5
             # self.agedb_30, self.cfp_fp, self.lfw, self.agedb_30_issame, self.cfp_fp_issame, self.lfw_issame = get_val_data(self.loader.dataset.root.parent)
+            self.val_112, self.val_112_issame = get_val_pair(self.loader.dataset.root.parent, 'val_112')xxx
         else:
             self.threshold = conf.threshold
     
@@ -209,20 +210,22 @@ class face_learner(object):
                     self.writer.add_scalar('train_loss', loss_board, self.step)
                     running_loss = 0.
                 
-                # if self.step % self.evaluate_every == 0 and self.step != 0:
-                #     accuracy, best_threshold, roc_curve_tensor = self.evaluate(conf, self.agedb_30, self.agedb_30_issame)
-                #     self.board_val('agedb_30', accuracy, best_threshold, roc_curve_tensor)
-                #     accuracy, best_threshold, roc_curve_tensor = self.evaluate(conf, self.lfw, self.lfw_issame)
-                #     self.board_val('lfw', accuracy, best_threshold, roc_curve_tensor)
-                #     accuracy, best_threshold, roc_curve_tensor = self.evaluate(conf, self.cfp_fp, self.cfp_fp_issame)
-                #     self.board_val('cfp_fp', accuracy, best_threshold, roc_curve_tensor)
-                #     self.model.train()
+                if self.step % self.evaluate_every == 0 and self.step != 0:
+                    # accuracy, best_threshold, roc_curve_tensor = self.evaluate(conf, self.agedb_30, self.agedb_30_issame)
+                    # self.board_val('agedb_30', accuracy, best_threshold, roc_curve_tensor)
+                    # accuracy, best_threshold, roc_curve_tensor = self.evaluate(conf, self.lfw, self.lfw_issame)
+                    # self.board_val('lfw', accuracy, best_threshold, roc_curve_tensor)
+                    # accuracy, best_threshold, roc_curve_tensor = self.evaluate(conf, self.cfp_fp, self.cfp_fp_issame)
+                    # self.board_val('cfp_fp', accuracy, best_threshold, roc_curve_tensor)
+                    accuracy, best_threshold, roc_curve_tensor = self.evaluate(conf, self.vall_112, self.val_112_issame)
+                    self.board_val('n+n_val_112', accuracy, best_threshold, roc_curve_tensor)
+                    self.model.train()
                 if self.step % self.save_every == 0 and self.step != 0:
                     self.save_state(conf, accuracy)
                     
                 self.step += 1
                 
-        self.save_state(conf, accuracy, to_save_folder=True, extra='final')
+        self.save_state(conf, accuracy, to_save_folder=True, extra='final', model_only=True)
 
     def schedule_lr(self):
         for params in self.optimizer.param_groups:                 
