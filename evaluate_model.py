@@ -151,6 +151,11 @@
 ##############################################################################################
 # generate roc/pr images
 ##############################################################################################
+import argparse
 from data.data_pipe import merge_plt
 
-merge_plt()
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='for face verification')
+    parser.add_argument("-n", "--exp_name", help="experiment name", default="", type=str)
+    args = parser.parse_args()
+    merge_plt(args.exp_name)
