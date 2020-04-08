@@ -1,4 +1,5 @@
 data/facebank/*
+data/faces_emore/*
 data/lmk_predictor/*
 work_space
 *.pth
