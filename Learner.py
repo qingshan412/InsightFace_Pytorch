@@ -53,9 +53,9 @@ class face_learner(object):
 
             print('optimizers generated')
             print(len(self.loader))
-            self.board_loss_every = len(self.loader)//10 # originally, 100
-            self.evaluate_every = len(self.loader)//10
-            self.save_every = len(self.loader)//5
+            self.board_loss_every = len(self.loader)//2 # originally, 100
+            self.evaluate_every = len(self.loader)//2 # originally, 10
+            self.save_every = len(self.loader)//2 # originally, 5
             print(self.board_loss_every, self.evaluate_every, self.save_every)
             exit(0)
             # self.agedb_30, self.cfp_fp, self.lfw, self.agedb_30_issame, self.cfp_fp_issame, self.lfw_issame = get_val_data(self.loader.dataset.root.parent)
