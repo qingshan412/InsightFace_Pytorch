@@ -183,7 +183,7 @@ class face_learner(object):
                 plt.plot(log_lrs[10:-5], losses[10:-5])
                 return log_lrs, losses    
 
-    def train(self, conf, epochs):
+    def train(self, conf, epochs, ext='final'):
         self.model.train()
         running_loss = 0.            
         for e in range(epochs):
@@ -221,11 +221,11 @@ class face_learner(object):
                     self.board_val('n+n_val_112', accuracy, best_threshold, roc_curve_tensor)
                     self.model.train()
                 if self.step % self.save_every == 0 and self.step != 0:
-                    self.save_state(conf, accuracy)
+                    self.save_state(conf, accuracy, extra=ext)
                     
                 self.step += 1
                 
-        self.save_state(conf, accuracy, to_save_folder=True, extra='final', model_only=True)
+        self.save_state(conf, accuracy, to_save_folder=True, extra=ext, model_only=True)
 
     def schedule_lr(self):
         for params in self.optimizer.param_groups:                 
