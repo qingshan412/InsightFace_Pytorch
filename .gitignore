@@ -1,3 +1,4 @@
 data/facebank/*
 data/lmk_predictor/*
+workspace
 *.pth
