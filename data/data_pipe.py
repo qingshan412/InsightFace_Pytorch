@@ -410,7 +410,7 @@ def merge_plt(exp_name="refine,500", rec_path='data/facebank/plt_recs'):
     labels = np.load(rec_path + os.sep + 'labels.npy', allow_pickle=True)
     scores = np.load(rec_path + os.sep + 'scores.npy', allow_pickle=True)
 
-    colors = list(mcolors.CSS4_COLORS) #TABLEAU_COLORS)
+    colors = list(mcolors.TABLEAU_COLORS)
     color_size = len(colors)
     linestyles = ['-', '--', '-.', ':']
     line_size = len(linestyles)
@@ -418,11 +418,11 @@ def merge_plt(exp_name="refine,500", rec_path='data/facebank/plt_recs'):
     plt.figure()
     plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
 
-    for i in work_idx: #names.shape[0]
-        fpr, tpr, _ = roc_curve(labels[i], scores[i])#scores_np[:, noonan_idx]
+    for (i, idx) in enumerate(work_idx): #names.shape[0]
+        fpr, tpr, _ = roc_curve(labels[idx], scores[idx])#scores_np[:, noonan_idx]
         roc_auc = auc(fpr, tpr)
-        plt.plot(fpr, tpr, #color=colors[i%color_size], lw=lw, linestyle=linestyles[(i//color_size)%line_size], 
-                    label='{} (area = {:0.2f})'.format(names[i], roc_auc))
+        plt.plot(fpr, tpr, color=colors[i%color_size], lw=lw, linestyle=linestyles[i//color_size], 
+                    label='{} (area = {:0.2f})'.format(names[idx], roc_auc))
     
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
@@ -435,11 +435,12 @@ def merge_plt(exp_name="refine,500", rec_path='data/facebank/plt_recs'):
     plt.savefig(rec_path + os.sep + '/fp_tp_{}.png'.format(exp_name))
 
     plt.figure()
-    for i in work_idx: #names.shape[0]
-        precision, recall, _ = precision_recall_curve(labels[i], scores[i])
-        average_precision = average_precision_score(labels[i], scores[i])
-        plt.step(recall, precision, where='post', #color=colors[i%color_size], lw=lw, # linestyle=linestyles[(i//color_size)%line_size], 
-                label='{} (AP={:0.2f})'.format(names[i], average_precision))
+    for (i, idx) in enumerate(work_idx): #names.shape[0]
+        precision, recall, _ = precision_recall_curve(labels[idx], scores[idx])
+        average_precision = average_precision_score(labels[idx], scores[idx])
+        plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, 
+                linestyle=linestyles[i//color_size], 
+                label='{} (AP={:0.2f})'.format(names[idx], average_precision))
     
     plt.xlabel('Recall')
     plt.ylabel('Precision')
