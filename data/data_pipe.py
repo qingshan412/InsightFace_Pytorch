@@ -421,7 +421,7 @@ def merge_plt(exp_name="refine,500", rec_path='data/facebank/plt_recs'):
     for i in work_idx: #names.shape[0]
         fpr, tpr, _ = roc_curve(labels[i], scores[i])#scores_np[:, noonan_idx]
         roc_auc = auc(fpr, tpr)
-        plt.plot(fpr, tpr, color=colors[i%color_size], lw=lw, linestyle=linestyles[(i//color_size)%line_size], 
+        plt.plot(fpr, tpr, #color=colors[i%color_size], lw=lw, linestyle=linestyles[(i//color_size)%line_size], 
                     label='{} (area = {:0.2f})'.format(names[i], roc_auc))
     
     plt.xlim([0.0, 1.0])
@@ -438,8 +438,7 @@ def merge_plt(exp_name="refine,500", rec_path='data/facebank/plt_recs'):
     for i in work_idx: #names.shape[0]
         precision, recall, _ = precision_recall_curve(labels[i], scores[i])
         average_precision = average_precision_score(labels[i], scores[i])
-        plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, 
-                linestyle=linestyles[(i//color_size)%line_size], 
+        plt.step(recall, precision, where='post', #color=colors[i%color_size], lw=lw, # linestyle=linestyles[(i//color_size)%line_size], 
                 label='{} (AP={:0.2f})'.format(names[i], average_precision))
     
     plt.xlabel('Recall')
