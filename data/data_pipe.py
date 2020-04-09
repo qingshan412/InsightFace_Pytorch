@@ -412,7 +412,7 @@ def merge_plt(exp_name="refine,500", rec_path='data/facebank/plt_recs'):
 
     colors = list(mcolors.TABLEAU_COLORS)
     color_size = len(colors)
-    linestyles = ['-', '--', '-.', ':']
+    linestyles = ['--', '-.', ':']
     line_size = len(linestyles)
     lw = 2
     plt.figure()
@@ -421,7 +421,11 @@ def merge_plt(exp_name="refine,500", rec_path='data/facebank/plt_recs'):
     for (i, idx) in enumerate(work_idx): #names.shape[0]
         fpr, tpr, _ = roc_curve(labels[idx], scores[idx])#scores_np[:, noonan_idx]
         roc_auc = auc(fpr, tpr)
-        plt.plot(fpr, tpr, color=colors[i%color_size], lw=lw, linestyle=linestyles[i//color_size], 
+        if idx in [0, 1, 2, 15, 16, 17]:
+            plt.plot(fpr, tpr, color=colors[i%color_size], lw=lw, linestyle='-', 
+                    label='{} (area = {:0.2f})'.format(names[idx], roc_auc))
+        else:
+            plt.plot(fpr, tpr, color=colors[i%color_size], lw=lw, linestyle=linestyles[i//color_size], 
                     label='{} (area = {:0.2f})'.format(names[idx], roc_auc))
     
     plt.xlim([0.0, 1.0])
@@ -438,9 +442,12 @@ def merge_plt(exp_name="refine,500", rec_path='data/facebank/plt_recs'):
     for (i, idx) in enumerate(work_idx): #names.shape[0]
         precision, recall, _ = precision_recall_curve(labels[idx], scores[idx])
         average_precision = average_precision_score(labels[idx], scores[idx])
-        plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, 
-                linestyle=linestyles[i//color_size], 
-                label='{} (AP={:0.2f})'.format(names[idx], average_precision))
+        if idx in [0, 1, 2, 15, 16, 17]:
+            plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, 
+                linestyle='-', label='{} (AP={:0.2f})'.format(names[idx], average_precision))
+        else:
+            plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, 
+                linestyle=linestyles[i//color_size], label='{} (AP={:0.2f})'.format(names[idx], average_precision))
     
     plt.xlabel('Recall')
     plt.ylabel('Precision')
