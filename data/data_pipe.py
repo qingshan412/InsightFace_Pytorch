@@ -410,9 +410,9 @@ def merge_plt(exp_name="refine,500", rec_path='data/facebank/plt_recs'):
     labels = np.load(rec_path + os.sep + 'labels.npy', allow_pickle=True)
     scores = np.load(rec_path + os.sep + 'scores.npy', allow_pickle=True)
 
-    colors = list(mcolors.TABLEAU_COLORS)
+    colors = list(mcolors.CSS4_COLORS) #TABLEAU_COLORS)
     color_size = len(colors)
-    linestyles = ['-', '--', '--', '-.', '-.', ':', ':', ':']
+    linestyles = ['-', '--', '-.', ':']
     line_size = len(linestyles)
     lw = 2
     plt.figure()
