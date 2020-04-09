@@ -412,7 +412,7 @@ def merge_plt(exp_name="refine,500", rec_path='data/facebank/plt_recs'):
 
     colors = list(mcolors.TABLEAU_COLORS)
     color_size = len(colors)
-    linestyles = ['-', ':', '-.', '--']
+    linestyles = ['-', '--', '--', '-.', '-.', ':', ':', ':']
     line_size = len(linestyles)
     lw = 2
     plt.figure()
