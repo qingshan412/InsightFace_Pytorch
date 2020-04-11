@@ -394,9 +394,9 @@ def img2lmk_np(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_pred
     np.save(lmk_path + os.sep + 'img_names.npy', np.array(img_names))
     np.save(lmk_path + os.sep + 'lmks.npy', np.array(lmks))
 
-def merge_plt(exp_name="dist_refine2_500pool5", rec_path='data/facebank/plt_recs'):
-    tmp_idx = [48, 49, 50] #+ [33, 34, 35]
-    work_idx = [0, 1, 2] + tmp_idx # + [15, 16, 17]
+def merge_plt(exp_name="dist_retrain", rec_path='data/facebank/plt_recs'):
+    # tmp_idx = [48, 49, 50] #+ [33, 34, 35]
+    work_idx = [i + 66 for i in range(12)] #+ tmp_idx # + [15, 16, 17]
     # 0,1,2 basic dist
     # 0 - 14 all dist
     # 15,16,17 basic divi
@@ -405,6 +405,11 @@ def merge_plt(exp_name="dist_refine2_500pool5", rec_path='data/facebank/plt_recs
     # 39 - 47 divi, refine
     # 48 - 56 dist, refine2
     # 57 - 65 divi, refine2
+    # retrain + 66 (missed one fake dataset)
+    # 0,1,2 basic dist
+    # 0 - 11 all dist
+    # 12,13,14 basic divi
+    # 12 - 23 all divi
 
     names = np.load(rec_path + os.sep + 'names.npy')
     labels = np.load(rec_path + os.sep + 'labels.npy', allow_pickle=True)
