@@ -426,7 +426,7 @@ def merge_plt(exp_name="dist_retrain", rec_path='data/facebank/plt_recs'):
     for (i, idx) in enumerate(work_idx): #names.shape[0]
         fpr, tpr, _ = roc_curve(labels[idx], scores[idx])#scores_np[:, noonan_idx]
         roc_auc = auc(fpr, tpr)
-        if idx in [0, 1, 2, 15, 16, 17]:
+        if idx in [0, 1, 2, 15, 16, 17, 66, 67, 68]:
             plt.plot(fpr, tpr, color=colors[i%color_size], lw=lw, linestyle='-', 
                     label='{} (area = {:0.2f})'.format(names[idx], roc_auc))
         else:
@@ -447,7 +447,7 @@ def merge_plt(exp_name="dist_retrain", rec_path='data/facebank/plt_recs'):
     for (i, idx) in enumerate(work_idx): #names.shape[0]
         precision, recall, _ = precision_recall_curve(labels[idx], scores[idx])
         average_precision = average_precision_score(labels[idx], scores[idx])
-        if idx in [0, 1, 2, 15, 16, 17]:
+        if idx in [0, 1, 2, 15, 16, 17, 66, 67, 68]:
             plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, 
                 linestyle='-', label='{} (AP={:0.2f})'.format(names[idx], average_precision))
         else:
