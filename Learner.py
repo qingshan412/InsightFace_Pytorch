@@ -220,12 +220,12 @@ class face_learner(object):
                     accuracy, best_threshold, roc_curve_tensor = self.evaluate(conf, self.val_112, self.val_112_issame)
                     self.board_val('n+n_val_112', accuracy, best_threshold, roc_curve_tensor)
                     self.model.train()
-                if self.step % self.save_every == 0 and self.step != 0:
-                    self.save_state(conf, accuracy, extra=ext)
+                # if self.step % self.save_every == 0 and self.step != 0:
+                #     self.save_state(conf, accuracy, extra=ext)
                     
                 self.step += 1
                 
-        self.save_state(conf, accuracy, to_save_folder=True, extra=ext, model_only=True)
+        # self.save_state(conf, accuracy, to_save_folder=True, extra=ext, model_only=True)
 
     def schedule_lr(self):
         for params in self.optimizer.param_groups:                 
