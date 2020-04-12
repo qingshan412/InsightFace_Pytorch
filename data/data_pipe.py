@@ -428,10 +428,10 @@ def merge_plt(exp_name="divi_retrain", rec_path='data/facebank/plt_recs'):
         roc_auc = auc(fpr, tpr)
         if idx in [0, 1, 2, 15, 16, 17, 66, 67, 68, 78, 79, 80]:
             plt.plot(fpr, tpr, color=colors[i%color_size], lw=lw, linestyle='-', 
-                    label='{} (area = {:0.2f})'.format(names[idx], roc_auc))
+                    label='{} (area = {:0.4f})'.format(names[idx], roc_auc))
         else:
             plt.plot(fpr, tpr, color=colors[i%color_size], lw=lw, linestyle=linestyles[i//color_size], 
-                    label='{} (area = {:0.2f})'.format(names[idx], roc_auc))
+                    label='{} (area = {:0.4f})'.format(names[idx], roc_auc))
     
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
@@ -449,10 +449,10 @@ def merge_plt(exp_name="divi_retrain", rec_path='data/facebank/plt_recs'):
         average_precision = average_precision_score(labels[idx], scores[idx])
         if idx in [0, 1, 2, 15, 16, 17, 66, 67, 68, 78, 79, 80]:
             plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, 
-                linestyle='-', label='{} (AP={:0.2f})'.format(names[idx], average_precision))
+                linestyle='-', label='{} (AP={:0.4f})'.format(names[idx], average_precision))
         else:
             plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, 
-                linestyle=linestyles[i//color_size], label='{} (AP={:0.2f})'.format(names[idx], average_precision))
+                linestyle=linestyles[i//color_size], label='{} (AP={:0.4f})'.format(names[idx], average_precision))
     
     plt.xlabel('Recall')
     plt.ylabel('Precision')
