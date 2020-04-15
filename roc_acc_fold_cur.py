@@ -232,7 +232,7 @@ if __name__ == '__main__':
     # data_labels = np.delete(np.append(data_labels, np.array([score_names, np.array([])])), -1, axis=0) # to add as an object
     # data_scores = np.load(os.path.join(args.stored_data_dir, 'scores.npy'), allow_pickle=True)
     # data_scores = np.delete(np.append(data_scores, np.array([relative_scores, np.array([])])), -1, axis=0) # to add as an object
-    np.save(os.path.join(args.stored_data_dir, 'names.npy'), np.array([data_names,]))
+    np.save(os.path.join(args.stored_data_dir, 'names.npy'), np.array([exp_name,]))
     np.save(os.path.join(args.stored_data_dir, 'labels.npy'), np.array([data_labels,]))
     np.save(os.path.join(args.stored_data_dir, 'scores.npy'), np.array([data_scores,]))
 
