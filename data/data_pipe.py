@@ -477,6 +477,21 @@ def get_sg_faces(source_path, save_path):
             os.makedirs(save_path + os.sep + subfolder, exist_ok=True)
             shutil.copy(source_path + os.sep + img, os.path.join(save_path, subfolder, img))
 
+def map_divi(divi_path):
+    map_divi2sg = {}
+    with open('data/facebank/sg_divi_name_map.csv') as f:
+        for line in f:
+            if 'no' in line:
+                [sg_name, divi_name] = line.strip().split(',')
+                if 'normal9' in divi_name:
+                    map_divi2sg[divi_name] = 'normal51'
+                else:
+                    map_divi2sg[divi_name] = sg_name
+    print('map size:', len(map_divi2sg))
+
+    os.makedirs(divi_path + '_tmp', exist_ok=True)
+    for divi in map_divi2sg.keys():
+        shutil.move(divi_path + os.sep + divi, divi_path + '_tmp' + os.sep + map_divi2sg[divi])
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
 #         self.imgs = bcolz.carray(rootdir = imgs_bcolz)
