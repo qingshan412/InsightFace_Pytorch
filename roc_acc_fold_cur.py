@@ -227,14 +227,14 @@ if __name__ == '__main__':
     print('scores_np:')
     print(relative_scores)
 
-    data_names = np.append(np.load(os.path.join(args.stored_data_dir, 'names.npy')), np.array([exp_name]))
-    data_labels = np.load(os.path.join(args.stored_data_dir, 'labels.npy'), allow_pickle=True)
-    data_labels = np.delete(np.append(data_labels, np.array([score_names, np.array([])])), -1, axis=0) # to add as an object
-    data_scores = np.load(os.path.join(args.stored_data_dir, 'scores.npy'), allow_pickle=True)
-    data_scores = np.delete(np.append(data_scores, np.array([relative_scores, np.array([])])), -1, axis=0) # to add as an object
-    np.save(os.path.join(args.stored_data_dir, 'names.npy'), data_names)
-    np.save(os.path.join(args.stored_data_dir, 'labels.npy'), data_labels)
-    np.save(os.path.join(args.stored_data_dir, 'scores.npy'), data_scores)
+    # data_names = np.append(np.load(os.path.join(args.stored_data_dir, 'names.npy')), np.array([exp_name]))
+    # data_labels = np.load(os.path.join(args.stored_data_dir, 'labels.npy'), allow_pickle=True)
+    # data_labels = np.delete(np.append(data_labels, np.array([score_names, np.array([])])), -1, axis=0) # to add as an object
+    # data_scores = np.load(os.path.join(args.stored_data_dir, 'scores.npy'), allow_pickle=True)
+    # data_scores = np.delete(np.append(data_scores, np.array([relative_scores, np.array([])])), -1, axis=0) # to add as an object
+    np.save(os.path.join(args.stored_data_dir, 'names.npy'), np.array([data_names,]))
+    np.save(os.path.join(args.stored_data_dir, 'labels.npy'), np.array([data_labels,]))
+    np.save(os.path.join(args.stored_data_dir, 'scores.npy'), np.array([data_scores,]))
 
     # Compute ROC curve and ROC area for noonan
     fpr, tpr, _ = roc_curve(score_names, relative_scores)#scores_np[:, noonan_idx]
