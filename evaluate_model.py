@@ -50,7 +50,7 @@
 # cg_lmk(img_path, lmk_path)
 
 ##############################################################################################
-# get fake images that can be recognized by mtcnn
+# get fake images that can be recognized by mtcnn from pix2pix
 ##############################################################################################
 # from data.data_pipe import get_vague_faces
 
@@ -90,7 +90,7 @@
 #             get_vague_faces(source_path, save_path)
 
 ##############################################################################################
-# generate images for data augmentation in gan
+# generate images for gan training
 ##############################################################################################
 # from data.data_pipe import get_train_dataset_gan, img2lmk
 
@@ -151,13 +151,19 @@
 ##############################################################################################
 # generate roc/pr images
 ##############################################################################################
-# import argparse
-from data.data_pipe import merge_plt
+# from data.data_pipe import merge_plt
 
-merge_plt()
+# merge_plt()
 
-# if __name__ == '__main__':
-#     parser = argparse.ArgumentParser(description='for face verification')
-#     parser.add_argument("-n", "--exp_name", help="experiment name", default="", type=str)
-#     args = parser.parse_args()
-#     merge_plt(args.exp_name)
+##############################################################################################
+# get fake images that can be recognized by mtcnn from stylegan
+##############################################################################################
+from data.data_pipe import get_sg_faces
+
+records = ['smile_refine',]
+
+for rec in new_recs:
+    print('processing', rec)
+    source_path = 'data/facebank/stylegan/smile_refine'
+    save_path = 'data/facebank/stylegan/smile_refine_mtcnn_divi'
+    get_sg_faces(source_path, save_path)
