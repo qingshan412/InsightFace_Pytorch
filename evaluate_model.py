@@ -162,7 +162,7 @@ from data.data_pipe import get_sg_faces
 
 records = ['smile_refine',]
 
-for rec in new_recs:
+for rec in records:
     print('processing', rec)
     source_path = 'data/facebank/stylegan/smile_refine'
     save_path = 'data/facebank/stylegan/smile_refine_mtcnn_divi'
