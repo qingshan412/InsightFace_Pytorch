@@ -462,6 +462,21 @@ def merge_plt(exp_name="divi_retrain", rec_path='data/facebank/plt_recs'):
     plt.legend(loc="lower left")
     plt.savefig(rec_path + os.sep + '/pr_{}.png'.format(exp_name))
 
+def get_sg_faces(source_path, save_path):
+    # st: stylegan
+    # os.makedirs(save_path, exist_ok=True)
+    fake_images = [item for item in os.listdir(source_path)]
+    mtcnn = MTCNN()
+    for img in fake_images:
+        bboxes, _ = mtcnn.align_multi(Image.open(source_path + os.sep + img), 1, 30)
+        # the last two params: conf.face_limit, conf.min_face_size
+        if bboxes.shape[0] != 1:
+            print(img + ':', bboxes.shape)
+        else:
+            subfolder = os.path.basename(img).split('_')[0]
+            os.makedirs(save_path + os.sep + subfolder, exist_ok=True)
+            shutil.copy(source_path + os.sep + img, os.path.join(save_path, subfolder, img))
+
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
 #         self.imgs = bcolz.carray(rootdir = imgs_bcolz)
