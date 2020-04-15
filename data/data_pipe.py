@@ -491,7 +491,7 @@ def map_divi(divi_path):
 
     os.makedirs(divi_path + '_tmp', exist_ok=True)
     for divi in map_divi2sg.keys():
-        shutil.move(divi_path + os.sep + divi, divi_path + '_tmp' + os.sep + map_divi2sg[divi])
+        shutil.copytree(divi_path + os.sep + divi, divi_path + '_tmp' + os.sep + map_divi2sg[divi])
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
 #         self.imgs = bcolz.carray(rootdir = imgs_bcolz)
