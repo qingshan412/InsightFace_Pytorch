@@ -9,23 +9,23 @@
 
 module load pytorch
 
-DataDir=distinct
-python roc_acc_fold_cur.py -d ${DataDir} -g 0 > data/facebank/plt_recs/${DataDir}
+# DataDir=distinct
+# python roc_acc_fold_cur.py -d ${DataDir} -g 0 > data/facebank/plt_recs/${DataDir}
 
-# for DataDir in distinct divided
-# do
-#     echo ${DataDir}
-#     python roc_acc_fold_cur.py -d ${DataDir} -g 0 > data/facebank/plt_recs/${DataDir}
-#     python roc_acc_fold_cur.py -d ${DataDir} -g 0 -s > data/facebank/plt_recs/${DataDir}_s
-#     python roc_acc_fold_cur.py -d ${DataDir} -g 0 -tta > data/facebank/plt_recs/${DataDir}_tta
-#     for Model in mix_aug_500_pool5_full mix_aug_500_full mix_aug_100_pool5_full
-#     do
-#         echo ${Model}
-#         python roc_acc_fold_cur.py -d ${DataDir} -g 0 -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}
-#         python roc_acc_fold_cur.py -d ${DataDir} -g 0 -s -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}_s
-#         python roc_acc_fold_cur.py -d ${DataDir} -g 0 -tta -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}_tta
-#     done
-# done
+for DataDir in distinct divided
+do
+    echo ${DataDir}
+    python roc_acc_fold_cur.py -d ${DataDir} -g 0 > data/facebank/plt_recs/${DataDir}
+    python roc_acc_fold_cur.py -d ${DataDir} -g 0 -s > data/facebank/plt_recs/${DataDir}_s
+    python roc_acc_fold_cur.py -d ${DataDir} -g 0 -tta > data/facebank/plt_recs/${DataDir}_tta
+    for Model in mix_aug_500_pool5_full mix_aug_500_full mix_aug_100_pool5_full
+    do
+        echo ${Model}
+        python roc_acc_fold_cur.py -d ${DataDir} -g 0 -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}
+        python roc_acc_fold_cur.py -d ${DataDir} -g 0 -s -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}_s
+        python roc_acc_fold_cur.py -d ${DataDir} -g 0 -tta -a fake_${Model} > data/facebank/plt_recs/${DataDir}_${Model}_tta
+    done
+done
 
 # DataDir=divided
 # echo ${DataDir}
