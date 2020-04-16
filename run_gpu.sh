@@ -12,11 +12,22 @@ module load pytorch
 # DataDir=distinct
 # python roc_acc_fold_cur.py -d ${DataDir} -g 0 > data/facebank/plt_recs/${DataDir}
 
-DataDir=stylegan
-echo ${DataDir}
-python roc_acc_fold_cur.py -d ${DataDir} -g 0 > data/facebank/plt_recs/${DataDir}
-python roc_acc_fold_cur.py -d ${DataDir} -g 0 -s > data/facebank/plt_recs/${DataDir}_s
-python roc_acc_fold_cur.py -d ${DataDir} -g 0 -tta > data/facebank/plt_recs/${DataDir}_tta
+Model=smile_refine_mtcnn_112_divi
+for DataDir in distinct divided
+do
+    echo ${DataDir}
+    python roc_acc_fold_cur.py -d ${DataDir} -g 0 -as ${Model} > data/facebank/plt_recs/${DataDir}_${Model}
+    python roc_acc_fold_cur.py -d ${DataDir} -g 0 -s -as ${Model} > data/facebank/plt_recs/${DataDir}_${Model}_s
+    python roc_acc_fold_cur.py -d ${DataDir} -g 0 -tta -as ${Model} > data/facebank/plt_recs/${DataDir}_${Model}_tta
+    done
+done
+
+
+# DataDir=stylegan
+# echo ${DataDir}
+# python roc_acc_fold_cur.py -d ${DataDir} -g 0 > data/facebank/plt_recs/${DataDir}
+# python roc_acc_fold_cur.py -d ${DataDir} -g 0 -s > data/facebank/plt_recs/${DataDir}_s
+# python roc_acc_fold_cur.py -d ${DataDir} -g 0 -tta > data/facebank/plt_recs/${DataDir}_tta
 
 # DataDir=divided
 # echo ${DataDir}
