@@ -495,21 +495,24 @@ def map_divi(divi_path):
     for divi in map_divi2sg.keys():
         shutil.copytree(divi_path + os.sep + divi, divi_path + '_tmp' + os.sep + map_divi2sg[divi])
 
-def merge_plt(exp_name="divi_styl", rec_path='data/facebank/plt_recs'):
+def merge_plt(exp_name="divi_styl_test", rec_path='data/facebank/plt_recs'):
     # _dist, _divi, _styl
     # 3 orig, 9 data_aug, 3 stylegan_aug
-    data_name = ['divi'] #'dist'
+    data_name = ['divi', 'divi+styl'] #'dist'
     names = []
     labels = []
     scores = []
     for dn in data_name:
-        names.append(np.load(rec_path + os.sep + 'names_{}.npy'.format(dn))[:3])
-        labels.append(np.load(rec_path + os.sep + 'labels_{}.npy'.format(dn))[:3, :])
-        scores.append(np.load(rec_path + os.sep + 'scores_{}.npy'.format(dn))[:3, :])
-        names.append(np.load(rec_path + os.sep + 'names_{}.npy'.format(dn))[-3:])
-        labels.append(np.load(rec_path + os.sep + 'labels_{}.npy'.format(dn))[-3:, :])
-        scores.append(np.load(rec_path + os.sep + 'scores_{}.npy'.format(dn))[-3:, :])
-    
+        if 'styl' in dn:
+            names.append(np.load(rec_path + os.sep + 'names_{}.npy'.format(dn)))
+            labels.append(np.load(rec_path + os.sep + 'labels_{}.npy'.format(dn)))
+            scores.append(np.load(rec_path + os.sep + 'scores_{}.npy'.format(dn)))
+        else:
+            names.append(np.load(rec_path + os.sep + 'names_{}.npy'.format(dn))[:3])
+            labels.append(np.load(rec_path + os.sep + 'labels_{}.npy'.format(dn))[:3, :])
+            scores.append(np.load(rec_path + os.sep + 'scores_{}.npy'.format(dn))[:3, :])
+
+
     # total_len = sum([item.shape[0] for item in names])
     # work_idx = [i for i in range(total_len)] #+ tmp_idx # + [15, 16, 17]
 
@@ -526,7 +529,8 @@ def merge_plt(exp_name="divi_styl", rec_path='data/facebank/plt_recs'):
         for k in range(names[j].shape[0]):
             fpr, tpr, _ = roc_curve(labels[j][k, :], scores[j][k, :])#scores_np[:, noonan_idx]
             roc_auc = auc(fpr, tpr)
-            if k in [0, 1, 2]:
+            if names[j][k] in ['distinct', 'distinct_s', 'distinct_tta', 'divided', 'divided_s', 'divided_tta',]:
+                #k in [0, 1, 2]:
                 plt.plot(fpr, tpr, color=colors[i%color_size], lw=lw, linestyle='-', 
                         label='{} (area = {:0.2f})'.format(names[j][k], roc_auc))
             else:
@@ -552,7 +556,8 @@ def merge_plt(exp_name="divi_styl", rec_path='data/facebank/plt_recs'):
         for k in range(names[j].shape[0]):
             precision, recall, _ = precision_recall_curve(labels[j][k, :], scores[j][k, :])
             average_precision = average_precision_score(labels[j][k, :], scores[j][k, :])
-            if k in [0, 1, 2]:
+            if names[j][k] in ['distinct', 'distinct_s', 'distinct_tta', 'divided', 'divided_s', 'divided_tta',]:
+                # if k in [0, 1, 2]:
                 plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, 
                     linestyle='-', label='{} (AP={:0.4f})'.format(names[j][k], average_precision))
             else:
