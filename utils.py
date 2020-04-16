@@ -3,7 +3,7 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 plt.switch_backend('agg')
-import io
+import io, os
 from torchvision import transforms as trans
 from data.data_pipe import de_preprocess
 import torch
