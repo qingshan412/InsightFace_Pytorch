@@ -473,7 +473,7 @@ def get_sg_faces(source_path, save_path):
         if bboxes.shape[0] != 1:
             print(img + ':', bboxes.shape)
         else:
-            new_img = mtcnn.align(Image.open(source_path + os.sep + img), 112)
+            new_img = mtcnn.align(Image.open(source_path + os.sep + img), (112,112))
             subfolder = os.path.basename(img).split('_')[0]
             os.makedirs(save_path + os.sep + subfolder, exist_ok=True)
             new_img.save(os.path.join(save_path, subfolder, img))
