@@ -493,10 +493,10 @@ def map_divi(divi_path):
     for divi in map_divi2sg.keys():
         shutil.copytree(divi_path + os.sep + divi, divi_path + '_tmp' + os.sep + map_divi2sg[divi])
 
-def merge_plt(exp_name="dist_all", rec_path='data/facebank/plt_recs'):
+def merge_plt(exp_name="divi_all", rec_path='data/facebank/plt_recs'):
     work_idx = [i for i in range(12)] #+ tmp_idx # + [15, 16, 17]
     # _dist, _divi
-    data_name = 'dist'
+    data_name = 'divi'
     names = np.load(rec_path + os.sep + 'names_{}.npy'.format(data_name))
     labels = np.load(rec_path + os.sep + 'labels_{}.npy'.format(data_name))
     scores = np.load(rec_path + os.sep + 'scores_{}.npy'.format(data_name))
