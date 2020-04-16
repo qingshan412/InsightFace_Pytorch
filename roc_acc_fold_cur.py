@@ -7,7 +7,7 @@ import torch
 from config import get_config
 from mtcnn import MTCNN
 from Learner import face_learner
-from utils import load_facebank, draw_box_name, prepare_facebank
+from utils import load_facebank, draw_box_name, prepare_facebank, save_label_score
 
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, average_precision_score
 from sklearn.model_selection import KFold
@@ -227,18 +227,17 @@ if __name__ == '__main__':
     print('scores_np:')
     print(relative_scores)
 
-    data_names = np.append(np.load(os.path.join(args.stored_data_dir, 'names.npy')), np.array([exp_name,]), axis=0)
-    data_labels = np.load(os.path.join(args.stored_data_dir, 'labels.npy'))
-    data_labels = np.append(data_labels, np.array([score_names,]), axis=0)
-    data_scores = np.load(os.path.join(args.stored_data_dir, 'scores.npy'))
-    data_scores = np.append(data_scores, np.array([relative_scores,]), axis=0)
-    np.save(os.path.join(args.stored_data_dir, 'names.npy'), data_names)
-    np.save(os.path.join(args.stored_data_dir, 'labels.npy'), data_labels)
-    np.save(os.path.join(args.stored_data_dir, 'scores.npy'), data_scores)
-    # np.save(os.path.join(args.stored_data_dir, 'names.npy'), np.array([exp_name,]))
-    # np.save(os.path.join(args.stored_data_dir, 'labels.npy'), np.array([score_names,]))
-    # np.save(os.path.join(args.stored_data_dir, 'scores.npy'), np.array([relative_scores,]))
-
+    if score_names.shape[0] == 58:
+        ext = 'dist'
+    else:
+        ext = 'divi'
+    name_path = os.path.join(args.stored_data_dir, 'names_{}.npy'.format(ext))
+    save_label_score(name_path, exp_name)
+    label_path = os.path.join(args.stored_data_dir, 'labels_{}.npy'.format(ext))
+    save_label_score(label_path, score_names)
+    score_path = os.path.join(args.stored_data_dir, 'scores_{}.npy'.format(ext))
+    save_label_score(score_path, relative_scores)
+    
     # Compute ROC curve and ROC area for noonan
     fpr, tpr, _ = roc_curve(score_names, relative_scores)#scores_np[:, noonan_idx]
     roc_auc = auc(fpr, tpr)
