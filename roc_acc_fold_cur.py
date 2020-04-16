@@ -29,6 +29,8 @@ if __name__ == '__main__':
     parser.add_argument("-tta", "--tta", help="whether test time augmentation",action="store_true")
     parser.add_argument("-a", "--additional_data_dir", help="where to get the additional data", 
                         default="", type=str)
+    parser.add_argument("-as", "--stylegan_data_dir", help="where to get the stylegan additional data", 
+                        default="", type=str)
     args = parser.parse_args()
 
     conf = get_config(False, args)
@@ -41,6 +43,8 @@ if __name__ == '__main__':
     names_considered = args.names_considered.strip().split(',')
 
     exp_name = args.dataset_dir
+    if args.stylegan_data_dir:
+        exp_name += ('_' + args.stylegan_data_dir)
     if args.additional_data_dir:
         exp_name += ('_' + args.additional_data_dir)
     if args.use_shuffled_kfold:
@@ -94,6 +98,11 @@ if __name__ == '__main__':
         learner.load_state(conf, 'mobilefacenet.pth', True, True)
     learner.model.eval()
     print('learner loaded.')
+
+    if args.stylegan_data_dir:
+        #e.g. smile_refine_mtcnn_112_divi
+        full_stylegan_dir = conf.data_path/'facebank'/'stylegan'/args.stylegan_data_dir
+        stylegan_folders = os.listdir(str(full_stylegan_dir))
     
     # # count for roc-auc
     # counts = {}
@@ -120,32 +129,46 @@ if __name__ == '__main__':
         # save trains to conf.facebank_path/args.dataset_dir/'train' and 
         # tests to conf.data_path/'facebank'/args.dataset_dir/'test'
         for name in names_considered:
+            # train
             for i in range(len(train_set[name])):
-                # print(args.dataset_dir)
-                # print('divided' in args.dataset_dir)
-                if 'distinct' in args.dataset_dir:
-                    shutil.copy(train_set[name][i], 
-                                train_set[name][i].replace(raw_dir, verify_type + '/train/' + name))
-                    
-                else:
-                    for img in os.listdir(train_set[name][i]):
+                for img in os.listdir(train_set[name][i]):
                         shutil.copy(train_set[name][i] + os.sep + img, 
                                     ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
                                         '/' + verify_type + '/train/' + name + os.sep + img))
+                # addition data from stylegan
+                folder = os.path.basename(train_set[name][i])
+                if args.stylegan_data_dir and (folder in stylegan_folders):
+                    for img in os.listdir(full_stylegan_dir + os.sep + folder):
+                        shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
+                                    ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
+                                        '/' + verify_type + '/train/' + name + os.sep + img))
+            # test
             for i in range(len(test_set[name])):
-                if 'distinct' in args.dataset_dir:
-                    shutil.copy(test_set[name][i], 
-                                test_set[name][i].replace(raw_dir, verify_type + '/test/' + name))
-                else:
-                    for img in os.listdir(test_set[name][i]):
+                for img in os.listdir(test_set[name][i]):
                         shutil.copy(test_set[name][i] + os.sep + img, 
                                     ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
                                         '/' + verify_type + '/test/' + name + os.sep + img))
-                    
-        
-        
 
-        if args.additional_data_dir:
+            # for i in range(len(train_set[name])):
+            #     if 'distinct' in args.dataset_dir:
+            #         shutil.copy(train_set[name][i], 
+            #                     train_set[name][i].replace(raw_dir, verify_type + '/train/' + name))
+            #     else:
+            #         for img in os.listdir(train_set[name][i]):
+            #             shutil.copy(train_set[name][i] + os.sep + img, 
+            #                         ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
+            #                             '/' + verify_type + '/train/' + name + os.sep + img))
+            # for i in range(len(test_set[name])):
+            #     if 'distinct' in args.dataset_dir:
+            #         shutil.copy(test_set[name][i], 
+            #                     test_set[name][i].replace(raw_dir, verify_type + '/test/' + name))
+            #     else:
+            #         for img in os.listdir(test_set[name][i]):
+            #             shutil.copy(test_set[name][i] + os.sep + img, 
+            #                         ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
+            #                             '/' + verify_type + '/test/' + name + os.sep + img))
+
+        if 'fake' in args.additional_data_dir:
             fake_dict = {'noonan':'normal', 'normal':'noonan'}
             full_additional_dir = conf.data_path/'facebank'/'noonan+normal'/args.additional_data_dir
             add_data = glob.glob(str(full_additional_dir) + os.sep + '*.png')
