@@ -47,6 +47,7 @@ if __name__ == '__main__':
     exp_name = args.dataset_dir
     if args.stylegan_data_dir:
         exp_name += ('_' + args.stylegan_data_dir)
+        exp_name += ('_' + args.stylegan_test_or_train)
     if args.additional_data_dir:
         exp_name += ('_' + args.additional_data_dir)
     if args.use_shuffled_kfold:
