@@ -189,7 +189,7 @@ if __name__ == '__main__':
             print(path)
             for fil in path.iterdir():
                 print(fil)
-                orig_name = ''.join([i for i in fil.name.strip().split('.')[0] if not i.isdigit()])
+                orig_name = ''.join([i for i in fil.name.strip().split('.')[0].split('_')[0] if not i.isdigit()])
                 if 'noonan' in orig_name:
                     score_names.append(names_idx['noonan'])
                 else:
