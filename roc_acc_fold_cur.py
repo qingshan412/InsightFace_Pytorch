@@ -233,8 +233,13 @@ if __name__ == '__main__':
 
     if score_names.shape[0] == 58:
         ext = 'dist'
-    else:
+    elif score_names.shape[0] == 104:
         ext = 'divi'
+    elif score_names.shape[0] == 154:
+        ext = 'styl'
+    else:
+        print('label dimension wrong:',score_names.shape[0])
+        exit(0)
     name_path = os.path.join(args.stored_data_dir, 'names_{}.npy'.format(ext))
     save_label_score(name_path, exp_name)
     label_path = os.path.join(args.stored_data_dir, 'labels_{}.npy'.format(ext))
