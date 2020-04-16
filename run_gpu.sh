@@ -19,7 +19,6 @@ do
     python roc_acc_fold_cur.py -d ${DataDir} -g 0 -as ${Model} > data/facebank/plt_recs/${DataDir}_${Model}
     python roc_acc_fold_cur.py -d ${DataDir} -g 0 -s -as ${Model} > data/facebank/plt_recs/${DataDir}_${Model}_s
     python roc_acc_fold_cur.py -d ${DataDir} -g 0 -tta -as ${Model} > data/facebank/plt_recs/${DataDir}_${Model}_tta
-    done
 done
 
 
