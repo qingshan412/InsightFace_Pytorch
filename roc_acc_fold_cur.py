@@ -123,23 +123,25 @@ if __name__ == '__main__':
             for i in range(len(train_set[name])):
                 # print(args.dataset_dir)
                 # print('divided' in args.dataset_dir)
-                if 'divided' in args.dataset_dir:
+                if 'distinct' in args.dataset_dir:
+                    shutil.copy(train_set[name][i], 
+                                train_set[name][i].replace(raw_dir, verify_type + '/train/' + name))
+                    
+                else:
                     for img in os.listdir(train_set[name][i]):
                         shutil.copy(train_set[name][i] + os.sep + img, 
                                     ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
                                         '/' + verify_type + '/train/' + name + os.sep + img))
-                else:
-                    shutil.copy(train_set[name][i], 
-                                train_set[name][i].replace(raw_dir, verify_type + '/train/' + name))
             for i in range(len(test_set[name])):
-                if 'divided' in args.dataset_dir:
+                if 'distinct' in args.dataset_dir:
+                    shutil.copy(test_set[name][i], 
+                                test_set[name][i].replace(raw_dir, verify_type + '/test/' + name))
+                else:
                     for img in os.listdir(test_set[name][i]):
                         shutil.copy(test_set[name][i] + os.sep + img, 
                                     ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
                                         '/' + verify_type + '/test/' + name + os.sep + img))
-                else:
-                    shutil.copy(test_set[name][i], 
-                                test_set[name][i].replace(raw_dir, verify_type + '/test/' + name))
+                    
         
         
 
