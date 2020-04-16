@@ -493,13 +493,19 @@ def map_divi(divi_path):
     for divi in map_divi2sg.keys():
         shutil.copytree(divi_path + os.sep + divi, divi_path + '_tmp' + os.sep + map_divi2sg[divi])
 
-def merge_plt(exp_name="divi_all", rec_path='data/facebank/plt_recs'):
-    work_idx = [i for i in range(12)] #+ tmp_idx # + [15, 16, 17]
+def merge_plt(exp_name="dist_divi", rec_path='data/facebank/plt_recs'):
     # _dist, _divi
-    data_name = 'divi'
-    names = np.load(rec_path + os.sep + 'names_{}.npy'.format(data_name))
-    labels = np.load(rec_path + os.sep + 'labels_{}.npy'.format(data_name))
-    scores = np.load(rec_path + os.sep + 'scores_{}.npy'.format(data_name))
+    data_name = ['divi', 'dist']
+    names = []
+    labels = []
+    scores = []
+    for dn in data_name:
+        names.append(np.load(rec_path + os.sep + 'names_{}.npy'.format(data_name))[:3])
+        lables.append(np.load(rec_path + os.sep + 'labels_{}.npy'.format(data_name))[:3, :])
+        scores.append(np.load(rec_path + os.sep + 'scores_{}.npy'.format(data_name))[:3, :])
+    
+    # total_len = sum([item.shape[0] for item in names])
+    # work_idx = [i for i in range(total_len)] #+ tmp_idx # + [15, 16, 17]
 
     colors = list(mcolors.TABLEAU_COLORS)
     color_size = len(colors)
@@ -509,15 +515,19 @@ def merge_plt(exp_name="divi_all", rec_path='data/facebank/plt_recs'):
     plt.figure()
     plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
 
-    for (i, idx) in enumerate(work_idx): #names.shape[0]
-        fpr, tpr, _ = roc_curve(labels[idx], scores[idx])#scores_np[:, noonan_idx]
-        roc_auc = auc(fpr, tpr)
-        if idx in [0, 1, 2, 15, 16, 17, 66, 67, 68, 78, 79, 80]:
-            plt.plot(fpr, tpr, color=colors[i%color_size], lw=lw, linestyle='-', 
-                    label='{} (area = {:0.4f})'.format(names[idx], roc_auc))
-        else:
-            plt.plot(fpr, tpr, color=colors[i%color_size], lw=lw, linestyle=linestyles[i//color_size], 
-                    label='{} (area = {:0.4f})'.format(names[idx], roc_auc))
+    i = 0
+    for j in range(len(names)):
+        for k in range(names[j].shape[0]):
+            fpr, tpr, _ = roc_curve(labels[j][k, :], scores[j][k, :])#scores_np[:, noonan_idx]
+            roc_auc = auc(fpr, tpr)
+            if k in [0, 1, 2]:
+                plt.plot(fpr, tpr, color=colors[i%color_size], lw=lw, linestyle='-', 
+                        label='{} (area = {:0.2f})'.format(names[j][k], roc_auc))
+            else:
+                plt.plot(fpr, tpr, color=colors[i%color_size], lw=lw, linestyle=linestyles[i//color_size], 
+                        label='{} (area = {:0.2f})'.format(names[j][k], roc_auc))
+            i += 1
+    
     
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
@@ -530,15 +540,19 @@ def merge_plt(exp_name="divi_all", rec_path='data/facebank/plt_recs'):
     plt.savefig(rec_path + os.sep + '/fp_tp_{}.png'.format(exp_name))
 
     plt.figure()
-    for (i, idx) in enumerate(work_idx): #names.shape[0]
-        precision, recall, _ = precision_recall_curve(labels[idx], scores[idx])
-        average_precision = average_precision_score(labels[idx], scores[idx])
-        if idx in [0, 1, 2, 15, 16, 17, 66, 67, 68, 78, 79, 80]:
-            plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, 
-                linestyle='-', label='{} (AP={:0.4f})'.format(names[idx], average_precision))
-        else:
-            plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, 
-                linestyle=linestyles[i//color_size], label='{} (AP={:0.4f})'.format(names[idx], average_precision))
+
+    i = 0
+    for j in range(len(names)):
+        for k in range(names[j].shape[0]):
+            precision, recall, _ = precision_recall_curve(labels[j][k, :], scores[j][k, :])
+            average_precision = average_precision_score(labels[j][k, :], scores[j][k, :])
+            if k in [0, 1, 2]:
+                plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, 
+                    linestyle='-', label='{} (AP={:0.4f})'.format(names[j][k], average_precision))
+            else:
+                plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, 
+                    linestyle=linestyles[i//color_size], label='{} (AP={:0.4f})'.format(names[j][k], average_precision))
+            i += 1
     
     plt.xlabel('Recall')
     plt.ylabel('Precision')
