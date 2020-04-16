@@ -495,9 +495,10 @@ def map_divi(divi_path):
     for divi in map_divi2sg.keys():
         shutil.copytree(divi_path + os.sep + divi, divi_path + '_tmp' + os.sep + map_divi2sg[divi])
 
-def merge_plt(exp_name="dist_divi", rec_path='data/facebank/plt_recs'):
-    # _dist, _divi
-    data_name = ['divi', 'dist']
+def merge_plt(exp_name="dist_styl", rec_path='data/facebank/plt_recs'):
+    # _dist, _divi, _styl
+    # 3 orig, 9 data_aug, 3 stylegan_aug
+    data_name = ['dist'] #'divi'
     names = []
     labels = []
     scores = []
@@ -505,6 +506,9 @@ def merge_plt(exp_name="dist_divi", rec_path='data/facebank/plt_recs'):
         names.append(np.load(rec_path + os.sep + 'names_{}.npy'.format(dn))[:3])
         labels.append(np.load(rec_path + os.sep + 'labels_{}.npy'.format(dn))[:3, :])
         scores.append(np.load(rec_path + os.sep + 'scores_{}.npy'.format(dn))[:3, :])
+        names.append(np.load(rec_path + os.sep + 'names_{}.npy'.format(dn))[-3:])
+        labels.append(np.load(rec_path + os.sep + 'labels_{}.npy'.format(dn))[-3:, :])
+        scores.append(np.load(rec_path + os.sep + 'scores_{}.npy'.format(dn))[-3:, :])
     
     # total_len = sum([item.shape[0] for item in names])
     # work_idx = [i for i in range(total_len)] #+ tmp_idx # + [15, 16, 17]
