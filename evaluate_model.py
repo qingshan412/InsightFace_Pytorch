@@ -151,19 +151,19 @@
 ##############################################################################################
 # generate roc/pr images
 ##############################################################################################
-# from data.data_pipe import merge_plt
+from data.data_pipe import merge_plt
 
-# merge_plt()
+merge_plt()
 
 ##############################################################################################
 # get fake images that can be recognized by mtcnn from stylegan
 ##############################################################################################
-from data.data_pipe import get_sg_faces
+# from data.data_pipe import get_sg_faces
 
-records = ['smile_refine',]
+# records = ['smile_refine',]
 
-for rec in records:
-    print('processing', rec)
-    source_path = 'data/facebank/stylegan/smile_refine'
-    save_path = 'data/facebank/stylegan/smile_refine_mtcnn_divi'
-    get_sg_faces(source_path, save_path)
+# for rec in records:
+#     print('processing', rec)
+#     source_path = 'data/facebank/stylegan/smile_refine'
+#     save_path = 'data/facebank/stylegan/smile_refine_mtcnn_divi'
+#     get_sg_faces(source_path, save_path)
