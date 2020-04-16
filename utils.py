@@ -11,6 +11,12 @@ from model import l2_norm
 import pdb
 import cv2
 
+def save_label_score(npy_path, new_data):
+    if os.path.exists(npy_path):
+        np.save(npy_path, np.append(np.load(npy_path), np.array([new_data,]), axis=0))
+    else:
+        np.save(npy_path, np.array([new_data,]))
+
 def separate_bn_paras(modules):
     if not isinstance(modules, list):
         modules = [*modules.modules()]
