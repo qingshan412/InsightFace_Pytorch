@@ -500,9 +500,9 @@ def merge_plt(exp_name="dist_divi", rec_path='data/facebank/plt_recs'):
     labels = []
     scores = []
     for dn in data_name:
-        names.append(np.load(rec_path + os.sep + 'names_{}.npy'.format(data_name))[:3])
-        lables.append(np.load(rec_path + os.sep + 'labels_{}.npy'.format(data_name))[:3, :])
-        scores.append(np.load(rec_path + os.sep + 'scores_{}.npy'.format(data_name))[:3, :])
+        names.append(np.load(rec_path + os.sep + 'names_{}.npy'.format(dn))[:3])
+        lables.append(np.load(rec_path + os.sep + 'labels_{}.npy'.format(dn))[:3, :])
+        scores.append(np.load(rec_path + os.sep + 'scores_{}.npy'.format(dn))[:3, :])
     
     # total_len = sum([item.shape[0] for item in names])
     # work_idx = [i for i in range(total_len)] #+ tmp_idx # + [15, 16, 17]
