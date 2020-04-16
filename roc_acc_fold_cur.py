@@ -101,8 +101,8 @@ if __name__ == '__main__':
 
     if args.stylegan_data_dir:
         #e.g. smile_refine_mtcnn_112_divi
-        full_stylegan_dir = conf.data_path/'facebank'/'stylegan'/args.stylegan_data_dir
-        stylegan_folders = os.listdir(str(full_stylegan_dir))
+        full_stylegan_dir = str(conf.data_path/'facebank'/'stylegan'/args.stylegan_data_dir)
+        stylegan_folders = os.listdir(full_stylegan_dir)
     
     # # count for roc-auc
     # counts = {}
