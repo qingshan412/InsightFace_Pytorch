@@ -495,10 +495,10 @@ def map_divi(divi_path):
     for divi in map_divi2sg.keys():
         shutil.copytree(divi_path + os.sep + divi, divi_path + '_tmp' + os.sep + map_divi2sg[divi])
 
-def merge_plt(exp_name="dis_styl_test", rec_path='data/facebank/plt_recs'):
+def merge_plt(exp_name="divi_styl_test", rec_path='data/facebank/plt_recs'):
     # _dist, _divi, _styl
     # 3 orig, 9 data_aug, 3 stylegan_aug
-    data_name = ['dist', 'dist+styl'] #'dist'
+    data_name = ['divi', 'divi+styl'] #'dist'
     names = []
     labels = []
     scores = []
