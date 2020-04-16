@@ -394,7 +394,7 @@ def img2lmk_np(img_path, lmk_path, predictor_path='data/lmk_predictor/shape_pred
     np.save(lmk_path + os.sep + 'img_names.npy', np.array(img_names))
     np.save(lmk_path + os.sep + 'lmks.npy', np.array(lmks))
 
-def merge_plt(exp_name="divi_retrain", rec_path='data/facebank/plt_recs'):
+def merge_plt_old(exp_name="divi_retrain", rec_path='data/facebank/plt_recs'):
     # tmp_idx = [48, 49, 50] #+ [33, 34, 35]
     work_idx = [i + 66 + 12 for i in range(12)] #+ tmp_idx # + [15, 16, 17]
     # 0,1,2 basic dist
@@ -492,6 +492,61 @@ def map_divi(divi_path):
     os.makedirs(divi_path + '_tmp', exist_ok=True)
     for divi in map_divi2sg.keys():
         shutil.copytree(divi_path + os.sep + divi, divi_path + '_tmp' + os.sep + map_divi2sg[divi])
+
+def merge_plt(exp_name="dist_all", rec_path='data/facebank/plt_recs'):
+    work_idx = [i for i in range(12)] #+ tmp_idx # + [15, 16, 17]
+    # _dist, _divi
+    data_name = 'dist'
+    names = np.load(rec_path + os.sep + 'names_{}.npy'.format(data_name))
+    labels = np.load(rec_path + os.sep + 'labels_{}.npy'.format(data_name))
+    scores = np.load(rec_path + os.sep + 'scores_{}.npy'.format(data_name))
+
+    colors = list(mcolors.TABLEAU_COLORS)
+    color_size = len(colors)
+    linestyles = ['--', '-.', ':']
+    line_size = len(linestyles)
+    lw = 2
+    plt.figure()
+    plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
+
+    for (i, idx) in enumerate(work_idx): #names.shape[0]
+        fpr, tpr, _ = roc_curve(labels[idx], scores[idx])#scores_np[:, noonan_idx]
+        roc_auc = auc(fpr, tpr)
+        if idx in [0, 1, 2, 15, 16, 17, 66, 67, 68, 78, 79, 80]:
+            plt.plot(fpr, tpr, color=colors[i%color_size], lw=lw, linestyle='-', 
+                    label='{} (area = {:0.4f})'.format(names[idx], roc_auc))
+        else:
+            plt.plot(fpr, tpr, color=colors[i%color_size], lw=lw, linestyle=linestyles[i//color_size], 
+                    label='{} (area = {:0.4f})'.format(names[idx], roc_auc))
+    
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('ROC Curves ({})'.format(exp_name))
+    plt.legend(loc="lower right")
+    # plt.legend(bbox_to_anchor=(1.04, 1), borderaxespad=0)#, ncol=2)#loc='upper right', 
+    # plt.subplots_adjust(right=0.5, top=0.6)
+    plt.savefig(rec_path + os.sep + '/fp_tp_{}.png'.format(exp_name))
+
+    plt.figure()
+    for (i, idx) in enumerate(work_idx): #names.shape[0]
+        precision, recall, _ = precision_recall_curve(labels[idx], scores[idx])
+        average_precision = average_precision_score(labels[idx], scores[idx])
+        if idx in [0, 1, 2, 15, 16, 17, 66, 67, 68, 78, 79, 80]:
+            plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, 
+                linestyle='-', label='{} (AP={:0.4f})'.format(names[idx], average_precision))
+        else:
+            plt.step(recall, precision, where='post', color=colors[i%color_size], lw=lw, 
+                linestyle=linestyles[i//color_size], label='{} (AP={:0.4f})'.format(names[idx], average_precision))
+    
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.ylim([0.0, 1.05])
+    plt.xlim([0.0, 1.0])
+    plt.title('PR Curves ({})'.format(exp_name))
+    plt.legend(loc="lower left")
+    plt.savefig(rec_path + os.sep + '/pr_{}.png'.format(exp_name))
 # class train_dataset(Dataset):
 #     def __init__(self, imgs_bcolz, label_bcolz, h_flip=True):
 #         self.imgs = bcolz.carray(rootdir = imgs_bcolz)
