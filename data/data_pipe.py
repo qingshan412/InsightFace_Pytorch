@@ -511,6 +511,9 @@ def merge_plt(exp_name="dis_styl_test", rec_path='data/facebank/plt_recs'):
             names.append(np.load(rec_path + os.sep + 'names_{}.npy'.format(dn))[:3])
             labels.append(np.load(rec_path + os.sep + 'labels_{}.npy'.format(dn))[:3, :])
             scores.append(np.load(rec_path + os.sep + 'scores_{}.npy'.format(dn))[:3, :])
+            names.append(np.load(rec_path + os.sep + 'names_{}.npy'.format(dn))[-3:])
+            labels.append(np.load(rec_path + os.sep + 'labels_{}.npy'.format(dn))[-3:, :])
+            scores.append(np.load(rec_path + os.sep + 'scores_{}.npy'.format(dn))[-3:, :])
 
 
     # total_len = sum([item.shape[0] for item in names])
