@@ -31,6 +31,8 @@ if __name__ == '__main__':
                         default="", type=str)
     parser.add_argument("-as", "--stylegan_data_dir", help="where to get the stylegan additional data", 
                         default="", type=str)
+    parser.add_argument("-ts", "--stylegan_test_or_train", help="use stylegan additional data in only train, or test, or both", 
+                        default="train", type=str)
     args = parser.parse_args()
 
     conf = get_config(False, args)
@@ -137,7 +139,7 @@ if __name__ == '__main__':
                                         '/' + verify_type + '/train/' + name + os.sep + img))
                 # addition data from stylegan
                 folder = os.path.basename(train_set[name][i])
-                if args.stylegan_data_dir and (folder in stylegan_folders):
+                if args.stylegan_data_dir and ('train' in args.stylegan_test_or_train) and (folder in stylegan_folders):
                     for img in os.listdir(full_stylegan_dir + os.sep + folder):
                         shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
                                     ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
@@ -146,6 +148,13 @@ if __name__ == '__main__':
             for i in range(len(test_set[name])):
                 for img in os.listdir(test_set[name][i]):
                         shutil.copy(test_set[name][i] + os.sep + img, 
+                                    ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
+                                        '/' + verify_type + '/test/' + name + os.sep + img))
+                # addition data from stylegan
+                folder = os.path.basename(test_set[name][i])
+                if args.stylegan_data_dir and ('test' in args.stylegan_test_or_train) and (folder in stylegan_folders):
+                    for img in os.listdir(full_stylegan_dir + os.sep + folder):
+                        shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
                                     ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
                                         '/' + verify_type + '/test/' + name + os.sep + img))
 
@@ -260,6 +269,10 @@ if __name__ == '__main__':
         ext = 'divi'
     elif score_names.shape[0] == 154:
         ext = 'styl'
+    elif score_names.shape[0] == 58 + 154:
+        ext = 'dist+styl'
+    elif score_names.shape[0] == 104 + 154:
+        ext = 'divi+styl'
     else:
         print('label dimension wrong:',score_names.shape[0])
         exit(0)
