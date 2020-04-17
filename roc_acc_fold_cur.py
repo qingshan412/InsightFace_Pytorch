@@ -153,7 +153,9 @@ if __name__ == '__main__':
                                         '/' + verify_type + '/test/' + name + os.sep + img))
                 # addition data from stylegan
                 folder = os.path.basename(test_set[name][i])
-                if args.stylegan_data_dir and ('test' in args.stylegan_test_or_train) and (folder in stylegan_folders):
+                if (args.stylegan_data_dir and ('test' in args.stylegan_test_or_train) and 
+                    (folder in stylegan_folders) and 
+                    (folder not in ['noonan7','noonan19','noonan23','normal9','normal20','normal23'])):
                     for img in os.listdir(full_stylegan_dir + os.sep + folder):
                         shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
                                     ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
@@ -240,12 +242,13 @@ if __name__ == '__main__':
                 bboxes = bboxes + [-1,-1,1,1] # personal choice    
                 score = learner.binfer(conf, faces, targets, args.tta)
                 scores.append(score)
-                if 'noonan' in orig_name:
-                    if score[0, names_idx['noonan']] > score[0, names_idx['normal']]:
-                        print('wrong:', fil)
-                else:
-                    if score[0, names_idx['noonan']] < score[0, names_idx['normal']]:
-                        print('wrong:', fil)
+                # if 'noonan' in orig_name:
+                #     if score[0, names_idx['noonan']] > score[0, names_idx['normal']]:
+                #         print('wrong:', fil)
+                # else:
+                #     if score[0, names_idx['noonan']] < score[0, names_idx['normal']]:
+                #         print('wrong:', fil)
+
                 # for idx,bbox in enumerate(bboxes):
                 #     pred_name = names[results[idx] + 1]
                 #     frame = draw_box_name(bbox, pred_name + '_{:.2f}'.format(score[idx]), frame)
@@ -260,7 +263,7 @@ if __name__ == '__main__':
         # print(np.squeeze(np.array(scores)))
         # exit(0)
     # print(counts)
-    exit(0)
+    # exit(0)
     score_names = np.array(score_names)
     print(score_names.shape)
     scores_np = np.squeeze(np.array(scores))
