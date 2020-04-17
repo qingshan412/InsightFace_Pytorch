@@ -18,11 +18,23 @@ do
     echo ${DataDir}
     for Op in "train" "test" "train,test"
     do
-        python roc_acc_fold_cur.py -d ${DataDir} -g 0 -as ${Model} -ts ${Op} > data/facebank/plt_recs/${DataDir}_${Model}_${Op}_filter
-        python roc_acc_fold_cur.py -d ${DataDir} -g 0 -s -as ${Model} -ts ${Op} > data/facebank/plt_recs/${DataDir}_${Model}_${Op}_filter_s
-        python roc_acc_fold_cur.py -d ${DataDir} -g 0 -tta -as ${Model} -ts ${Op} > data/facebank/plt_recs/${DataDir}_${Model}_${Op}_filter_tta
+        python fold_cur_retrain.py -d ${DataDir} -g 0 -as ${Model} -ts ${Op} > data/facebank/plt_recs/${DataDir}_${Model}_${Op}_filter
+        python fold_cur_retrain.py -d ${DataDir} -g 0 -s -as ${Model} -ts ${Op} > data/facebank/plt_recs/${DataDir}_${Model}_${Op}_filter_s
+        python fold_cur_retrain.py -d ${DataDir} -g 0 -tta -as ${Model} -ts ${Op} > data/facebank/plt_recs/${DataDir}_${Model}_${Op}_filter_tta
     done
 done
+
+# Model=smile_refine_mtcnn_112_divi
+# for DataDir in distinct divided
+# do
+#     echo ${DataDir}
+#     for Op in "train" "test" "train,test"
+#     do
+#         python roc_acc_fold_cur.py -d ${DataDir} -g 0 -as ${Model} -ts ${Op} > data/facebank/plt_recs/${DataDir}_${Model}_${Op}_filter
+#         python roc_acc_fold_cur.py -d ${DataDir} -g 0 -s -as ${Model} -ts ${Op} > data/facebank/plt_recs/${DataDir}_${Model}_${Op}_filter_s
+#         python roc_acc_fold_cur.py -d ${DataDir} -g 0 -tta -as ${Model} -ts ${Op} > data/facebank/plt_recs/${DataDir}_${Model}_${Op}_filter_tta
+#     done
+# done
 
 
 # DataDir=stylegan
