@@ -16,11 +16,11 @@ Model=smile_refine_mtcnn_112_divi
 for DataDir in distinct divided
 do
     echo ${DataDir}
-    for Op in "test" "train,test"
+    for Op in "train" "test" "train,test"
     do
-        python roc_acc_fold_cur.py -d ${DataDir} -g 0 -as ${Model} -ts ${Op} > data/facebank/plt_recs/${DataDir}_${Model}_${Op}
-        python roc_acc_fold_cur.py -d ${DataDir} -g 0 -s -as ${Model} -ts ${Op} > data/facebank/plt_recs/${DataDir}_${Model}_${Op}_s
-        python roc_acc_fold_cur.py -d ${DataDir} -g 0 -tta -as ${Model} -ts ${Op} > data/facebank/plt_recs/${DataDir}_${Model}_${Op}_tta
+        python roc_acc_fold_cur.py -d ${DataDir} -g 0 -as ${Model} -ts ${Op} > data/facebank/plt_recs/${DataDir}_${Model}_${Op}_filter
+        python roc_acc_fold_cur.py -d ${DataDir} -g 0 -s -as ${Model} -ts ${Op} > data/facebank/plt_recs/${DataDir}_${Model}_${Op}_filter_s
+        python roc_acc_fold_cur.py -d ${DataDir} -g 0 -tta -as ${Model} -ts ${Op} > data/facebank/plt_recs/${DataDir}_${Model}_${Op}_filter_tta
     done
 done
 
