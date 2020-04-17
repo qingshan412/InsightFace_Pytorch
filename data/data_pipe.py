@@ -498,6 +498,15 @@ def map_divi(divi_path):
 def merge_plt(exp_name="divi_styl_test", rec_path='data/facebank/plt_recs'):
     # _dist, _divi, _styl
     # 3 orig, 9 data_aug, 3 stylegan_aug
+    # 0,1,2 dist
+    # 3 - 11 dist, data_aug
+    # 12 - 14 dist, stylegan_aug
+    # + 15 for divi
+    # 30, 31, 32 stylegan only
+    # 33 - 38 dist_styl
+    # 39 - 44 divi_styl
+    # 45 - 53 dist_styl_filter
+    # 53 - 62 divi_styl_filter
     data_name = ['divi', 'divi+styl'] #'dist'
     names = []
     labels = []
