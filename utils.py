@@ -13,7 +13,10 @@ import cv2
 
 def save_label_score(npy_path, new_data):
     if os.path.exists(npy_path):
-        np.save(npy_path, np.append(np.load(npy_path), np.array([new_data,]), axis=0))
+        tmp_np = np.load(npy_path, allow_pickle=True)
+        tmp = [tmp_np[i] for i in range(tmp_np.shape[0])]
+        tmp.append(new_data)
+        np.save(npy_path, np.array(tmp))
     else:
         np.save(npy_path, np.array([new_data,]))
 
