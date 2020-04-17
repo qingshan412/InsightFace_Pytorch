@@ -7,7 +7,7 @@ import torch
 from config import get_config
 from mtcnn import MTCNN
 from Learner import face_learner
-from utils import load_facebank, draw_box_name, prepare_facebank
+from utils import load_facebank, draw_box_name, prepare_facebank, save_label_score
 
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, average_precision_score
 from sklearn.model_selection import KFold
@@ -30,6 +30,10 @@ if __name__ == '__main__':
     parser.add_argument("-tta", "--tta", help="whether test time augmentation",action="store_true")
     parser.add_argument("-a", "--additional_data_dir", help="where to get the additional data", 
                         default="", type=str)
+    parser.add_argument("-as", "--stylegan_data_dir", help="where to get the stylegan additional data", 
+                        default="", type=str)
+    parser.add_argument("-ts", "--stylegan_test_or_train", help="use stylegan additional data in only train, or test, or both", 
+                        default="train", type=str)
     args = parser.parse_args()
 
     conf = get_config(False, args)
@@ -39,7 +43,10 @@ if __name__ == '__main__':
     
     names_considered = args.names_considered.strip().split(',')
 
-    exp_name = args.dataset_dir
+    exp_name = args.dataset_dir[:4] + '_re'
+    if args.stylegan_data_dir:
+        exp_name += ('_' + args.stylegan_data_dir)
+        exp_name += ('_' + args.stylegan_test_or_train)
     if args.additional_data_dir:
         exp_name += ('_' + args.additional_data_dir)
     if args.use_shuffled_kfold:
@@ -113,26 +120,27 @@ if __name__ == '__main__':
         # tests to conf.data_path/'facebank'/args.dataset_dir/'test'
         for name in names_considered:
             for i in range(len(train_set[name])):
-                # print(args.dataset_dir)
-                # print('divided' in args.dataset_dir)
-                if 'divided' in args.dataset_dir:
-                    for img in os.listdir(train_set[name][i]):
-                        shutil.copy(train_set[name][i] + os.sep + img, 
+                for img in os.listdir(train_set[name][i]):
+                    shutil.copy(train_set[name][i] + os.sep + img, 
+                                os.path.join(str(train_dir), name, img))
+                # addition data from stylegan
+                folder = os.path.basename(train_set[name][i])
+                if args.stylegan_data_dir and ('train' in args.stylegan_test_or_train) and (folder in stylegan_folders):
+                    for img in os.listdir(full_stylegan_dir + os.sep + folder):
+                        shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
                                     os.path.join(str(train_dir), name, img))
-                else:
-                    shutil.copy(train_set[name][i], 
-                                os.path.join(str(train_dir), name, os.path.basename(train_set[name][i])))
-
             for i in range(len(test_set[name])):
-                if 'divided' in args.dataset_dir:
-                    for img in os.listdir(test_set[name][i]):
-                        shutil.copy(test_set[name][i] + os.sep + img, 
+                for img in os.listdir(test_set[name][i]):
+                    shutil.copy(test_set[name][i] + os.sep + img, 
+                                os.path.join(str(test_dir), name, img))
+                # addition data from stylegan
+                folder = os.path.basename(test_set[name][i])
+                if (args.stylegan_data_dir and ('test' in args.stylegan_test_or_train) and 
+                    (folder in stylegan_folders)):
+                    for img in os.listdir(full_stylegan_dir + os.sep + folder):
+                        shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
                                     os.path.join(str(test_dir), name, img))
-                else:
-                    shutil.copy(test_set[name][i], 
-                                os.path.join(str(test_dir), name, os.path.basename(test_set[name][i])))
-        
-        
+
 
         if args.additional_data_dir:
             fake_dict = {'noonan':'normal', 'normal':'noonan'}
@@ -191,7 +199,7 @@ if __name__ == '__main__':
             print(path)
             for fil in path.iterdir():
                 print(fil)
-                orig_name = ''.join([i for i in fil.name.strip().split('.')[0] if not i.isdigit()])
+                orig_name = ''.join([i for i in fil.name.strip().split('.')[0].split('_')[0] if not i.isdigit()])
                 if 'noonan' in orig_name:
                     score_names.append(names_idx['noonan'])
                 else:
@@ -231,15 +239,21 @@ if __name__ == '__main__':
     print('scores_np:')
     print(relative_scores)
 
-    data_names = np.append(np.load(os.path.join(args.stored_data_dir, 'names.npy')), np.array([exp_name]))
-    data_labels = np.load(os.path.join(args.stored_data_dir, 'labels.npy'), allow_pickle=True)
-    data_labels = np.delete(np.append(data_labels, np.array([score_names, np.array([])])), -1, axis=0) # to add as an object
-    data_scores = np.load(os.path.join(args.stored_data_dir, 'scores.npy'), allow_pickle=True)
-    data_scores = np.delete(np.append(data_scores, np.array([relative_scores, np.array([])])), -1, axis=0) # to add as an object
-    np.save(os.path.join(args.stored_data_dir, 'names.npy'), data_names)
-    np.save(os.path.join(args.stored_data_dir, 'labels.npy'), data_labels)
-    np.save(os.path.join(args.stored_data_dir, 'scores.npy'), data_scores)
-
+    # data_names = np.append(np.load(os.path.join(args.stored_data_dir, 'names.npy')), np.array([exp_name]))
+    # data_labels = np.load(os.path.join(args.stored_data_dir, 'labels.npy'), allow_pickle=True)
+    # data_labels = np.delete(np.append(data_labels, np.array([score_names, np.array([])])), -1, axis=0) # to add as an object
+    # data_scores = np.load(os.path.join(args.stored_data_dir, 'scores.npy'), allow_pickle=True)
+    # data_scores = np.delete(np.append(data_scores, np.array([relative_scores, np.array([])])), -1, axis=0) # to add as an object
+    # np.save(os.path.join(args.stored_data_dir, 'names.npy'), data_names)
+    # np.save(os.path.join(args.stored_data_dir, 'labels.npy'), data_labels)
+    # np.save(os.path.join(args.stored_data_dir, 'scores.npy'), data_scores)
+    name_path = os.path.join(args.stored_data_dir, 'names.npy')
+    save_label_score(name_path, exp_name)
+    label_path = os.path.join(args.stored_data_dir, 'labels.npy')
+    save_label_score(label_path, score_names)
+    score_path = os.path.join(args.stored_data_dir, 'scores.npy')
+    save_label_score(score_path, relative_scores)
+    
     # Compute ROC curve and ROC area for noonan
     fpr, tpr, _ = roc_curve(score_names, relative_scores)#scores_np[:, noonan_idx]
     roc_auc = auc(fpr, tpr)
@@ -274,38 +288,4 @@ if __name__ == '__main__':
     plt.xlim([0.0, 1.0])
     plt.title('Average precision score ({}): AP={:0.2f}'.format(exp_name, average_precision))
     plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/pr_{}.png'.format(exp_name))
-    # plt.figure()
-    # for i in range(len(names_considered)):
-    #     name = names_considered[i]
-    #     fp = np.array(fp_tp[name][0])
-    #     tp = np.array(fp_tp[name][1])
-    #     idxs = np.argsort(fp)
-    #     if i%2 != 1:
-    #         plt.plot(fp[idxs], tp[idxs], label=name+' ROC curve', color=colors[i])#, linewidth=4)
-    #     else:
-    #         plt.plot(fp[idxs], tp[idxs], label=name+' ROC curve', color=colors[i], linestyle=':')#, linewidth=4)
-    
-    # plt.plot([0, 1], [0, 1], 'k--', lw=2)
-    # plt.title('ROC Threshold:{:.2f}-{:.2f}'.format(threshold_array[0], threshold_array[-1]))
-    # plt.xlabel('False Positive Rate')
-    # plt.ylabel('True Positive Rate')
-    # plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left')
-    # plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/fp_tp.png')
-    # plt.close()
 
-    # plt.figure()
-    # for i in range(len(names_considered)):
-    #     name = names_considered[i]
-    #     if i%2 != 1:
-    #         plt.plot(threshold_array, accuracy[name], label=name+' accuracy curve',
-    #                  color=colors[i], linewidth=4)
-    #     else:
-    #         plt.plot(threshold_array, accuracy[name], label=name+' accuracy curve',
-    #                  color=colors[i], linestyle=':', linewidth=4)
-    
-    # plt.ylim([0.0, 1.05])
-    # plt.xlabel('Threshold')
-    # plt.ylabel('Accuracy')
-    # plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left')
-    # plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/accuracy.png')
-    # plt.close()
