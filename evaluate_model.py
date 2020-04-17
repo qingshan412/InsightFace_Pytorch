@@ -153,7 +153,17 @@
 ##############################################################################################
 from data.data_pipe import merge_plt
 
-merge_plt()
+work_idx = [0, 1, 2] + [i + 33 for i in range(3)]
+merge_plt(work_idx=work_idx, exp_name="dist_styl_test")
+
+work_idx = [0, 1, 2] + [i + 48 for i in range(3)]
+merge_plt(work_idx=work_idx, exp_name="dist_styl_filter_test")
+
+work_idx = [15, 16, 17] + [i + 39 for i in range(3)]
+merge_plt(work_idx=work_idx, exp_name="divi_styl_test")
+
+work_idx = [15, 16, 17] + [i + 57 for i in range(3)]
+merge_plt(work_idx=work_idx, exp_name="divi_styl_filter_test")
 
 ##############################################################################################
 # get fake images that can be recognized by mtcnn from stylegan
