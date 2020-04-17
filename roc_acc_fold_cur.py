@@ -274,24 +274,24 @@ if __name__ == '__main__':
     print('scores_np:')
     print(relative_scores)
 
-    if score_names.shape[0] == 58:
-        ext = 'dist'
-    elif score_names.shape[0] == 104:
-        ext = 'divi'
-    elif score_names.shape[0] == 154:
-        ext = 'styl'
-    elif score_names.shape[0] == 58 + 154:
-        ext = 'dist+styl'
-    elif score_names.shape[0] == 104 + 154:
-        ext = 'divi+styl'
-    else:
-        print('label dimension wrong:',score_names.shape[0])
-        exit(0)
-    name_path = os.path.join(args.stored_data_dir, 'names_{}.npy'.format(ext))
+    # if score_names.shape[0] == 58:
+    #     ext = 'dist'
+    # elif score_names.shape[0] == 104:
+    #     ext = 'divi'
+    # elif score_names.shape[0] == 154:
+    #     ext = 'styl'
+    # elif score_names.shape[0] == 58 + 154:
+    #     ext = 'dist+styl'
+    # elif score_names.shape[0] == 104 + 154:
+    #     ext = 'divi+styl'
+    # else:
+    #     print('label dimension wrong:',score_names.shape[0])
+    #     exit(0)
+    name_path = os.path.join(args.stored_data_dir, 'names.npy')#.format(ext))
     save_label_score(name_path, exp_name)
-    label_path = os.path.join(args.stored_data_dir, 'labels_{}.npy'.format(ext))
+    label_path = os.path.join(args.stored_data_dir, 'labels.npy')#.format(ext))
     save_label_score(label_path, score_names)
-    score_path = os.path.join(args.stored_data_dir, 'scores_{}.npy'.format(ext))
+    score_path = os.path.join(args.stored_data_dir, 'scores.npy')#.format(ext))
     save_label_score(score_path, relative_scores)
     
     # Compute ROC curve and ROC area for noonan
