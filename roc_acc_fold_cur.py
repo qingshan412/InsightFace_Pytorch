@@ -135,9 +135,9 @@ if __name__ == '__main__':
             # train
             for i in range(len(train_set[name])):
                 for img in os.listdir(train_set[name][i]):
-                        shutil.copy(train_set[name][i] + os.sep + img, 
-                                    ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
-                                        '/' + verify_type + '/train/' + name + os.sep + img))
+                    shutil.copy(train_set[name][i] + os.sep + img, 
+                                ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
+                                    '/' + verify_type + '/train/' + name + os.sep + img))
                 # addition data from stylegan
                 folder = os.path.basename(train_set[name][i])
                 if args.stylegan_data_dir and ('train' in args.stylegan_test_or_train) and (folder in stylegan_folders):
@@ -148,9 +148,9 @@ if __name__ == '__main__':
             # test
             for i in range(len(test_set[name])):
                 for img in os.listdir(test_set[name][i]):
-                        shutil.copy(test_set[name][i] + os.sep + img, 
-                                    ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
-                                        '/' + verify_type + '/test/' + name + os.sep + img))
+                    shutil.copy(test_set[name][i] + os.sep + img, 
+                                ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
+                                    '/' + verify_type + '/test/' + name + os.sep + img))
                 # addition data from stylegan
                 folder = os.path.basename(test_set[name][i])
                 if (args.stylegan_data_dir and ('test' in args.stylegan_test_or_train) and 
@@ -287,11 +287,11 @@ if __name__ == '__main__':
     # else:
     #     print('label dimension wrong:',score_names.shape[0])
     #     exit(0)
-    name_path = os.path.join(args.stored_data_dir, 'names.npy')#.format(ext))
+    name_path = os.path.join(args.stored_data_dir, 'names.npy')
     save_label_score(name_path, exp_name)
-    label_path = os.path.join(args.stored_data_dir, 'labels.npy')#.format(ext))
+    label_path = os.path.join(args.stored_data_dir, 'labels.npy')
     save_label_score(label_path, score_names)
-    score_path = os.path.join(args.stored_data_dir, 'scores.npy')#.format(ext))
+    score_path = os.path.join(args.stored_data_dir, 'scores.npy')
     save_label_score(score_path, relative_scores)
     
     # Compute ROC curve and ROC area for noonan
