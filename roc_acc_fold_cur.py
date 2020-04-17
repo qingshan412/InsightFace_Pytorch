@@ -241,10 +241,10 @@ if __name__ == '__main__':
                 score = learner.binfer(conf, faces, targets, args.tta)
                 scores.append(score)
                 if 'noonan' in orig_name:
-                    if score[names_idx[0, 'noonan']] > score[names_idx[0, 'normal']]:
+                    if score[0, names_idx['noonan']] > score[0, names_idx['normal']]:
                         print('wrong:', fil)
                 else:
-                    if score[names_idx[0, 'noonan']] < score[names_idx[0, 'normal']]:
+                    if score[0, names_idx['noonan']] < score[0, names_idx['normal']]:
                         print('wrong:', fil)
                 # for idx,bbox in enumerate(bboxes):
                 #     pred_name = names[results[idx] + 1]
