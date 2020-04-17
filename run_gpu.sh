@@ -16,11 +16,14 @@ Model=smile_refine_mtcnn_112_divi
 for DataDir in distinct divided
 do
     echo ${DataDir}
+    python fold_cur_retrain.py -d ${DataDir} -g 0 > data/facebank/plt_recs/retrain_${DataDir}
+    python fold_cur_retrain.py -d ${DataDir} -g 0 -s > data/facebank/plt_recs/retrain_${DataDir}_s
+    python fold_cur_retrain.py -d ${DataDir} -g 0 -tta > data/facebank/plt_recs/retrain_${DataDir}_tta
     for Op in "train" "test" "train,test"
     do
-        python fold_cur_retrain.py -d ${DataDir} -g 0 -as ${Model} -ts ${Op} > data/facebank/plt_recs/${DataDir}_${Model}_${Op}_filter
-        python fold_cur_retrain.py -d ${DataDir} -g 0 -s -as ${Model} -ts ${Op} > data/facebank/plt_recs/${DataDir}_${Model}_${Op}_filter_s
-        python fold_cur_retrain.py -d ${DataDir} -g 0 -tta -as ${Model} -ts ${Op} > data/facebank/plt_recs/${DataDir}_${Model}_${Op}_filter_tta
+        python fold_cur_retrain.py -d ${DataDir} -g 0 -as ${Model} -ts ${Op} > data/facebank/plt_recs/retrain_${DataDir}_${Model}_${Op}
+        python fold_cur_retrain.py -d ${DataDir} -g 0 -s -as ${Model} -ts ${Op} > data/facebank/plt_recs/retrain_${DataDir}_${Model}_${Op}_s
+        python fold_cur_retrain.py -d ${DataDir} -g 0 -tta -as ${Model} -ts ${Op} > data/facebank/plt_recs/retrain_${DataDir}_${Model}_${Op}_tta
     done
 done
 
