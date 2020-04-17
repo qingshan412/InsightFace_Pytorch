@@ -154,8 +154,8 @@ if __name__ == '__main__':
                 # addition data from stylegan
                 folder = os.path.basename(test_set[name][i])
                 if (args.stylegan_data_dir and ('test' in args.stylegan_test_or_train) and 
-                    (folder in stylegan_folders) and 
-                    (folder not in ['noonan7','noonan19','noonan23','normal9','normal20','normal23'])):
+                    (folder in stylegan_folders)): # and 
+                    # (folder not in ['noonan7','noonan19','noonan23','normal9','normal20','normal23'])):
                     for img in os.listdir(full_stylegan_dir + os.sep + folder):
                         shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
                                     ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
