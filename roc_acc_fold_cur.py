@@ -240,6 +240,12 @@ if __name__ == '__main__':
                 bboxes = bboxes + [-1,-1,1,1] # personal choice    
                 score = learner.binfer(conf, faces, targets, args.tta)
                 scores.append(score)
+                if 'noonan' in orig_name:
+                    if score[names_idx['noonan']] > score[names_idx['normal']]:
+                        print('wrong:', fil)
+                else:
+                    if score[names_idx['noonan']] < score[names_idx['normal']]:
+                        print('wrong:', fil)
                 # for idx,bbox in enumerate(bboxes):
                 #     pred_name = names[results[idx] + 1]
                 #     frame = draw_box_name(bbox, pred_name + '_{:.2f}'.format(score[idx]), frame)
@@ -254,6 +260,7 @@ if __name__ == '__main__':
         # print(np.squeeze(np.array(scores)))
         # exit(0)
     # print(counts)
+    exit(0)
     score_names = np.array(score_names)
     print(score_names.shape)
     scores_np = np.squeeze(np.array(scores))
