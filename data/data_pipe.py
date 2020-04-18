@@ -509,8 +509,8 @@ def merge_plt(work_idx, exp_name, rec_path='data/facebank/plt_recs'):
     # 54 - 62 divi_styl_filter
     # retrain
     # 63,64,65 dist
-    # 66 - 74 dist_styl
-    # 75,76,77 divi
+    # 66,67,68 divi
+    # 69 - 77 dist_styl
     # 78 - 86 divi_styl
     # data_name = [] #'dist'
     names = np.load(rec_path + os.sep + 'names.npy')[work_idx]
