@@ -54,7 +54,11 @@ if __name__ == '__main__':
     if args.tta:
         exp_name += '_tta'
     
-    
+    if args.stylegan_data_dir:
+        #e.g. smile_refine_mtcnn_112_divi
+        full_stylegan_dir = str(conf.data_path/'facebank'/'stylegan'/args.stylegan_data_dir)
+        stylegan_folders = os.listdir(full_stylegan_dir)
+
     # prepare folders
     raw_dir = 'raw_112'
     verify_type = 'verify'
