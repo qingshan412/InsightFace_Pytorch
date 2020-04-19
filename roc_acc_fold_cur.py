@@ -232,17 +232,20 @@ if __name__ == '__main__':
         for path in test_dir.iterdir():
             if path.is_file():
                 continue
+            
             print(path)
+            orig_name = str(path).strip().split('/')[-1]
+            if orig_name not in names_considered:
+                print("Un-considered name:", fil.name)
+                continue
+
             for fil in path.iterdir():
                 print(fil)
-                orig_name = ''.join([i for i in fil.name.strip().split('.')[0].split('_')[0] if not i.isdigit()])
+                # orig_name = ''.join([i for i in fil.name.strip().split('.')[0].split('_')[0] if not i.isdigit()])
                 if 'noonan' in orig_name:
                     score_names.append(names_idx['noonan'])
                 else:
                     score_names.append(names_idx['normal'])
-                if orig_name not in names_considered:
-                    print("Un-considered name:", fil.name)
-                    continue
                 frame = cv2.imread(str(fil))
                 image = Image.fromarray(frame)
                 faces = [image,]
