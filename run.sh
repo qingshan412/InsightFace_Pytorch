@@ -1,21 +1,25 @@
 #!/bin/bash
 
-#$ -M jliu16@nd.edu	 # Email address for job notification
-#$ -m abe		 # Send mail when job begins, ends and aborts
-#$ -pe smp 4	 # Specify parallel environment and legal core size
-#$ -q long		 # Specify queue
-#$ -N verify_test	         # Specify job name
+#$ -M jliu16@nd.edu      # Email address for job notification
+#$ -m abe                # Send mail when job begins, ends and aborts
+#$ -pe smp 16            # Specify parallel environment and legal core size
+#$ -q gpu
+#$ -l gpu_card=1
+#$ -N divi_lag_gpu         # Specify job name
 
 module load python pytorch
 
 DataDir=divided
+AugDir=LAG_y_fine
 echo ${DataDir}
+echo ${AugDir}
 python roc_acc_fold_cur.py -d ${DataDir} -sd data/facebank/${DataDir}/plt_recs \
-> data/facebank/${DataDir}/plt_recs/${DataDir}
+-a ${AugDir} > data/facebank/${DataDir}/plt_recs/${DataDir}
 python roc_acc_fold_cur.py -d ${DataDir} -s -sd data/facebank/${DataDir}/plt_recs \
-> data/facebank/${DataDir}/plt_recs/${DataDir}_s
+-a ${AugDir} > data/facebank/${DataDir}/plt_recs/${DataDir}_s
 python roc_acc_fold_cur.py -d ${DataDir} -tta -sd data/facebank/${DataDir}/plt_recs \
-> data/facebank/${DataDir}/plt_recs/${DataDir}_tta
+-a ${AugDir} > data/facebank/${DataDir}/plt_recs/${DataDir}_tta
+
 # python roc_acc_fold_cur.py -d ${DataDir} > data/facebank/plt_recs/${DataDir}
 # python roc_acc_fold_cur.py -d ${DataDir} -s > data/facebank/plt_recs/${DataDir}_s
 # python roc_acc_fold_cur.py -d ${DataDir} -tta > data/facebank/plt_recs/${DataDir}_tta
