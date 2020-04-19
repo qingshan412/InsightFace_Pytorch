@@ -39,6 +39,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     conf = get_config(False, args)
+    conf.emore_folder = conf.data_path/'faces_emore_trans'
 
     mtcnn = MTCNN()
     print('mtcnn loaded')
