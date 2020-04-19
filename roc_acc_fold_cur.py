@@ -62,8 +62,8 @@ if __name__ == '__main__':
     
     
     # prepare folders
-    raw_dir = 'mtcnn_112_aug' #'raw_112'
-    verify_type = 'mtcnn_112_aug' #'verify'
+    raw_dir = 'raw_112' #'mtcnn_112_aug'
+    verify_type = 'dist_lag' #'mtcnn_112_aug' 'verify'
     if args.tta:
         verify_type += '_tta'
     if args.use_shuffled_kfold:
@@ -87,7 +87,13 @@ if __name__ == '__main__':
     for name in names_considered:
         data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/raw_dir) + 
                                             '/' + name + '*'))
+        if 'LAG' in args.additional_data_dir and name=='normal':
+            full_additional_dir = conf.data_path/'facebank'/args.additional_data_dir/raw_dir
+            add_data = np.array(glob.glob(str(full_additional_dir) + '/*'))
+            data_dict[name] = np.concatenate((data_dict[name], add_data))
+
         idx_gen[name] = kf.split(data_dict[name])
+    
 
     # threshold_array = np.arange(1.5, 1.6, 0.2)
     # for threshold in threshold_array:
@@ -137,21 +143,24 @@ if __name__ == '__main__':
             for i in range(len(train_set[name])):
                 for img in os.listdir(train_set[name][i]):
                     shutil.copy(train_set[name][i] + os.sep + img, 
-                                ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
-                                    '/' + verify_type + '/train/' + name + os.sep + img))
+                                os.path.join(str(train_dir), name, img))
+                                # ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
+                                #     '/' + verify_type + '/train/' + name + os.sep + img))
                 # addition data from stylegan
                 folder = os.path.basename(train_set[name][i])
                 if args.stylegan_data_dir and ('train' in args.stylegan_test_or_train) and (folder in stylegan_folders):
                     for img in os.listdir(full_stylegan_dir + os.sep + folder):
                         shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
-                                    ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
-                                        '/' + verify_type + '/train/' + name + os.sep + img))
+                                    os.path.join(str(train_dir), name, img))
+                                    # ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
+                                    #     '/' + verify_type + '/train/' + name + os.sep + img))
             # test
             for i in range(len(test_set[name])):
                 for img in os.listdir(test_set[name][i]):
                     shutil.copy(test_set[name][i] + os.sep + img, 
-                                ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
-                                    '/' + verify_type + '/test/' + name + os.sep + img))
+                                os.path.join(str(test_dir), name, img))
+                                # ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
+                                #     '/' + verify_type + '/test/' + name + os.sep + img))
                 # addition data from stylegan
                 folder = os.path.basename(test_set[name][i])
                 if (args.stylegan_data_dir and ('test' in args.stylegan_test_or_train) and 
@@ -159,8 +168,9 @@ if __name__ == '__main__':
                     # (folder not in ['noonan7','noonan19','noonan23','normal9','normal20','normal23'])):
                     for img in os.listdir(full_stylegan_dir + os.sep + folder):
                         shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
-                                    ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
-                                        '/' + verify_type + '/test/' + name + os.sep + img))
+                                    os.path.join(str(test_dir), name, img))
+                                    # ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
+                                    #     '/' + verify_type + '/test/' + name + os.sep + img))
 
             # for i in range(len(train_set[name])):
             #     if 'distinct' in args.dataset_dir:
@@ -196,7 +206,7 @@ if __name__ == '__main__':
                         #                                 verify_type + '/train/' + name))
                         shutil.copy(img_f, img_f.replace(str(full_additional_dir), 
                                                         str(train_dir) + os.sep + fake_dict[name]))
-        
+
         print(fold_idx)
         print('datasets ready')
 
