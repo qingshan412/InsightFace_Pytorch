@@ -62,8 +62,8 @@ if __name__ == '__main__':
     
     
     # prepare folders
-    raw_dir = 'raw_112'
-    verify_type = 'verify'
+    raw_dir = 'mtcnn_112_aug' #'raw_112'
+    verify_type = 'mtcnn_112_aug' #'verify'
     if args.tta:
         verify_type += '_tta'
     if args.use_shuffled_kfold:
