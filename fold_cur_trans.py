@@ -169,6 +169,8 @@ if __name__ == '__main__':
         print('datasets ready')
 
         conf_train = get_config(True, args)
+        conf_train.emore_folder = conf.data_path/'faces_emore_trans'
+
         learner = face_learner(conf=conf_train, transfer=args.transfer_depth) # conf, inference=False, transfer=0
         
         if conf.device.type == 'cpu': # conf.device.type = 'cpu' for CRC01/02 
