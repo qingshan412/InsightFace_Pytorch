@@ -14,8 +14,8 @@ python roc_acc_fold_cur.py -d ${DataDir} -sd data/facebank/${DataDir}/plt_recs \
 > data/facebank/${DataDir}/plt_recs/${DataDir}
 python roc_acc_fold_cur.py -d ${DataDir} -s -sd data/facebank/${DataDir}/plt_recs \
 > data/facebank/${DataDir}/plt_recs/${DataDir}_s
-python roc_acc_fold_cur.py -d ${DataDir} -tta -sd data/facebank/${DataDir}/plt_recs > 
-data/facebank/${DataDir}/plt_recs/${DataDir}_tta
+python roc_acc_fold_cur.py -d ${DataDir} -tta -sd data/facebank/${DataDir}/plt_recs \
+> data/facebank/${DataDir}/plt_recs/${DataDir}_tta
 # python roc_acc_fold_cur.py -d ${DataDir} > data/facebank/plt_recs/${DataDir}
 # python roc_acc_fold_cur.py -d ${DataDir} -s > data/facebank/plt_recs/${DataDir}_s
 # python roc_acc_fold_cur.py -d ${DataDir} -tta > data/facebank/plt_recs/${DataDir}_tta
