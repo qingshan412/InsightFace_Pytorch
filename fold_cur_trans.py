@@ -19,7 +19,8 @@ import matplotlib.colors as mcolors
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='for face verification')
     parser.add_argument("-ds", "--dataset_dir", help="where to get data", default="noonan+normal", type=str)
-    parser.add_argument('-sd','--stored_data_dir',help='where to store data as np arrays',default="data/facebank/trans/plt_recs", type=str)
+    parser.add_argument('-sd','--stored_data_dir',help='where to store data as np arrays', 
+                        default="data/facebank/trans/plt_recs", type=str)
     parser.add_argument("-k", "--kfold", help="returns the number of splitting iterations in the cross-validator.", 
                         default=10, type=int)
     parser.add_argument("-e", "--epochs", help="training epochs", default=20, type=int)
