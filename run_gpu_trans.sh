@@ -5,7 +5,7 @@
 #$ -pe smp 16            # Specify parallel environment and legal core size
 #$ -q gpu
 #$ -l gpu_card=1
-#$ -N verify_test_gpu         # Specify job name
+#$ -N trans_gpu         # Specify job name
 
 module load pytorch
 
