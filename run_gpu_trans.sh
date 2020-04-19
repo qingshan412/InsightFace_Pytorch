@@ -28,11 +28,11 @@ do
     do
         echo ${Op}
         python fold_cur_trans.py -d ${DataDir} -g 0 -as ${Model} -ts ${Op} -t ${TransDepth} \
-        > data/facebank/plt_recs/retrain_${TransDepth}_${DataDir}_${Model}_${Op}
+        > data/facebank/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}
         python fold_cur_trans.py -d ${DataDir} -g 0 -s -as ${Model} -ts ${Op} -t ${TransDepth} \
-        > data/facebank/plt_recs/retrain_${TransDepth}_${DataDir}_${Model}_${Op}_s
+        > data/facebank/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_s
         python fold_cur_trans.py -d ${DataDir} -g 0 -tta -as ${Model} -ts ${Op} -t ${TransDepth} \
-        > data/facebank/plt_recs/retrain_${TransDepth}_${DataDir}_${Model}_${Op}_tta
+        > data/facebank/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_tta
     done
 done
 
