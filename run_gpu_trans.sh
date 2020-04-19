@@ -19,20 +19,20 @@ for DataDir in distinct divided
 do
     echo ${DataDir}
     python fold_cur_trans.py -d ${DataDir} -g 0 -t ${TransDepth} \
-    > data/facebank/plt_recs/trans_${TransDepth}_${DataDir}
+    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}
     python fold_cur_trans.py -d ${DataDir} -g 0 -s -t ${TransDepth} \
-    > data/facebank/plt_recs/trans_${TransDepth}_${DataDir}_s
+    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_s
     python fold_cur_trans.py -d ${DataDir} -g 0 -tta -t ${TransDepth} \
-    > data/facebank/plt_recs/trans_${TransDepth}_${DataDir}_tta
+    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_tta
     for Op in "train" "test" "train,test"
     do
         echo ${Op}
         python fold_cur_trans.py -d ${DataDir} -g 0 -as ${Model} -ts ${Op} -t ${TransDepth} \
-        > data/facebank/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}
+        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}
         python fold_cur_trans.py -d ${DataDir} -g 0 -s -as ${Model} -ts ${Op} -t ${TransDepth} \
-        > data/facebank/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_s
+        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_s
         python fold_cur_trans.py -d ${DataDir} -g 0 -tta -as ${Model} -ts ${Op} -t ${TransDepth} \
-        > data/facebank/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_tta
+        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_tta
     done
 done
 
