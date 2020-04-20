@@ -153,13 +153,13 @@
 ##############################################################################################
 from data.data_pipe import merge_plt
 
-work_idx = [0, 1, 2] + [15, 16, 17] + [i + 63 for i in range(6)]
-merge_plt(work_idx=work_idx, exp_name="retrain_dist_divi")
+# work_idx = [0, 1, 2] + [15, 16, 17] + [i + 63 for i in range(6)]
+# merge_plt(work_idx=work_idx, exp_name="retrain_dist_divi")
 
-work_idx = [0, 1, 2] + [i + 69 for i in range(9)]
-merge_plt(work_idx=work_idx, exp_name="retrain_dist_styl")
+# work_idx = [0, 1, 2] + [i + 69 for i in range(9)]
+# merge_plt(work_idx=work_idx, exp_name="retrain_dist_styl")
 
-work_idx = [15, 16, 17] + [i + 78 for i in range(9)]
+work_idx = [15, 16, 17] + [i + 71 for i in range(9)]
 merge_plt(work_idx=work_idx, exp_name="retrain_divi_styl")
 
 # work_idx = [0, 1, 2] + [i + 33 for i in range(3)]
