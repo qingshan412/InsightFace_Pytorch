@@ -510,8 +510,9 @@ def merge_plt(work_idx, exp_name, rec_path='data/facebank/plt_recs'):
     # retrain, whole network
     # 63,64,65 dist
     # 66,67,68 divi
-    # 69 - 77 dist_styl
-    # 78 - 86 divi_styl
+    # 69 dist_re_smile_refine_mtcnn_112_divi_test (messed up)
+    # 70 dist_re_smile_refine_mtcnn_112_divi_test_tta (messed up)
+    # 71 - 79 divi_styl
     # data_name = [] #'dist'
     names = np.load(rec_path + os.sep + 'names.npy')[work_idx]
     labels = np.load(rec_path + os.sep + 'labels.npy', allow_pickle=True)[work_idx]
