@@ -507,7 +507,7 @@ def merge_plt(work_idx, exp_name, rec_path='data/facebank/plt_recs'):
     # 39 - 44 divi_styl
     # 45 - 53 dist_styl_filter
     # 54 - 62 divi_styl_filter
-    # retrain
+    # retrain, whole network
     # 63,64,65 dist
     # 66,67,68 divi
     # 69 - 77 dist_styl
