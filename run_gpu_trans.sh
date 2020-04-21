@@ -18,12 +18,6 @@ echo ${TransDepth}
 for DataDir in distinct divided
 do
     echo ${DataDir}
-    python fold_cur_trans.py -d ${DataDir} -g 0 -t ${TransDepth} \
-    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}
-    python fold_cur_trans.py -d ${DataDir} -g 0 -s -t ${TransDepth} \
-    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_s
-    python fold_cur_trans.py -d ${DataDir} -g 0 -tta -t ${TransDepth} \
-    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_tta
     for Op in "train" "test" "train,test"
     do
         echo ${Op}
@@ -36,7 +30,14 @@ do
     done
 done
 
+# python fold_cur_trans.py -d distinct -g 0 -as smile_refine_mtcnn_112_divi -ts train -t 1 > data/facebank/trans/plt_recs/trans_1_distinct_smile_refine_mtcnn_112_divi_train
 
+# python fold_cur_trans.py -d ${DataDir} -g 0 -t ${TransDepth} \
+# > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}
+# python fold_cur_trans.py -d ${DataDir} -g 0 -s -t ${TransDepth} \
+# > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_s
+# python fold_cur_trans.py -d ${DataDir} -g 0 -tta -t ${TransDepth} \
+# > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_tta
 
 # Model=smile_refine_mtcnn_112_divi
 # for DataDir in distinct divided
