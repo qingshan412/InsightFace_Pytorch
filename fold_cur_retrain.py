@@ -86,6 +86,10 @@ if __name__ == '__main__':
     for name in names_considered:
         data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/raw_dir) + 
                                             '/' + name + '*'))
+        if 'LAG' in args.additional_data_dir and name=='normal':
+            full_additional_dir = conf.data_path/'facebank'/args.additional_data_dir/raw_dir
+            add_data = np.array(glob.glob(str(full_additional_dir) + '/*'))
+            data_dict[name] = np.concatenate((data_dict[name], add_data))
         idx_gen[name] = kf.split(data_dict[name])
 
     # threshold_array = np.arange(1.5, 1.6, 0.2)
@@ -214,11 +218,11 @@ if __name__ == '__main__':
                 frame = cv2.imread(str(fil))
                 image = Image.fromarray(frame)
                 faces = [image,]
-                bboxes, _ = mtcnn.align_multi(image, conf.face_limit, conf.min_face_size)
-                bboxes = bboxes[:,:-1] #shape:[10,4],only keep 10 highest possibiity faces
-                # print('bboxes shape:', bboxes.shape)
-                bboxes = bboxes.astype(int)
-                bboxes = bboxes + [-1,-1,1,1] # personal choice    
+                # bboxes, _ = mtcnn.align_multi(image, conf.face_limit, conf.min_face_size)
+                # bboxes = bboxes[:,:-1] #shape:[10,4],only keep 10 highest possibiity faces
+                # # print('bboxes shape:', bboxes.shape)
+                # bboxes = bboxes.astype(int)
+                # bboxes = bboxes + [-1,-1,1,1] # personal choice    
                 score = learner.binfer(conf, faces, targets, args.tta)
                 scores.append(score)
                 # for idx,bbox in enumerate(bboxes):
