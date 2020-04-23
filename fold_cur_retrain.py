@@ -51,6 +51,8 @@ if __name__ == '__main__':
         exp_name += ('_' + args.stylegan_test_or_train)
     if args.additional_data_dir:
         exp_name += ('_' + args.additional_data_dir)
+    if args.epochs != 20:
+        exp_name += ('_e' + str(args.epochs))
     if args.use_shuffled_kfold:
         exp_name += '_s'
     if args.tta:
