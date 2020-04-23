@@ -53,6 +53,8 @@ if __name__ == '__main__':
         exp_name += ('_' + args.additional_data_dir)
     if args.epochs != 20:
         exp_name += ('_e' + str(args.epochs))
+    if args.transfer_depth != 0 and args.transfer_depth != 1:
+        exp_name += ('_t' + str(args.transfer_depth))
     if args.use_shuffled_kfold:
         exp_name += '_s'
     if args.tta:
