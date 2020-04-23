@@ -141,14 +141,14 @@ if __name__ == '__main__':
                     for img in os.listdir(full_stylegan_dir + os.sep + folder):
                         shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
                                     os.path.join(str(train_dir), name, img))
+
             for i in range(len(test_set[name])):
                 for img in os.listdir(test_set[name][i]):
                     shutil.copy(test_set[name][i] + os.sep + img, 
                                 os.path.join(str(test_dir), name, img))
                 # addition data from stylegan
                 folder = os.path.basename(test_set[name][i])
-                if (args.stylegan_data_dir and ('test' in args.stylegan_test_or_train) and 
-                    (folder in stylegan_folders)):
+                if args.stylegan_data_dir and ('test' in args.stylegan_test_or_train) and (folder in stylegan_folders):
                     for img in os.listdir(full_stylegan_dir + os.sep + folder):
                         shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
                                     os.path.join(str(test_dir), name, img))
