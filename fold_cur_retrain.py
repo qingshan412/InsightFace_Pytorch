@@ -6,7 +6,7 @@ from multiprocessing import Process, Pipe,Value,Array
 import torch
 from config import get_config
 from mtcnn import MTCNN
-from Learner import face_learner
+from Learner_trans import face_learner
 from utils import load_facebank, draw_box_name, prepare_facebank, save_label_score
 
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, average_precision_score
@@ -34,6 +34,8 @@ if __name__ == '__main__':
                         default="", type=str)
     parser.add_argument("-ts", "--stylegan_test_or_train", help="use stylegan additional data in only train, or test, or both", 
                         default="train", type=str)
+    parser.add_argument("-t", "--transfer_depth", help="how many layer(s) used for transfer learning, "
+                        "but 0 means retraining the whole network.", default=0, type=int)
     args = parser.parse_args()
 
     conf = get_config(False, args)
@@ -61,7 +63,7 @@ if __name__ == '__main__':
 
     # prepare folders
     raw_dir = 'raw_112'
-    verify_type = 'verify'
+    verify_type = 'retrain'
     if args.tta:
         verify_type += '_tta'
     if args.use_shuffled_kfold:
@@ -137,14 +139,14 @@ if __name__ == '__main__':
                     for img in os.listdir(full_stylegan_dir + os.sep + folder):
                         shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
                                     os.path.join(str(train_dir), name, img))
+
             for i in range(len(test_set[name])):
                 for img in os.listdir(test_set[name][i]):
                     shutil.copy(test_set[name][i] + os.sep + img, 
                                 os.path.join(str(test_dir), name, img))
                 # addition data from stylegan
                 folder = os.path.basename(test_set[name][i])
-                if (args.stylegan_data_dir and ('test' in args.stylegan_test_or_train) and 
-                    (folder in stylegan_folders)):
+                if args.stylegan_data_dir and ('test' in args.stylegan_test_or_train) and (folder in stylegan_folders):
                     for img in os.listdir(full_stylegan_dir + os.sep + folder):
                         shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
                                     os.path.join(str(test_dir), name, img))
@@ -169,7 +171,7 @@ if __name__ == '__main__':
         print('datasets ready')
 
         conf_train = get_config(True, args)
-        learner = face_learner(conf_train)
+        learner = face_learner(conf=conf_train, transfer=args.transfer_depth)
         
         if conf.device.type == 'cpu': # conf.device.type = 'cpu' for CRC01/02 
             learner.load_state(conf, 'mobilefacenet.pth', True, True)
