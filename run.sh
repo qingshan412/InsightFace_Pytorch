@@ -13,17 +13,18 @@ TransDepth=1
 Model=smile_refine_mtcnn_112_divi
 echo ${TransDepth}
 for Epoch in 50 100
-echo ${Epoch}
 do
+    echo ${Epoch}
     for DataDir in distinct divided
     do
-    echo ${DataDir}
-    python fold_cur_trans_e.py -d ${DataDir} -e ${Epoch} -g 0 -t ${TransDepth} \
-    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_e${Epoch}
-    python fold_cur_trans_e.py -d ${DataDir} -e ${Epoch} -g 0 -s -t ${TransDepth} \
-    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_e${Epoch}_s
-    python fold_cur_trans_e.py -d ${DataDir} -e ${Epoch} -g 0 -tta -t ${TransDepth} \
-    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_e${Epoch}_tta
+        echo ${DataDir}
+        python fold_cur_trans_e.py -d ${DataDir} -e ${Epoch} -g 0 -t ${TransDepth} \
+        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_e${Epoch}
+        python fold_cur_trans_e.py -d ${DataDir} -e ${Epoch} -g 0 -s -t ${TransDepth} \
+        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_e${Epoch}_s
+        python fold_cur_trans_e.py -d ${DataDir} -e ${Epoch} -g 0 -tta -t ${TransDepth} \
+        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_e${Epoch}_tta
+    done
 done
 
 # TransDepth=1
