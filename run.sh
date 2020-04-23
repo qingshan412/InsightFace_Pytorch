@@ -9,16 +9,51 @@
 
 module load python pytorch
 
-DataDir=divided
-AugDir=LAG_y_fine
-echo ${DataDir}
-echo ${AugDir}
-python roc_acc_fold_cur.py -d ${DataDir} -sd data/facebank/${DataDir}/plt_recs \
--a ${AugDir} > data/facebank/${DataDir}/plt_recs/${DataDir}
-python roc_acc_fold_cur.py -d ${DataDir} -s -sd data/facebank/${DataDir}/plt_recs \
--a ${AugDir} > data/facebank/${DataDir}/plt_recs/${DataDir}_s
-python roc_acc_fold_cur.py -d ${DataDir} -tta -sd data/facebank/${DataDir}/plt_recs \
--a ${AugDir} > data/facebank/${DataDir}/plt_recs/${DataDir}_tta
+TransDepth=1
+Model=smile_refine_mtcnn_112_divi
+echo ${TransDepth}
+for Epoch in 50 100
+echo ${Epoch}
+do
+    for DataDir in distinct divided
+    do
+    echo ${DataDir}
+    python fold_cur_trans_e.py -d ${DataDir} -e ${Epoch} -g 0 -t ${TransDepth} \
+    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_e${Epoch}
+    python fold_cur_trans_e.py -d ${DataDir} -e ${Epoch} -g 0 -s -t ${TransDepth} \
+    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_e${Epoch}_s
+    python fold_cur_trans_e.py -d ${DataDir} -e ${Epoch} -g 0 -tta -t ${TransDepth} \
+    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_e${Epoch}_tta
+done
+
+# TransDepth=1
+# Model=smile_refine_mtcnn_112_divi
+# echo ${TransDepth}
+# for DataDir in distinct divided
+# do
+#     echo ${DataDir}
+#     for Op in "train" "test" "train,test"
+#     do
+#         echo ${Op}
+#         python fold_cur_trans.py -d ${DataDir} -g 0 -as ${Model} -ts ${Op} -t ${TransDepth} \
+#         > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}
+#         python fold_cur_trans.py -d ${DataDir} -g 0 -s -as ${Model} -ts ${Op} -t ${TransDepth} \
+#         > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_s
+#         python fold_cur_trans.py -d ${DataDir} -g 0 -tta -as ${Model} -ts ${Op} -t ${TransDepth} \
+#         > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_tta
+#     done
+# done
+
+# DataDir=divided
+# AugDir=LAG_y_fine
+# echo ${DataDir}
+# echo ${AugDir}
+# python roc_acc_fold_cur.py -d ${DataDir} -sd data/facebank/${DataDir}/plt_recs \
+# -a ${AugDir} > data/facebank/${DataDir}/plt_recs/${DataDir}
+# python roc_acc_fold_cur.py -d ${DataDir} -s -sd data/facebank/${DataDir}/plt_recs \
+# -a ${AugDir} > data/facebank/${DataDir}/plt_recs/${DataDir}_s
+# python roc_acc_fold_cur.py -d ${DataDir} -tta -sd data/facebank/${DataDir}/plt_recs \
+# -a ${AugDir} > data/facebank/${DataDir}/plt_recs/${DataDir}_tta
 
 # python roc_acc_fold_cur.py -d ${DataDir} > data/facebank/plt_recs/${DataDir}
 # python roc_acc_fold_cur.py -d ${DataDir} -s > data/facebank/plt_recs/${DataDir}_s
