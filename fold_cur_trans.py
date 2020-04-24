@@ -53,6 +53,10 @@ if __name__ == '__main__':
         exp_name += ('_' + args.stylegan_test_or_train)
     if args.additional_data_dir:
         exp_name += ('_' + args.additional_data_dir)
+    if args.epochs != 20:
+        exp_name += ('_e' + str(args.epochs))
+    # if args.transfer_depth != 0:
+    #     exp_name += ('_e' + str(args.epochs))
     if args.use_shuffled_kfold:
         exp_name += '_s'
     if args.tta:
@@ -210,9 +214,9 @@ if __name__ == '__main__':
         for path in test_dir.iterdir():
             if path.is_file():
                 continue
-            print(path)
+            # print(path)
             for fil in path.iterdir():
-                print(fil)
+                # print(fil)
                 orig_name = ''.join([i for i in fil.name.strip().split('.')[0].split('_')[0] if not i.isdigit()])
                 if 'noonan' in orig_name:
                     score_names.append(names_idx['noonan'])
@@ -248,10 +252,10 @@ if __name__ == '__main__':
     score_names = np.array(score_names)
     scores_np = np.squeeze(np.array(scores))
     relative_scores = 1 - (scores_np[:, noonan_idx] / (scores_np[:, 0] + scores_np[:, 1]))
-    print('score_names:')
-    print(score_names)
-    print('scores_np:')
-    print(relative_scores)
+    # print('score_names:')
+    # print(score_names)
+    # print('scores_np:')
+    # print(relative_scores)
 
     # data_names = np.append(np.load(os.path.join(args.stored_data_dir, 'names.npy')), np.array([exp_name]))
     # data_labels = np.load(os.path.join(args.stored_data_dir, 'labels.npy'), allow_pickle=True)
@@ -267,39 +271,40 @@ if __name__ == '__main__':
     save_label_score(label_path, score_names)
     score_path = os.path.join(args.stored_data_dir, 'scores_trans.npy')
     save_label_score(score_path, relative_scores)
+    print('saved!')
     
-    # Compute ROC curve and ROC area for noonan
-    fpr, tpr, _ = roc_curve(score_names, relative_scores)#scores_np[:, noonan_idx]
-    roc_auc = auc(fpr, tpr)
+    # # Compute ROC curve and ROC area for noonan
+    # fpr, tpr, _ = roc_curve(score_names, relative_scores)#scores_np[:, noonan_idx]
+    # roc_auc = auc(fpr, tpr)
 
-    # For PR curve
-    precision, recall, _ = precision_recall_curve(score_names, relative_scores)
-    average_precision = average_precision_score(score_names, relative_scores)
+    # # For PR curve
+    # precision, recall, _ = precision_recall_curve(score_names, relative_scores)
+    # average_precision = average_precision_score(score_names, relative_scores)
 
     
 
-    # plots
-    plt.figure()
-    # colors = list(mcolors.TABLEAU_COLORS)
-    lw = 2
-    plt.plot(fpr, tpr, color='darkorange',
-            lw=lw, label='ROC curve (area = %0.2f)' % roc_auc)
-    plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
-    plt.xlim([0.0, 1.0])
-    plt.ylim([0.0, 1.05])
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.title('ROC_{}'.format(exp_name))
-    plt.legend(loc="lower right")
-    plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/fp_tp_{}.png'.format(exp_name))
-    # plt.show()
+    # # plots
+    # plt.figure()
+    # # colors = list(mcolors.TABLEAU_COLORS)
+    # lw = 2
+    # plt.plot(fpr, tpr, color='darkorange',
+    #         lw=lw, label='ROC curve (area = %0.2f)' % roc_auc)
+    # plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
+    # plt.xlim([0.0, 1.0])
+    # plt.ylim([0.0, 1.05])
+    # plt.xlabel('False Positive Rate')
+    # plt.ylabel('True Positive Rate')
+    # plt.title('ROC_{}'.format(exp_name))
+    # plt.legend(loc="lower right")
+    # plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/fp_tp_{}.png'.format(exp_name))
+    # # plt.show()
 
-    plt.figure()
-    plt.step(recall, precision, where='post')
-    plt.xlabel('Recall')
-    plt.ylabel('Precision')
-    plt.ylim([0.0, 1.05])
-    plt.xlim([0.0, 1.0])
-    plt.title('Average precision score ({}): AP={:0.2f}'.format(exp_name, average_precision))
-    plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/pr_{}.png'.format(exp_name))
+    # plt.figure()
+    # plt.step(recall, precision, where='post')
+    # plt.xlabel('Recall')
+    # plt.ylabel('Precision')
+    # plt.ylim([0.0, 1.05])
+    # plt.xlim([0.0, 1.0])
+    # plt.title('Average precision score ({}): AP={:0.2f}'.format(exp_name, average_precision))
+    # plt.savefig(str(conf.data_path/'facebank'/args.dataset_dir/verify_type) + '/pr_{}.png'.format(exp_name))
 
