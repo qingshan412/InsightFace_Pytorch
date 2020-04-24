@@ -15,20 +15,40 @@ module load pytorch
 TransDepth=1
 Model=smile_refine_mtcnn_112_divi
 echo ${TransDepth}
-for DataDir in distinct divided
+for DataDir in divided distinct
 do
     echo ${DataDir}
-    for Op in "train" "test" "train,test"
+    Op="train,test"
+    echo ${Op}
+    for Epoch in 50 100
     do
-        echo ${Op}
-        python fold_cur_trans.py -d ${DataDir} -g 0 -as ${Model} -ts ${Op} -t ${TransDepth} \
+        echo ${Epoch}
+        python fold_cur_trans.py -d ${DataDir} -e ${Epoch} -g 0 -as ${Model} -ts ${Op} -t ${TransDepth} \
         > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}
-        python fold_cur_trans.py -d ${DataDir} -g 0 -s -as ${Model} -ts ${Op} -t ${TransDepth} \
+        python fold_cur_trans.py -d ${DataDir} -e ${Epoch} -g 0 -s -as ${Model} -ts ${Op} -t ${TransDepth} \
         > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_s
-        python fold_cur_trans.py -d ${DataDir} -g 0 -tta -as ${Model} -ts ${Op} -t ${TransDepth} \
+        python fold_cur_trans.py -d ${DataDir} -e ${Epoch} -g 0 -tta -as ${Model} -ts ${Op} -t ${TransDepth} \
         > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_tta
     done
 done
+
+# TransDepth=1
+# Model=smile_refine_mtcnn_112_divi
+# echo ${TransDepth}
+# for DataDir in distinct divided
+# do
+#     echo ${DataDir}
+#     for Op in "train" "test" "train,test"
+#     do
+#         echo ${Op}
+#         python fold_cur_trans.py -d ${DataDir} -g 0 -as ${Model} -ts ${Op} -t ${TransDepth} \
+#         > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}
+#         python fold_cur_trans.py -d ${DataDir} -g 0 -s -as ${Model} -ts ${Op} -t ${TransDepth} \
+#         > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_s
+#         python fold_cur_trans.py -d ${DataDir} -g 0 -tta -as ${Model} -ts ${Op} -t ${TransDepth} \
+#         > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_tta
+#     done
+# done
 
 # python fold_cur_trans.py -d distinct -g 0 -as smile_refine_mtcnn_112_divi -ts train -t 1 > data/facebank/trans/plt_recs/trans_1_distinct_smile_refine_mtcnn_112_divi_train
 
