@@ -268,11 +268,11 @@ if __name__ == '__main__':
     # np.save(os.path.join(args.stored_data_dir, 'names.npy'), data_names)
     # np.save(os.path.join(args.stored_data_dir, 'labels.npy'), data_labels)
     # np.save(os.path.join(args.stored_data_dir, 'scores.npy'), data_scores)
-    name_path = os.path.join(args.stored_data_dir, 'names_trans_tf_lr4.npy')
+    name_path = os.path.join(args.stored_data_dir, 'names_trans_tf_lr.npy')
     save_label_score(name_path, exp_name)
-    label_path = os.path.join(args.stored_data_dir, 'labels_trans_tf_lr4.npy')
+    label_path = os.path.join(args.stored_data_dir, 'labels_trans_tf_lr.npy')
     save_label_score(label_path, score_names)
-    score_path = os.path.join(args.stored_data_dir, 'scores_trans_tf_lr4.npy')
+    score_path = os.path.join(args.stored_data_dir, 'scores_trans_tf_lr.npy')
     save_label_score(score_path, relative_scores)
     
     # # Compute ROC curve and ROC area for noonan
