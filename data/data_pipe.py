@@ -37,7 +37,7 @@ def get_train_dataset(imgs_folder):
         trans.ToTensor(),
         trans.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
     ])
-    ds = ImageFolder(imgs_folder, train_transform)
+    ds = ImageFolder(str(imgs_folder), train_transform)
     class_num = ds[-1][1] + 1
     return ds, class_num
 
