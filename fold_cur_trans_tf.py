@@ -57,6 +57,7 @@ if __name__ == '__main__':
         exp_name += ('_e' + str(args.epochs))
     # if args.transfer_depth != 0:
     #     exp_name += ('_e' + str(args.epochs))
+    exp_name += '_b20'
     if args.use_shuffled_kfold:
         exp_name += '_s'
     if args.tta:
@@ -178,6 +179,7 @@ if __name__ == '__main__':
 
         conf_train = get_config(True, args)
         conf_train.emore_folder = conf.data_path/'faces_emore_trans_tf'
+        conf_train.batch_size = 20
 
         learner = face_learner(conf=conf_train, transfer=args.transfer_depth, ext=exp_name+'_'+str(fold_idx))
         # conf, inference=False, transfer=0
