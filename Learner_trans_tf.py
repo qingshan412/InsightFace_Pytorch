@@ -41,7 +41,7 @@ class face_learner(object):
             
             if conf.use_mobilfacenet:
                 if transfer == 3:
-                    self.optimizer = optim.SGD([
+                    self.optimizer = optim.Adam([
                                         {'params': [paras_wo_bn[-1]] + [self.head.kernel], 'weight_decay': 4e-4},
                                         {'params': paras_only_bn}
                                     ], lr = conf.lr, momentum = conf.momentum)
