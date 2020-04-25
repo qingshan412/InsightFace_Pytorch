@@ -44,7 +44,7 @@ class face_learner(object):
                     self.optimizer = optim.Adam([
                                         {'params': [paras_wo_bn[-1]] + [self.head.kernel], 'weight_decay': 4e-4},
                                         {'params': paras_only_bn}
-                                    ], lr = conf.lr, momentum = conf.momentum)
+                                    ], lr = conf.lr) #, momentum = conf.momentum)
                 elif transfer == 2:
                     self.optimizer = optim.Adam([
                                         {'params': [paras_wo_bn[-1]] + [self.head.kernel], 'weight_decay': 4e-4},
