@@ -15,21 +15,21 @@ echo ${TransDepth}
 for DataDir in divided distinct
 do
     echo ${DataDir}
-    python fold_cur_trans_tf_def.py -d ${DataDir} -g 0 -t ${TransDepth} \
-    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_Adam
-    python fold_cur_trans_tf_def.py -d ${DataDir} -g 0 -s -t ${TransDepth} \
-    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_Adam_s
-    python fold_cur_trans_tf_def.py -d ${DataDir} -g 0 -tta -t ${TransDepth} \
-    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_Adam_tta
+    python fold_cur_trans_tf.py -d ${DataDir} -g 0 -t ${TransDepth} \
+    > data/facebank/trans/recs_0/trans_${TransDepth}_${DataDir}_Adam
+    python fold_cur_trans_tf.py -d ${DataDir} -g 0 -s -t ${TransDepth} \
+    > data/facebank/trans/recs_0/trans_${TransDepth}_${DataDir}_Adam_s
+    python fold_cur_trans_tf.py -d ${DataDir} -g 0 -tta -t ${TransDepth} \
+    > data/facebank/trans/recs_0/trans_${TransDepth}_${DataDir}_Adam_tta
     for Op in "test" "train,test"
     do
         echo ${Op}
-        python fold_cur_trans_tf_def.py -d ${DataDir} -g 0 -as ${Model} -ts ${Op} -t ${TransDepth} \
-        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_Adam
-        python fold_cur_trans_tf_def.py -d ${DataDir} -g 0 -s -as ${Model} -ts ${Op} -t ${TransDepth} \
-        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_Adam_s
-        python fold_cur_trans_tf_def.py -d ${DataDir} -g 0 -tta -as ${Model} -ts ${Op} -t ${TransDepth} \
-        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_Adam_tta
+        python fold_cur_trans_tf.py -d ${DataDir} -g 0 -as ${Model} -ts ${Op} -t ${TransDepth} \
+        > data/facebank/trans/recs_0/trans_${TransDepth}_${DataDir}_${Model}_${Op}_Adam
+        python fold_cur_trans_tf.py -d ${DataDir} -g 0 -s -as ${Model} -ts ${Op} -t ${TransDepth} \
+        > data/facebank/trans/recs_0/trans_${TransDepth}_${DataDir}_${Model}_${Op}_Adam_s
+        python fold_cur_trans_tf.py -d ${DataDir} -g 0 -tta -as ${Model} -ts ${Op} -t ${TransDepth} \
+        > data/facebank/trans/recs_0/trans_${TransDepth}_${DataDir}_${Model}_${Op}_Adam_tta
     done
 done
 
