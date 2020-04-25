@@ -5,7 +5,7 @@
 #$ -pe smp 16            # Specify parallel environment and legal core size
 #$ -q gpu
 #$ -l gpu_card=1
-#$ -N trans_tf_gpu         # Specify job name
+#$ -N batch_test         # Specify job name
 
 module load pytorch
 
@@ -15,21 +15,21 @@ echo ${TransDepth}
 for DataDir in divided distinct
 do
     echo ${DataDir}
-    python fold_cur_trans_tf.py -d ${DataDir} -g 0 -ts ${Op} -t ${TransDepth} \
-    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Op}_Adam
-    python fold_cur_trans_tf.py -d ${DataDir} -g 0 -s -ts ${Op} -t ${TransDepth} \
-    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Op}_Adam_s
-    python fold_cur_trans_tf.py -d ${DataDir} -g 0 -tta -ts ${Op} -t ${TransDepth} \
-    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Op}_Adam_tta
-    for Op in "train" "test"
+    python fold_cur_trans_tf.py -d ${DataDir} -g 0 -t ${TransDepth} \
+    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_Adam_b20
+    python fold_cur_trans_tf.py -d ${DataDir} -g 0 -s -t ${TransDepth} \
+    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_Adam_b20_s
+    python fold_cur_trans_tf.py -d ${DataDir} -g 0 -tta -t ${TransDepth} \
+    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_Adam_b20_tta
+    for Op in "test" "train,test"
     do
         echo ${Op}
         python fold_cur_trans_tf.py -d ${DataDir} -g 0 -as ${Model} -ts ${Op} -t ${TransDepth} \
-        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_Adam
+        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_Adam_b20
         python fold_cur_trans_tf.py -d ${DataDir} -g 0 -s -as ${Model} -ts ${Op} -t ${TransDepth} \
-        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_Adam_s
+        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_Adam_b20_s
         python fold_cur_trans_tf.py -d ${DataDir} -g 0 -tta -as ${Model} -ts ${Op} -t ${TransDepth} \
-        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_Adam_tta
+        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_Adam_b20_tta
     done
 done
 
