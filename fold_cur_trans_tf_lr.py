@@ -178,7 +178,7 @@ if __name__ == '__main__':
         print('datasets ready')
 
         conf_train = get_config(True, args)
-        conf_train.emore_folder = conf.data_path/'faces_emore_trans_tf_l4'
+        conf_train.emore_folder = conf.data_path/'faces_emore_trans_tf_lr'
         conf_train.lr = 1e-4
 
         learner = face_learner(conf=conf_train, transfer=args.transfer_depth, ext=exp_name+'_'+str(fold_idx))
