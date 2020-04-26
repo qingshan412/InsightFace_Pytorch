@@ -5,36 +5,52 @@
 #$ -pe smp 16            # Specify parallel environment and legal core size
 #$ -q gpu
 #$ -l gpu_card=1
-#$ -N verify_test_gpu         # Specify job name
+#$ -N lag_styl_gpu         # Specify job name
 
 module load pytorch
+
+DataDir=divided
+LagData=LAG_y_fine
+Model=smile_refine_mtcnn_112_divi
+
+echo ${DataDir}
+for Op in "test" "train,test"
+do
+    echo ${Op}
+    python fold_cur.py -d ${DataDir} -g 0 -a ${LagData} -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_styl_${Op}
+    python fold_cur_retrain.py -d ${DataDir} -g 0 -s -a ${LagData} -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_styl_${Op}_s
+    python fold_cur_retrain.py -d ${DataDir} -g 0 -tta -a ${LagData} -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_styl_${Op}_tta
+done
 
 # DataDir=distinct
 # python roc_acc_fold_cur.py -d ${DataDir} -g 0 > data/facebank/plt_recs/${DataDir}
 
-TransDepth=2
-Model=smile_refine_mtcnn_112_divi
-echo ${TransDepth}
-for DataDir in distinct divided
-do
-    echo ${DataDir}
-    python fold_cur_retrain.py -d ${DataDir} -g 0 -t ${TransDepth} \
-    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}
-    python fold_cur_retrain.py -d ${DataDir} -g 0 -s -t ${TransDepth} \
-    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_s
-    python fold_cur_retrain.py -d ${DataDir} -g 0 -tta -t ${TransDepth} \
-    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_tta
-    for Op in "train" "test" "train,test"
-    do
-        echo ${Op}
-        python fold_cur_retrain.py -d ${DataDir} -g 0 -as ${Model} -ts ${Op} -t ${TransDepth} \
-        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}
-        python fold_cur_retrain.py -d ${DataDir} -g 0 -s -as ${Model} -ts ${Op} -t ${TransDepth} \
-        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_s
-        python fold_cur_retrain.py -d ${DataDir} -g 0 -tta -as ${Model} -ts ${Op} -t ${TransDepth} \
-        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_tta
-    done
-done
+# TransDepth=2
+# Model=smile_refine_mtcnn_112_divi
+# echo ${TransDepth}
+# for DataDir in distinct divided
+# do
+#     echo ${DataDir}
+#     python fold_cur_retrain.py -d ${DataDir} -g 0 -t ${TransDepth} \
+#     > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}
+#     python fold_cur_retrain.py -d ${DataDir} -g 0 -s -t ${TransDepth} \
+#     > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_s
+#     python fold_cur_retrain.py -d ${DataDir} -g 0 -tta -t ${TransDepth} \
+#     > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_tta
+#     for Op in "train" "test" "train,test"
+#     do
+#         echo ${Op}
+#         python fold_cur_retrain.py -d ${DataDir} -g 0 -as ${Model} -ts ${Op} -t ${TransDepth} \
+#         > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}
+#         python fold_cur_retrain.py -d ${DataDir} -g 0 -s -as ${Model} -ts ${Op} -t ${TransDepth} \
+#         > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_s
+#         python fold_cur_retrain.py -d ${DataDir} -g 0 -tta -as ${Model} -ts ${Op} -t ${TransDepth} \
+#         > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_tta
+#     done
+# done
 
 # Model=smile_refine_mtcnn_112_divi
 # for DataDir in distinct divided
