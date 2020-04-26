@@ -33,8 +33,8 @@ if __name__ == '__main__':
                         default="", type=str)
     parser.add_argument("-as", "--stylegan_data_dir", help="where to get the stylegan additional data", 
                         default="", type=str)
-    parser.add_argument("-ts", "--stylegan_test_or_train", help="use stylegan additional data in only train, or test, or both", 
-                        default="train", type=str)
+    parser.add_argument("-ts", "--stylegan_test_or_train", help="use additional data in only train, or test, or both;"
+                        "not only for the stylegan", default="", type=str)
     parser.add_argument("-t", "--transfer_depth", help="how many layer(s) used for transfer learning, "
                         "but 0 means retraining the whole network.", default=0, type=int)
     args = parser.parse_args()
@@ -59,7 +59,7 @@ if __name__ == '__main__':
             exp_name += '_smile'
         else:
             exp_name += ('_' + args.stylegan_data_dir)
-        exp_name += ('_' + args.stylegan_test_or_train)
+    exp_name += ('_' + args.stylegan_test_or_train)
     if args.epochs != 20:
         exp_name += ('_e' + str(args.epochs))
     if args.transfer_depth != 0 and args.transfer_depth != 1:
