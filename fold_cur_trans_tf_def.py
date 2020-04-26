@@ -39,8 +39,10 @@ if __name__ == '__main__':
                         "but 0 means retraining the whole network.", default=0, type=int)
     args = parser.parse_args()
 
+    tmp_training_folder = 'faces_emore_trans_tf_def'
+
     conf = get_config(False, args)
-    conf.emore_folder = conf.data_path/'faces_emore_trans_tf'
+    conf.emore_folder = conf.data_path/tmp_training_folder
 
     mtcnn = MTCNN()
     print('mtcnn loaded')
@@ -158,7 +160,7 @@ if __name__ == '__main__':
                                     os.path.join(str(test_dir), name, img))
 
 
-        if args.additional_data_dir:
+        if 'fake' in args.additional_data_dir:
             fake_dict = {'noonan':'normal', 'normal':'noonan'}
             full_additional_dir = conf.data_path/'facebank'/'noonan+normal'/args.additional_data_dir
             add_data = glob.glob(str(full_additional_dir) + os.sep + '*.png')
@@ -177,7 +179,7 @@ if __name__ == '__main__':
         print('datasets ready')
 
         conf_train = get_config(True, args)
-        conf_train.emore_folder = conf.data_path/'faces_emore_trans_tf_def'
+        conf_train.emore_folder = conf.data_path/tmp_training_folder
 
         learner = face_learner(conf=conf_train, transfer=args.transfer_depth, ext=exp_name+'_'+str(fold_idx))
         # conf, inference=False, transfer=0
@@ -196,12 +198,13 @@ if __name__ == '__main__':
         # prepare_facebank
         targets, names = prepare_facebank(conf, learner.model, mtcnn, tta = args.tta)
         print('names_classes:', names)
+        names_idx = {'noonan':1, 'normal':0}
         if ('noonan' in names[1]) and ('normal' in names[2]):
             noonan_idx = 0
-            names_idx = {'noonan': 0, 'normal': 1}
+            # names_idx = {'noonan': 0, 'normal': 1}
         elif ('noonan' in names[2]) and ('normal' in names[1]):
             noonan_idx = 1
-            names_idx = {'noonan':1, 'normal':0}
+            # names_idx = {'noonan':1, 'normal':0}
         else:
             print('something wrong with names:', names)
             exit(0)
