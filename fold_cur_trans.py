@@ -6,7 +6,7 @@ from multiprocessing import Process, Pipe,Value,Array
 import torch
 from config import get_config
 from mtcnn import MTCNN
-from Learner_trans import face_learner
+from Learner_trans_tf import face_learner
 from utils import load_facebank, draw_box_name, prepare_facebank, save_label_score
 
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, average_precision_score
