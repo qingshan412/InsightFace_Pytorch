@@ -39,8 +39,9 @@ if __name__ == '__main__':
                         "but 0 means retraining the whole network.", default=0, type=int)
     args = parser.parse_args()
 
+    emore_dir = 'faces_emore_trans'
     conf = get_config(False, args)
-    conf.emore_folder = conf.data_path/'faces_emore_trans'
+    conf.emore_folder = conf.data_path/emore_dir
 
     mtcnn = MTCNN()
     print('mtcnn loaded')
@@ -48,11 +49,17 @@ if __name__ == '__main__':
     names_considered = args.names_considered.strip().split(',')
 
     exp_name = args.dataset_dir[:4] + '_trans'
-    if args.stylegan_data_dir:
-        exp_name += ('_' + args.stylegan_data_dir)
-        exp_name += ('_' + args.stylegan_test_or_train)
     if args.additional_data_dir:
-        exp_name += ('_' + args.additional_data_dir)
+        if 'LAG' in args.additional_data_dir:
+            exp_name += '_lag'
+        else:
+            exp_name += ('_' + args.additional_data_dir)
+    if args.stylegan_data_dir:
+        if 'smile' in args.stylegan_data_dir:
+            exp_name += '_smile'
+        else:
+            exp_name += ('_' + args.stylegan_data_dir)
+        exp_name += ('_' + args.stylegan_test_or_train)
     if args.epochs != 20:
         exp_name += ('_e' + str(args.epochs))
     if args.transfer_depth != 0 and args.transfer_depth != 1:
@@ -177,7 +184,7 @@ if __name__ == '__main__':
         print('datasets ready')
 
         conf_train = get_config(True, args)
-        conf_train.emore_folder = conf.data_path/'faces_emore_trans'
+        conf_train.emore_folder = conf.data_path/emore_dir
 
         learner = face_learner(conf=conf_train, transfer=args.transfer_depth) # conf, inference=False, transfer=0
         
