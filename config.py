@@ -28,13 +28,13 @@ def get_config(training = True, args = None):
     conf.ms1m_folder = conf.data_path/'faces_ms1m_112x112'
     conf.emore_folder = conf.data_path/'faces_emore'
     # conf.batch_size = 100 # irse net depth 50 
-    conf.batch_size = 10 # mobilefacenet 200
+    conf.batch_size = 20 # mobilefacenet 200
 #--------------------Training Config ------------------------    
     if training:        
         conf.log_path = conf.work_path/'log'
         conf.save_path = conf.work_path/'save'
         # conf.weight_decay = 5e-4
-        conf.lr = 1e-3
+        conf.lr = 1e-4 # originally 1e-3
         conf.milestones = [12,15,18]
         conf.momentum = 0.9
         conf.pin_memory = True
