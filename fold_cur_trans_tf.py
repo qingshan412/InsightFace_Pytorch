@@ -56,7 +56,7 @@ if __name__ == '__main__':
     if args.epochs != 20:
         exp_name += ('_e' + str(args.epochs))
     if args.transfer_depth != 0 and args.transfer_depth != 1:
-        exp_name += ('_t' + str(args.epochs))
+        exp_name += ('_t' + str(args.transfer_depth))
     # exp_name += '_b20'
     if args.use_shuffled_kfold:
         exp_name += '_s'
@@ -159,7 +159,7 @@ if __name__ == '__main__':
                                     os.path.join(str(test_dir), name, img))
 
 
-        if args.additional_data_dir:
+        if 'fake' in args.additional_data_dir:
             fake_dict = {'noonan':'normal', 'normal':'noonan'}
             full_additional_dir = conf.data_path/'facebank'/'noonan+normal'/args.additional_data_dir
             add_data = glob.glob(str(full_additional_dir) + os.sep + '*.png')
@@ -198,12 +198,13 @@ if __name__ == '__main__':
         # prepare_facebank
         targets, names = prepare_facebank(conf, learner.model, mtcnn, tta = args.tta)
         print('names_classes:', names)
+        names_idx = {'noonan':1, 'normal':0}
         if ('noonan' in names[1]) and ('normal' in names[2]):
             noonan_idx = 0
-            names_idx = {'noonan': 0, 'normal': 1}
+            # names_idx = {'noonan': 0, 'normal': 1}
         elif ('noonan' in names[2]) and ('normal' in names[1]):
             noonan_idx = 1
-            names_idx = {'noonan':1, 'normal':0}
+            # names_idx = {'noonan':1, 'normal':0}
         else:
             print('something wrong with names:', names)
             exit(0)
