@@ -186,7 +186,8 @@ if __name__ == '__main__':
         conf_train = get_config(True, args)
         conf_train.emore_folder = conf.data_path/emore_dir
 
-        learner = face_learner(conf=conf_train, transfer=args.transfer_depth) # conf, inference=False, transfer=0
+        learner = face_learner(conf=conf_train, transfer=args.transfer_depth, ext=exp_name+'_'+str(fold_idx))
+        # conf, inference=False, transfer=0
         
         if conf.device.type == 'cpu': # conf.device.type = 'cpu' for CRC01/02 
             learner.load_state(conf, 'mobilefacenet.pth', True, True)
@@ -196,7 +197,7 @@ if __name__ == '__main__':
         # learner.model.eval()
         print('learner loaded.')
 
-        learner.train(conf_train, args.epochs, exp_name + str(fold_idx))
+        learner.train(conf_train, args.epochs)
         print('learner retrained.')
 
         # prepare_facebank
