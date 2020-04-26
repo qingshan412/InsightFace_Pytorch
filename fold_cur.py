@@ -45,7 +45,7 @@ if __name__ == '__main__':
     exp_name = args.dataset_dir
     if args.stylegan_data_dir:
         if 'smile' in args.stylegan_data_dir:
-            exp_name += 'smile'
+            exp_name += '_smile'
         else:
             exp_name += ('_' + args.stylegan_data_dir)
         exp_name += ('_' + args.stylegan_test_or_train)
