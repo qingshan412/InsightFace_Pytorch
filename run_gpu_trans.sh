@@ -12,25 +12,45 @@ module load pytorch
 # DataDir=distinct
 # python roc_acc_fold_cur.py -d ${DataDir} -g 0 > data/facebank/plt_recs/${DataDir}
 
-TransDepth=1
+DataDir=divided
+LagData=LAG_y_fine
 Model=smile_refine_mtcnn_112_divi
-echo ${TransDepth}
-for DataDir in divided distinct
+TransDepth=3
+
+echo ${DataDir}
+for Op in "test" "train,test"
 do
-    echo ${DataDir}
-    Op="train,test"
     echo ${Op}
-    for Epoch in 50 100
-    do
-        echo ${Epoch}
-        python fold_cur_trans.py -d ${DataDir} -e ${Epoch} -g 0 -as ${Model} -ts ${Op} -t ${TransDepth} \
-        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}
-        python fold_cur_trans.py -d ${DataDir} -e ${Epoch} -g 0 -s -as ${Model} -ts ${Op} -t ${TransDepth} \
-        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_s
-        python fold_cur_trans.py -d ${DataDir} -e ${Epoch} -g 0 -tta -as ${Model} -ts ${Op} -t ${TransDepth} \
-        > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_tta
-    done
+    python fold_cur_trans.py -d ${DataDir} -g 0 -a ${LagData} -as ${Model} -ts ${Op} \
+    -t ${TransDepth} \
+    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_lag_styl_${Op}
+    python fold_cur_trans.py -d ${DataDir} -g 0 -s -a ${LagData} -as ${Model} -ts ${Op} \
+    -t ${TransDepth} \
+    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_lag_styl_${Op}_s
+    python fold_cur_trans.py -d ${DataDir} -g 0 -tta -a ${LagData} -as ${Model} -ts ${Op} \
+    -t ${TransDepth} \
+    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_lag_styl_${Op}_tta
 done
+
+# TransDepth=1
+# Model=smile_refine_mtcnn_112_divi
+# echo ${TransDepth}
+# for DataDir in divided distinct
+# do
+#     echo ${DataDir}
+#     Op="train,test"
+#     echo ${Op}
+#     for Epoch in 50 100
+#     do
+#         echo ${Epoch}
+#         python fold_cur_trans.py -d ${DataDir} -e ${Epoch} -g 0 -as ${Model} -ts ${Op} -t ${TransDepth} \
+#         > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}
+#         python fold_cur_trans.py -d ${DataDir} -e ${Epoch} -g 0 -s -as ${Model} -ts ${Op} -t ${TransDepth} \
+#         > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_s
+#         python fold_cur_trans.py -d ${DataDir} -e ${Epoch} -g 0 -tta -as ${Model} -ts ${Op} -t ${TransDepth} \
+#         > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_tta
+#     done
+# done
 
 # TransDepth=1
 # Model=smile_refine_mtcnn_112_divi
