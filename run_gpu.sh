@@ -17,13 +17,30 @@ echo ${DataDir}
 for Op in "test" "train,test"
 do
     echo ${Op}
-    python fold_cur.py -d ${DataDir} -g 0 -a ${LagData} -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_styl_${Op}
-    python fold_cur.py -d ${DataDir} -g 0 -s -a ${LagData} -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_styl_${Op}_s
-    python fold_cur.py -d ${DataDir} -g 0 -tta -a ${LagData} -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_styl_${Op}_tta
+    python fold_cur.py -d ${DataDir} -g 0 -a ${LagData} -ts ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_${Op}
+    python fold_cur.py -d ${DataDir} -g 0 -s -a ${LagData} -ts ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_${Op}_s
+    python fold_cur.py -d ${DataDir} -g 0 -tta -a ${LagData} -ts ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_${Op}_tta
+    python fold_cur.py -d ${DataDir} -g 0 -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_styl_${Op}
+    python fold_cur.py -d ${DataDir} -g 0 -s -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_styl_${Op}_s
+    python fold_cur.py -d ${DataDir} -g 0 -tta -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_styl_${Op}_tta
 done
+
+# for Op in "test" "train,test"
+# do
+#     echo ${Op}
+#     python fold_cur.py -d ${DataDir} -g 0 -a ${LagData} -as ${Model} -ts ${Op} \
+#     > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_styl_${Op}
+#     python fold_cur.py -d ${DataDir} -g 0 -s -a ${LagData} -as ${Model} -ts ${Op} \
+#     > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_styl_${Op}_s
+#     python fold_cur.py -d ${DataDir} -g 0 -tta -a ${LagData} -as ${Model} -ts ${Op} \
+#     > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_styl_${Op}_tta
+# done
 
 # DataDir=distinct
 # python roc_acc_fold_cur.py -d ${DataDir} -g 0 > data/facebank/plt_recs/${DataDir}
