@@ -29,10 +29,10 @@ if __name__ == '__main__':
     parser.add_argument("-tta", "--tta", help="whether test time augmentation",action="store_true")
     parser.add_argument("-a", "--additional_data_dir", help="where to get the additional data", 
                         default="", type=str)
-    parser.add_argument("-as", "--stylegan_data_dir", help="where to get the stylegan additional data", 
-                        default="", type=str)
+    parser.add_argument("-as", "--stylegan_data_dir", help="where to get the additional data, "
+                        "not only for the stylegan", default="", type=str)
     parser.add_argument("-ts", "--stylegan_test_or_train", help="use stylegan additional data in only train, or test, or both", 
-                        default="train", type=str)
+                        default="", type=str)
     args = parser.parse_args()
 
     conf = get_config(False, args)
