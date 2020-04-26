@@ -197,15 +197,15 @@ if __name__ == '__main__':
         targets, names = prepare_facebank(conf, learner.model, mtcnn, tta = args.tta)
         print('names_classes:', names)
         names_idx = {'noonan':1, 'normal':0}
-        # if ('noonan' in names[1]) and ('normal' in names[2]):
-        #     noonan_idx = 0
-        #     names_idx = {'noonan': 0, 'normal': 1}
-        # elif ('noonan' in names[2]) and ('normal' in names[1]):
-        #     noonan_idx = 1
-        #     names_idx = {'noonan':1, 'normal':0}
-        # else:
-        #     print('something wrong with names:', names)
-        #     exit(0)
+        if ('noonan' in names[1]) and ('normal' in names[2]):
+            noonan_idx = 0
+            # names_idx = {'noonan': 0, 'normal': 1}
+        elif ('noonan' in names[2]) and ('normal' in names[1]):
+            noonan_idx = 1
+            # names_idx = {'noonan':1, 'normal':0}
+        else:
+            print('something wrong with names:', names)
+            exit(0)
         print('facebank updated')
 
         
