@@ -5,7 +5,7 @@
 #$ -pe smp 16            # Specify parallel environment and legal core size
 #$ -q gpu
 #$ -l gpu_card=1
-#$ -N trans_gpu         # Specify job name
+#$ -N balanced_trans_gpu         # Specify job name
 
 module load pytorch
 
@@ -30,6 +30,15 @@ do
     python fold_cur_trans.py -d ${DataDir} -g 0 -tta -a ${LagData} -as ${Model} -ts ${Op} \
     -t ${TransDepth} \
     > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_lag_styl_${Op}_tta
+    python fold_cur_trans.py -d ${DataDir} -g 0 -a ${LagData} -ts ${Op} \
+    -t ${TransDepth} \
+    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_lag_${Op}
+    python fold_cur_trans.py -d ${DataDir} -g 0 -s -a ${LagData} -ts ${Op} \
+    -t ${TransDepth} \
+    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_lag_${Op}_s
+    python fold_cur_trans.py -d ${DataDir} -g 0 -tta -a ${LagData} -ts ${Op} \
+    -t ${TransDepth} \
+    > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_lag_${Op}_tta
 done
 
 # TransDepth=1
