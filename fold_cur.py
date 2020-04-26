@@ -29,9 +29,11 @@ if __name__ == '__main__':
     parser.add_argument("-tta", "--tta", help="whether test time augmentation",action="store_true")
     parser.add_argument("-a", "--additional_data_dir", help="where to get the additional data", 
                         default="", type=str)
+    parser.add_argument("-ta", "--additional_test_or_train", help="use additional data in only train, or test, or both", 
+                        default="", type=str)
     parser.add_argument("-as", "--stylegan_data_dir", help="where to get the additional data, "
                         "not only for the stylegan", default="", type=str)
-    parser.add_argument("-ts", "--stylegan_test_or_train", help="use stylegan additional data in only train, or test, or both", 
+    parser.add_argument("-ts", "--stylegan_test_or_train", help="use stylegan data in only train, or test, or both", 
                         default="", type=str)
     args = parser.parse_args()
 
@@ -48,12 +50,13 @@ if __name__ == '__main__':
             exp_name += '_lag'
         else:
             exp_name += ('_' + args.additional_data_dir)
+        exp_name += ('_' + args.additional_test_or_train)
     if args.stylegan_data_dir:
         if 'smile' in args.stylegan_data_dir:
             exp_name += '_smile'
         else:
             exp_name += ('_' + args.stylegan_data_dir)
-    exp_name += ('_' + args.stylegan_test_or_train)
+        exp_name += ('_' + args.stylegan_test_or_train)
     if args.use_shuffled_kfold:
         exp_name += '_s'
     if args.tta:
@@ -127,9 +130,9 @@ if __name__ == '__main__':
         if 'lag' in data_dict.keys():
             (train_index, test_index) = next(idx_gen['lag'])
             train_set['lag'], test_set['lag'] = data_dict['lag'][train_index], data_dict['lag'][test_index]
-            if 'train' in args.stylegan_test_or_train:
+            if 'train' in args.additional_test_or_train:
                 train_set['normal'] = np.concatenate((train_set['normal'], train_set['lag']))
-            if 'test' in args.stylegan_test_or_train:
+            if 'test' in args.additional_test_or_train:
                 test_set['normal'] = np.concatenate((test_set['normal'], test_set['lag']))
 
         # remove previous data 
