@@ -43,17 +43,17 @@ if __name__ == '__main__':
     names_considered = args.names_considered.strip().split(',')
 
     exp_name = args.dataset_dir
-    if args.stylegan_data_dir:
-        if 'smile' in args.stylegan_data_dir:
-            exp_name += '_smile'
-        else:
-            exp_name += ('_' + args.stylegan_data_dir)
-        exp_name += ('_' + args.stylegan_test_or_train)
     if args.additional_data_dir:
         if 'LAG' in args.additional_data_dir:
             exp_name += '_lag'
         else:
             exp_name += ('_' + args.additional_data_dir)
+    if args.stylegan_data_dir:
+        if 'smile' in args.stylegan_data_dir:
+            exp_name += '_smile'
+        else:
+            exp_name += ('_' + args.stylegan_data_dir)
+    exp_name += ('_' + args.stylegan_test_or_train)
     if args.use_shuffled_kfold:
         exp_name += '_s'
     if args.tta:
