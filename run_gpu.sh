@@ -19,9 +19,9 @@ do
     echo ${Op}
     python fold_cur.py -d ${DataDir} -g 0 -a ${LagData} -as ${Model} -ts ${Op} \
     > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_styl_${Op}
-    python fold_cur_retrain.py -d ${DataDir} -g 0 -s -a ${LagData} -as ${Model} -ts ${Op} \
+    python fold_cur.py -d ${DataDir} -g 0 -s -a ${LagData} -as ${Model} -ts ${Op} \
     > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_styl_${Op}_s
-    python fold_cur_retrain.py -d ${DataDir} -g 0 -tta -a ${LagData} -as ${Model} -ts ${Op} \
+    python fold_cur.py -d ${DataDir} -g 0 -tta -a ${LagData} -as ${Model} -ts ${Op} \
     > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_styl_${Op}_tta
 done
 
