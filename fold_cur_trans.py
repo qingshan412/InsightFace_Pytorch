@@ -48,7 +48,7 @@ if __name__ == '__main__':
     
     names_considered = args.names_considered.strip().split(',')
 
-    exp_name = args.dataset_dir[:4] + '_trans'
+    exp_name = args.dataset_dir[:4] + '_balanced_trans'
     if args.additional_data_dir:
         if 'LAG' in args.additional_data_dir:
             exp_name += '_lag'
@@ -141,17 +141,24 @@ if __name__ == '__main__':
             os.remove(p)
         # save trains to conf.facebank_path/args.dataset_dir/'train' and 
         # tests to conf.data_path/'facebank'/args.dataset_dir/'test'
+
+        # count unbalanced data
+        train_count = {}
+
         for name in names_considered:
+            train_count[name] = 0
             for i in range(len(train_set[name])):
                 for img in os.listdir(train_set[name][i]):
                     shutil.copy(train_set[name][i] + os.sep + img, 
                                 os.path.join(str(train_dir), name, img))
+                    train_count[name] += 1
                 # addition data from stylegan
                 folder = os.path.basename(train_set[name][i])
                 if args.stylegan_data_dir and ('train' in args.stylegan_test_or_train) and (folder in stylegan_folders):
                     for img in os.listdir(full_stylegan_dir + os.sep + folder):
                         shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
                                     os.path.join(str(train_dir), name, img))
+                        train_count[name] += 1
 
             for i in range(len(test_set[name])):
                 for img in os.listdir(test_set[name][i]):
@@ -163,6 +170,16 @@ if __name__ == '__main__':
                     for img in os.listdir(full_stylegan_dir + os.sep + folder):
                         shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
                                     os.path.join(str(test_dir), name, img))
+            
+        # deal with unbalanced data
+        if train_count['normal'] // train_count['noonan'] > 1:
+            aug_num = train_count['normal'] // train_count['noonan'] - 1
+            for img in os.listdir(os.path.join(str(train_dir), 'noonan')):
+                for aug_idx in range(aug_num):
+                    aug_img = img[:img.rfind('.')] + '_' + str(aug_idx) + img[img.rfind('.'):]
+                    shutil.copy(os.path.join(str(train_dir), 'noonan', img), 
+                                os.path.join(str(train_dir), 'noonan', aug_img))
+
 
 
         if 'fake' in args.additional_data_dir:
