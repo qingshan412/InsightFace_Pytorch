@@ -325,11 +325,11 @@ def select_webfaces(dir='data/facebank/webface/trainA', num=100):
                     'data/facebank/webface+children/trainB/' + f.strip().split('/')[-1])
 
 def get_train_dataset_gan(imgs_folder, target_folder, target_size):
-    if 'divided' in imgs_folder:
-        for sub_folder in os.listdir(imgs_folder):
-            os.makedirs(target_folder + os.sep + sub_folder, exist_ok=True)
-    else:
-        os.makedirs(target_folder, exist_ok=True)
+    # if 'divided' in imgs_folder:
+    for sub_folder in os.listdir(imgs_folder):
+        os.makedirs(target_folder + os.sep + sub_folder, exist_ok=True)
+    # else:
+    #     os.makedirs(target_folder, exist_ok=True)
 
     imgs=[]
     for root, _, fnames in sorted(os.walk(imgs_folder)): 
@@ -340,10 +340,10 @@ def get_train_dataset_gan(imgs_folder, target_folder, target_size):
     mtcnn = MTCNN()
     for img in imgs:
         new_img = mtcnn.align(Image.open(img[0]), target_size)
-        if 'divided' in imgs_folder:
-            new_img.save(target_folder + os.sep + '/'.join(img[0].strip().split(os.sep)[-2:]))
-        else:
-            new_img.save(target_folder + os.sep + img[1])
+        # if 'divided' in imgs_folder:
+        new_img.save(target_folder + os.sep + '/'.join(img[0].strip().split(os.sep)[-2:]))
+        # else:
+        #     new_img.save(target_folder + os.sep + img[1])
 
 def get_lag_y_data(lag_data, lag_y_data):
     os.makedirs(lag_y_data, exist_ok=True)
