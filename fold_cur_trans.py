@@ -74,7 +74,10 @@ if __name__ == '__main__':
         exp_name += ('_s' + str(args.random_seed))
     if args.tta:
         exp_name += '_tta'
-    
+
+    print(exp_name)
+    exit(0)
+
     if args.stylegan_data_dir:
         #e.g. smile_refine_mtcnn_112_divi
         full_stylegan_dir = str(conf.data_path/'facebank'/'stylegan'/args.stylegan_data_dir)
