@@ -34,8 +34,8 @@ if __name__ == '__main__':
                         default="", type=str)
     parser.add_argument("-ta", "--additional_test_or_train", help="use additional data in only train, or test, or both", 
                         default="", type=str)
-    parser.add_argument("-as", "--stylegan_data_dir", help="where to get the additional data, "
-                        "not only for the stylegan", default="", type=str)
+    parser.add_argument("-as", "--stylegan_data_dir", help="where to get the additional data", 
+                        default="", type=str)
     parser.add_argument("-ts", "--stylegan_test_or_train", help="use stylegan data in only train, or test, or both", 
                         default="", type=str)
     parser.add_argument("-t", "--transfer_depth", help="how many layer(s) used for transfer learning, "
