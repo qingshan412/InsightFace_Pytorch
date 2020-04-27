@@ -58,8 +58,10 @@ if __name__ == '__main__':
         else:
             exp_name += ('_' + args.stylegan_data_dir)
         exp_name += ('_' + args.stylegan_test_or_train)
+    if args.kfold != 10:
+        exp_name += ('_k' + str(args.kfold))
     if args.use_shuffled_kfold:
-        exp_name += '_s'
+        exp_name += ('_s' + str(args.random_seed))
     if args.tta:
         exp_name += '_tta'
     
