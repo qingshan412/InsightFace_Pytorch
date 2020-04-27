@@ -264,11 +264,11 @@ if __name__ == '__main__':
     # else:
     #     print('label dimension wrong:',score_names.shape[0])
     #     exit(0)
-    name_path = os.path.join(args.stored_data_dir, 'names_lag_styl.npy')
+    name_path = os.path.join(args.stored_data_dir, 'names_no_trans.npy')
     save_label_score(name_path, exp_name)
-    label_path = os.path.join(args.stored_data_dir, 'labels_lag_styl.npy')
+    label_path = os.path.join(args.stored_data_dir, 'labels_no_trans.npy')
     save_label_score(label_path, score_names)
-    score_path = os.path.join(args.stored_data_dir, 'scores_lag_styl.npy')
+    score_path = os.path.join(args.stored_data_dir, 'scores_no_trans.npy')
     save_label_score(score_path, relative_scores)
     print('saved!')
     
