@@ -26,6 +26,7 @@ if __name__ == '__main__':
                         default="normal,noonan", type=str)
     parser.add_argument("-g", "--gpu_id", help="gpu id to use", default="", type=str)
     parser.add_argument("-s", "--use_shuffled_kfold", help="whether to use shuffled kfold.", action="store_true")
+    parser.add_argument("-rs", "--random_seed", help="random seed used for k-fold split.", default=6, type=int)
     parser.add_argument("-tta", "--tta", help="whether test time augmentation",action="store_true")
     parser.add_argument("-a", "--additional_data_dir", help="where to get the additional data", 
                         default="", type=str)
