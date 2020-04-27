@@ -28,13 +28,16 @@ if __name__ == '__main__':
                         default="normal,noonan", type=str)
     parser.add_argument("-g", "--gpu_id", help="gpu id to use", default="", type=str)
     parser.add_argument("-s", "--use_shuffled_kfold", help="whether to use shuffled kfold.", action="store_true")
+    parser.add_argument("-rs", "--random_seed", help="random seed used for k-fold split.", default=6, type=int)
     parser.add_argument("-tta", "--tta", help="whether test time augmentation",action="store_true")
     parser.add_argument("-a", "--additional_data_dir", help="where to get the additional data", 
                         default="", type=str)
-    parser.add_argument("-as", "--stylegan_data_dir", help="where to get the stylegan additional data", 
+    parser.add_argument("-ta", "--additional_test_or_train", help="use additional data in only train, or test, or both", 
                         default="", type=str)
-    parser.add_argument("-ts", "--stylegan_test_or_train", help="use additional data in only train, or test, or both;"
+    parser.add_argument("-as", "--stylegan_data_dir", help="where to get the additional data, "
                         "not only for the stylegan", default="", type=str)
+    parser.add_argument("-ts", "--stylegan_test_or_train", help="use stylegan data in only train, or test, or both", 
+                        default="", type=str)
     parser.add_argument("-t", "--transfer_depth", help="how many layer(s) used for transfer learning, "
                         "but 0 means retraining the whole network.", default=0, type=int)
     args = parser.parse_args()
@@ -54,18 +57,21 @@ if __name__ == '__main__':
             exp_name += '_lag'
         else:
             exp_name += ('_' + args.additional_data_dir)
+        exp_name += ('_' + args.additional_test_or_train)
     if args.stylegan_data_dir:
         if 'smile' in args.stylegan_data_dir:
             exp_name += '_smile'
         else:
             exp_name += ('_' + args.stylegan_data_dir)
-    exp_name += ('_' + args.stylegan_test_or_train)
+        exp_name += ('_' + args.stylegan_test_or_train)
+    if args.kfold != 10:
+        exp_name += ('_k' + str(args.kfold))
     if args.epochs != 20:
         exp_name += ('_e' + str(args.epochs))
     if args.transfer_depth != 0 and args.transfer_depth != 1:
         exp_name += ('_t' + str(args.transfer_depth))
     if args.use_shuffled_kfold:
-        exp_name += '_s'
+        exp_name += ('_s' + str(args.random_seed))
     if args.tta:
         exp_name += '_tta'
     
@@ -73,6 +79,7 @@ if __name__ == '__main__':
         #e.g. smile_refine_mtcnn_112_divi
         full_stylegan_dir = str(conf.data_path/'facebank'/'stylegan'/args.stylegan_data_dir)
         stylegan_folders = os.listdir(full_stylegan_dir)
+
 
     # prepare folders
     raw_dir = 'raw_112'
@@ -91,7 +98,7 @@ if __name__ == '__main__':
 
     # init kfold
     if args.use_shuffled_kfold:
-        kf = KFold(n_splits=args.kfold, shuffle=True, random_state=6)
+        kf = KFold(n_splits=args.kfold, shuffle=True, random_state=args.random_seed)
     else:
         kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
 
@@ -101,11 +108,12 @@ if __name__ == '__main__':
     for name in names_considered:
         data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/raw_dir) + 
                                             '/' + name + '*'))
-        if 'LAG' in args.additional_data_dir and name=='normal':
-            full_additional_dir = conf.data_path/'facebank'/args.additional_data_dir/raw_dir
-            add_data = np.array(glob.glob(str(full_additional_dir) + '/*'))
-            data_dict[name] = np.concatenate((data_dict[name], add_data))
         idx_gen[name] = kf.split(data_dict[name])
+
+    if 'LAG' in args.additional_data_dir:
+        full_additional_dir = conf.data_path/'facebank'/args.additional_data_dir/raw_dir
+        data_dict['lag'] = np.array(glob.glob(str(full_additional_dir) + '/*'))
+        idx_gen['lag'] = kf.split(data_dict['lag'])
 
     # threshold_array = np.arange(1.5, 1.6, 0.2)
     # for threshold in threshold_array:
@@ -131,6 +139,14 @@ if __name__ == '__main__':
         for name in names_considered:
             (train_index, test_index) = next(idx_gen[name])
             train_set[name], test_set[name] = data_dict[name][train_index], data_dict[name][test_index]
+
+        if 'lag' in data_dict.keys():
+            (train_index, test_index) = next(idx_gen['lag'])
+            train_set['lag'], test_set['lag'] = data_dict['lag'][train_index], data_dict['lag'][test_index]
+            if 'train' in args.additional_test_or_train:
+                train_set['normal'] = np.concatenate((train_set['normal'], train_set['lag']))
+            if 'test' in args.additional_test_or_train:
+                test_set['normal'] = np.concatenate((test_set['normal'], test_set['lag']))
 
         # remove previous data 
         prev = glob.glob(str(train_dir) + '/*/*')
@@ -232,10 +248,6 @@ if __name__ == '__main__':
             exit(0)
         print('facebank updated')
 
-        # # folder for 1 fold
-        # verify_fold_dir = verify_dir/str(fold_idx)
-        # if not verify_fold_dir.is_dir():
-        #     verify_fold_dir.mkdir(parents=True)
         
         for path in test_dir.iterdir():
             if path.is_file():
