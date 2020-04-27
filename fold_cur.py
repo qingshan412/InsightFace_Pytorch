@@ -69,8 +69,8 @@ if __name__ == '__main__':
         #e.g. smile_refine_mtcnn_112_divi
         full_stylegan_dir = str(conf.data_path/'facebank'/'stylegan'/args.stylegan_data_dir)
         stylegan_folders = os.listdir(full_stylegan_dir)
-    
-    
+
+
     # prepare folders
     raw_dir = 'raw_112' #'mtcnn_112_aug'
     verify_type = 'no_retrain' #'mtcnn_112_aug' 'verify'
@@ -98,7 +98,7 @@ if __name__ == '__main__':
         data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/raw_dir) + 
                                             '/' + name + '*'))
         idx_gen[name] = kf.split(data_dict[name])
-    
+
     if 'LAG' in args.additional_data_dir:
         full_additional_dir = conf.data_path/'facebank'/args.additional_data_dir/raw_dir
         data_dict['lag'] = np.array(glob.glob(str(full_additional_dir) + '/*'))
@@ -242,14 +242,14 @@ if __name__ == '__main__':
 
 
     score_names = np.array(score_names)
-    print(score_names.shape)
+    # print(score_names.shape)
     scores_np = np.squeeze(np.array(scores))
-    print(scores_np.shape)
+    # print(scores_np.shape)
     relative_scores = 1 - (scores_np[:, noonan_idx] / (scores_np[:, 0] + scores_np[:, 1]))
-    print('score_names:')
-    print(score_names)
-    print('scores_np:')
-    print(relative_scores)
+    # print('score_names:')
+    # print(score_names)
+    # print('scores_np:')
+    # print(relative_scores)
 
     # if score_names.shape[0] == 58:
     #     ext = 'dist'
@@ -270,4 +270,5 @@ if __name__ == '__main__':
     save_label_score(label_path, score_names)
     score_path = os.path.join(args.stored_data_dir, 'scores_lag_styl.npy')
     save_label_score(score_path, relative_scores)
+    print('saved!')
     
