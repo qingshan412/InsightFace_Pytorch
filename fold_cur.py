@@ -85,7 +85,7 @@ if __name__ == '__main__':
 
     # init kfold
     if args.use_shuffled_kfold:
-        kf = KFold(n_splits=args.kfold, shuffle=True, random_state=6)
+        kf = KFold(n_splits=args.kfold, shuffle=True, random_state=args.random_seed)
     else:
         kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
 
