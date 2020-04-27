@@ -13,17 +13,17 @@ DataDir=divided
 LagData=LAG_y_fine
 Model=smile_refine_mtcnn_112_divi
 
-python fold_cur.py -d ${DataDir} -g 0  -a ${LagData} -ta "train,test" \
--as ${Model} -ts "test" \
-> data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_train,test_styl_test
+# python fold_cur.py -d ${DataDir} -g 0  -a ${LagData} -ta "train,test" \
+# -as ${Model} -ts "test" \
+# > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_train,test_styl_test
 
-python fold_cur.py -d ${DataDir} -g 0 -s -a ${LagData} -ta "train,test" \
--as ${Model} -ts "test" \
-> data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_train,test_styl_test_s
+# python fold_cur.py -d ${DataDir} -g 0 -s -a ${LagData} -ta "train,test" \
+# -as ${Model} -ts "test" \
+# > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_train,test_styl_test_s
 
-python fold_cur.py -d ${DataDir} -g 0 -tta -a ${LagData} -ta "train,test" \
--as ${Model} -ts "test" \
-> data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_train,test_styl_test_tta
+# python fold_cur.py -d ${DataDir} -g 0 -tta -a ${LagData} -ta "train,test" \
+# -as ${Model} -ts "test" \
+# > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_train,test_styl_test_tta
 
 for K in 5 8
 do
