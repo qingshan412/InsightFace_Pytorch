@@ -76,7 +76,6 @@ if __name__ == '__main__':
         exp_name += '_tta'
 
     print(exp_name)
-    exit(0)
 
     if args.stylegan_data_dir:
         #e.g. smile_refine_mtcnn_112_divi
