@@ -28,38 +28,50 @@ if __name__ == '__main__':
                         default="normal,noonan", type=str)
     parser.add_argument("-g", "--gpu_id", help="gpu id to use", default="", type=str)
     parser.add_argument("-s", "--use_shuffled_kfold", help="whether to use shuffled kfold.", action="store_true")
+    parser.add_argument("-rs", "--random_seed", help="random seed used for k-fold split.", default=6, type=int)
     parser.add_argument("-tta", "--tta", help="whether test time augmentation",action="store_true")
     parser.add_argument("-a", "--additional_data_dir", help="where to get the additional data", 
                         default="", type=str)
-    parser.add_argument("-as", "--stylegan_data_dir", help="where to get the stylegan additional data", 
+    parser.add_argument("-ta", "--additional_test_or_train", help="use additional data in only train, or test, or both", 
                         default="", type=str)
-    parser.add_argument("-ts", "--stylegan_test_or_train", help="use stylegan additional data in only train, or test, or both", 
-                        default="train", type=str)
+    parser.add_argument("-as", "--stylegan_data_dir", help="where to get the additional data", 
+                        default="", type=str)
+    parser.add_argument("-ts", "--stylegan_test_or_train", help="use stylegan data in only train, or test, or both", 
+                        default="", type=str)
     parser.add_argument("-t", "--transfer_depth", help="how many layer(s) used for transfer learning, "
                         "but 0 means retraining the whole network.", default=0, type=int)
     args = parser.parse_args()
 
+    emore_dir = 'faces_emore_trans_tf'
     conf = get_config(False, args)
-    conf.emore_folder = conf.data_path/'faces_emore_trans_tf'
+    conf.emore_folder = conf.data_path/emore_dir
 
     mtcnn = MTCNN()
     print('mtcnn loaded')
     
     names_considered = args.names_considered.strip().split(',')
 
-    exp_name = args.dataset_dir[:4] + '_trans'
-    if args.stylegan_data_dir:
-        exp_name += ('_' + args.stylegan_data_dir)
-        exp_name += ('_' + args.stylegan_test_or_train)
+    exp_name = args.dataset_dir[:4] + '_train_train'
     if args.additional_data_dir:
-        exp_name += ('_' + args.additional_data_dir)
+        if 'LAG' in args.additional_data_dir:
+            exp_name += '_lag'
+        else:
+            exp_name += ('_' + args.additional_data_dir)
+        exp_name += ('_' + args.additional_test_or_train)
+    if args.stylegan_data_dir:
+        if 'smile' in args.stylegan_data_dir:
+            exp_name += '_smile'
+        else:
+            exp_name += ('_' + args.stylegan_data_dir)
+        exp_name += ('_' + args.stylegan_test_or_train)
+    if args.kfold != 10:
+        exp_name += ('_k' + str(args.kfold))
     if args.epochs != 20:
         exp_name += ('_e' + str(args.epochs))
     if args.transfer_depth != 0 and args.transfer_depth != 1:
         exp_name += ('_t' + str(args.transfer_depth))
-    # exp_name += '_b20'
     if args.use_shuffled_kfold:
-        exp_name += '_s'
+        exp_name += ('_s' + str(args.random_seed))
     if args.tta:
         exp_name += '_tta'
     
@@ -68,9 +80,10 @@ if __name__ == '__main__':
         full_stylegan_dir = str(conf.data_path/'facebank'/'stylegan'/args.stylegan_data_dir)
         stylegan_folders = os.listdir(full_stylegan_dir)
 
+
     # prepare folders
     raw_dir = 'raw_112'
-    verify_type = 'trans'
+    verify_type = 'train_train'
     if args.tta:
         verify_type += '_tta'
     if args.use_shuffled_kfold:
@@ -85,7 +98,7 @@ if __name__ == '__main__':
 
     # init kfold
     if args.use_shuffled_kfold:
-        kf = KFold(n_splits=args.kfold, shuffle=True, random_state=6)
+        kf = KFold(n_splits=args.kfold, shuffle=True, random_state=args.random_seed)
     else:
         kf = KFold(n_splits=args.kfold, shuffle=False, random_state=None)
 
@@ -95,11 +108,12 @@ if __name__ == '__main__':
     for name in names_considered:
         data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/raw_dir) + 
                                             '/' + name + '*'))
-        if 'LAG' in args.additional_data_dir and name=='normal':
-            full_additional_dir = conf.data_path/'facebank'/args.additional_data_dir/raw_dir
-            add_data = np.array(glob.glob(str(full_additional_dir) + '/*'))
-            data_dict[name] = np.concatenate((data_dict[name], add_data))
         idx_gen[name] = kf.split(data_dict[name])
+
+    if 'LAG' in args.additional_data_dir:
+        full_additional_dir = conf.data_path/'facebank'/args.additional_data_dir/raw_dir
+        data_dict['lag'] = np.array(glob.glob(str(full_additional_dir) + '/*'))
+        idx_gen['lag'] = kf.split(data_dict['lag'])
 
     # threshold_array = np.arange(1.5, 1.6, 0.2)
     # for threshold in threshold_array:
@@ -126,6 +140,14 @@ if __name__ == '__main__':
             (train_index, test_index) = next(idx_gen[name])
             train_set[name], test_set[name] = data_dict[name][train_index], data_dict[name][test_index]
 
+        if 'lag' in data_dict.keys():
+            (train_index, test_index) = next(idx_gen['lag'])
+            train_set['lag'], test_set['lag'] = data_dict['lag'][train_index], data_dict['lag'][test_index]
+            if 'train' in args.additional_test_or_train:
+                train_set['normal'] = np.concatenate((train_set['normal'], train_set['lag']))
+            if 'test' in args.additional_test_or_train:
+                test_set['normal'] = np.concatenate((test_set['normal'], test_set['lag']))
+
         # remove previous data 
         prev = glob.glob(str(train_dir) + '/*/*')
         for p in prev:
@@ -140,23 +162,27 @@ if __name__ == '__main__':
                 for img in os.listdir(train_set[name][i]):
                     shutil.copy(train_set[name][i] + os.sep + img, 
                                 os.path.join(str(train_dir), name, img))
+                    shutil.copy(train_set[name][i] + os.sep + img, 
+                                os.path.join(str(test_dir), name, img))
                 # addition data from stylegan
                 folder = os.path.basename(train_set[name][i])
                 if args.stylegan_data_dir and ('train' in args.stylegan_test_or_train) and (folder in stylegan_folders):
                     for img in os.listdir(full_stylegan_dir + os.sep + folder):
                         shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
                                     os.path.join(str(train_dir), name, img))
-
-            for i in range(len(test_set[name])):
-                for img in os.listdir(test_set[name][i]):
-                    shutil.copy(test_set[name][i] + os.sep + img, 
-                                os.path.join(str(test_dir), name, img))
-                # addition data from stylegan
-                folder = os.path.basename(test_set[name][i])
-                if args.stylegan_data_dir and ('test' in args.stylegan_test_or_train) and (folder in stylegan_folders):
-                    for img in os.listdir(full_stylegan_dir + os.sep + folder):
                         shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
                                     os.path.join(str(test_dir), name, img))
+
+            # for i in range(len(test_set[name])):
+            #     for img in os.listdir(test_set[name][i]):
+            #         shutil.copy(test_set[name][i] + os.sep + img, 
+            #                     os.path.join(str(test_dir), name, img))
+            #     # addition data from stylegan
+            #     folder = os.path.basename(test_set[name][i])
+            #     if args.stylegan_data_dir and ('test' in args.stylegan_test_or_train) and (folder in stylegan_folders):
+            #         for img in os.listdir(full_stylegan_dir + os.sep + folder):
+            #             shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
+            #                         os.path.join(str(test_dir), name, img))
 
 
         if 'fake' in args.additional_data_dir:
@@ -178,7 +204,7 @@ if __name__ == '__main__':
         print('datasets ready')
 
         conf_train = get_config(True, args)
-        conf_train.emore_folder = conf.data_path/'faces_emore_trans_tf'
+        conf_train.emore_folder = conf.data_path/emore_dir
         # conf_train.batch_size = 20
 
         learner = face_learner(conf=conf_train, transfer=args.transfer_depth, ext=exp_name+'_'+str(fold_idx))
@@ -256,10 +282,10 @@ if __name__ == '__main__':
     score_names = np.array(score_names)
     scores_np = np.squeeze(np.array(scores))
     relative_scores = 1 - (scores_np[:, noonan_idx] / (scores_np[:, 0] + scores_np[:, 1]))
-    print('score_names:')
-    print(score_names)
-    print('scores_np:')
-    print(relative_scores)
+    # print('score_names:')
+    # print(score_names)
+    # print('scores_np:')
+    # print(relative_scores)
 
     # data_names = np.append(np.load(os.path.join(args.stored_data_dir, 'names.npy')), np.array([exp_name]))
     # data_labels = np.load(os.path.join(args.stored_data_dir, 'labels.npy'), allow_pickle=True)
@@ -275,6 +301,7 @@ if __name__ == '__main__':
     save_label_score(label_path, score_names)
     score_path = os.path.join(args.stored_data_dir, 'scores_trans_tf.npy')
     save_label_score(score_path, relative_scores)
+    print('saved!')
     
     # # Compute ROC curve and ROC area for noonan
     # fpr, tpr, _ = roc_curve(score_names, relative_scores)#scores_np[:, noonan_idx]
