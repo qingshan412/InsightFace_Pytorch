@@ -32,6 +32,30 @@ do
     > data/facebank/trans/plt_recs/no_trans_${DataDir}_${Model}_${Op}_tta
 done
 
+for Op in "train" "test" "train,test"
+do
+    python fold_cur.py -d ${DataDir} -g 0 \
+    -a ${LagData} -ta ${Op} \
+    -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_${Model}_${Op}
+
+    python fold_cur.py -d ${DataDir} -g 0 -s \
+    -a ${LagData} -ta ${Op} \
+    -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_${Model}_${Op}_s
+
+    python fold_cur.py -d ${DataDir} -g 0 -s -rs 888 \
+    -a ${LagData} -ta ${Op} \
+    -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_${Model}_${Op}_s888
+
+    python fold_cur.py -d ${DataDir} -g 0 -tta \
+    -a ${LagData} -ta ${Op} \
+    -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_${Model}_${Op}_tta
+done
+
+
 # DataDir=smile
 # LagData=LAG_y_fine
 # Model=divi_mtcnn_112
