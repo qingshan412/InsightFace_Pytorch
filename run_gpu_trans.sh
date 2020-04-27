@@ -21,22 +21,22 @@ echo ${DataDir}
 for Op in "test" "train,test"
 do
     echo ${Op}
-    python fold_cur_trans.py -d ${DataDir} -g 0 -a ${LagData} -as ${Model} -ts ${Op} \
-    -t ${TransDepth} \
+    python fold_cur_trans.py -d ${DataDir} -g 0 -a ${LagData} -ta ${Op} \
+    -as ${Model} -ts ${Op} -t ${TransDepth} \
     > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_lag_styl_${Op}
-    python fold_cur_trans.py -d ${DataDir} -g 0 -s -a ${LagData} -as ${Model} -ts ${Op} \
-    -t ${TransDepth} \
+    python fold_cur_trans.py -d ${DataDir} -g 0 -s -a ${LagData} -ta ${Op} \
+    -as ${Model} -ts ${Op} -t ${TransDepth} \
     > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_lag_styl_${Op}_s
-    python fold_cur_trans.py -d ${DataDir} -g 0 -s -rs 888 -a ${LagData} -as ${Model} -ts ${Op} \
-    -t ${TransDepth} \
+    python fold_cur_trans.py -d ${DataDir} -g 0 -s -rs 888 -a ${LagData} -ta ${Op} \
+    -as ${Model} -ts ${Op} -t ${TransDepth} \
     > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_lag_styl_${Op}_s888
-    python fold_cur_trans.py -d ${DataDir} -g 0 -a ${LagData} -ts ${Op} \
+    python fold_cur_trans.py -d ${DataDir} -g 0 -a ${LagData} -ta ${Op} \
     -t ${TransDepth} \
     > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_lag_${Op}
-    python fold_cur_trans.py -d ${DataDir} -g 0 -s -a ${LagData} -ts ${Op} \
+    python fold_cur_trans.py -d ${DataDir} -g 0 -s -a ${LagData} -ta ${Op} \
     -t ${TransDepth} \
     > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_lag_${Op}_s
-    python fold_cur_trans.py -d ${DataDir} -g 0 -s -rs 888 -a ${LagData} -ts ${Op} \
+    python fold_cur_trans.py -d ${DataDir} -g 0 -s -rs 888 -a ${LagData} -ta ${Op} \
     -t ${TransDepth} \
     > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_lag_${Op}_s888
 done
