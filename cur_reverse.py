@@ -117,7 +117,7 @@ if __name__ == '__main__':
 
     if 'lag' in data_dict.keys():
         if 'train' in args.additional_test_or_train and 'test' in args.additional_test_or_train:
-            lag_size = data_dict['lag'].shape(0)
+            lag_size = data_dict['lag'].shape[0]
             train_idx = random.sample([i for i in range(lag_size)], lag_size//2)
             test_idx = [i for i in range(lag_size) if i not in train_idx]
             train_set['normal'] = np.concatenate((train_set['normal'], data_dict['lag'][train_idx]))
