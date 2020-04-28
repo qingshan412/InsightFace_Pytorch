@@ -55,8 +55,12 @@ if __name__ == '__main__':
     if args.stylegan_data_dir:
         if 'smile' in args.stylegan_data_dir:
             exp_name += '_smile'
-        elif 'no0' in args.stylegan_data_dir:
+        elif 'srm112d_no0' in args.stylegan_data_dir:
             exp_name += '_sn0' #srm112d_no0
+        elif 'srm112d_nowrong' in args.stylegan_data_dir:
+            exp_name += '_snw'
+        elif 'srm112d_no0wrong' in args.stylegan_data_dir:
+            exp_name += '_sn0w'
         else:
             exp_name += ('_' + args.stylegan_data_dir)
         exp_name += ('_' + args.stylegan_test_or_train)
@@ -266,11 +270,11 @@ if __name__ == '__main__':
     # else:
     #     print('label dimension wrong:',score_names.shape[0])
     #     exit(0)
-    name_path = os.path.join(args.stored_data_dir, 'names_no_trans.npy')
+    name_path = os.path.join(args.stored_data_dir, 'names_no_wrong.npy')
     save_label_score(name_path, exp_name)
-    label_path = os.path.join(args.stored_data_dir, 'labels_no_trans.npy')
+    label_path = os.path.join(args.stored_data_dir, 'labels_no_wrong.npy')
     save_label_score(label_path, score_names)
-    score_path = os.path.join(args.stored_data_dir, 'scores_no_trans.npy')
+    score_path = os.path.join(args.stored_data_dir, 'scores_no_wrong.npy')
     save_label_score(score_path, relative_scores)
     print('saved!')
     
