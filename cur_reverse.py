@@ -11,7 +11,7 @@ from utils import load_facebank, draw_box_name, prepare_facebank, save_label_sco
 
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, average_precision_score
 from sklearn.model_selection import KFold
-import os, glob, shutil
+import os, glob, shutil, random
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
