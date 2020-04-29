@@ -16,24 +16,47 @@ for Model in srm112df srm112df_no0
 do
     python fold_cur.py -ds ${DataDir} -g 0 \
     -a ${LagData} -ta "test" \
-    -as ${Model} -ts "train,test" \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_train,test
+    -as ${Model} -ts "test" \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_test
 
     python fold_cur.py -ds ${DataDir} -g 0 -s \
     -a ${LagData} -ta "test" \
-    -as ${Model} -ts "train,test" \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_train,test_s
+    -as ${Model} -ts "test" \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_test_s
 
     python fold_cur.py -ds ${DataDir} -g 0 -s -rs 888\
     -a ${LagData} -ta "test" \
-    -as ${Model} -ts "train,test" \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_train,test_s888
+    -as ${Model} -ts "test" \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_test_s888
 
     python fold_cur.py -ds ${DataDir} -g 0 -tta \
     -a ${LagData} -ta "test" \
-    -as ${Model} -ts "train,test" \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_train,test_tta
+    -as ${Model} -ts "test" \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_test_tta
 done
+
+# for Model in srm112df srm112df_no0
+# do
+#     python fold_cur.py -ds ${DataDir} -g 0 \
+#     -a ${LagData} -ta "test" \
+#     -as ${Model} -ts "train,test" \
+#     > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_train,test
+
+#     python fold_cur.py -ds ${DataDir} -g 0 -s \
+#     -a ${LagData} -ta "test" \
+#     -as ${Model} -ts "train,test" \
+#     > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_train,test_s
+
+#     python fold_cur.py -ds ${DataDir} -g 0 -s -rs 888\
+#     -a ${LagData} -ta "test" \
+#     -as ${Model} -ts "train,test" \
+#     > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_train,test_s888
+
+#     python fold_cur.py -ds ${DataDir} -g 0 -tta \
+#     -a ${LagData} -ta "test" \
+#     -as ${Model} -ts "train,test" \
+#     > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_train,test_tta
+# done
 
 # DataDir=divided
 # python fold_cur.py -d ${DataDir} -g 0 \
