@@ -127,14 +127,14 @@ if __name__ == '__main__':
     learner.model.eval()
     print('learner loaded.')
 
-    
+
     # # count for roc-auc
     # counts = {}
     # for name in names_considered:
     #     counts[name] = [0, 0, 0] # #false, #true, #false_positive
     score_names = []
     scores = []
-        
+
     # for fold_idx, (train_index, test_index) in enumerate(kf.split(data_dict[names_considered[0]])):
     for fold_idx in range(args.kfold):
         train_set = {}
