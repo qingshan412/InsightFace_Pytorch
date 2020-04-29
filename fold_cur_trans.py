@@ -11,7 +11,7 @@ from utils import load_facebank, draw_box_name, prepare_facebank, save_label_sco
 
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, average_precision_score
 from sklearn.model_selection import KFold
-import os, glob, shutil
+import os, glob, shutil, pprint
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
@@ -42,7 +42,7 @@ if __name__ == '__main__':
                         "but 0 means retraining the whole network.", default=0, type=int)
     args = parser.parse_args()
 
-    print(args)
+    pprint.pprint(args)
     exit(0)
 
     emore_dir = 'faces_emore_trans'
