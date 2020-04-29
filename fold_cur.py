@@ -38,6 +38,9 @@ if __name__ == '__main__':
                         default="", type=str)
     args = parser.parse_args()
 
+    print(args.dataset_dir)
+    exit(0)
+
     conf = get_config(False, args)
 
     mtcnn = MTCNN()
