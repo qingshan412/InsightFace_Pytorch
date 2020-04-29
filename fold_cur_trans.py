@@ -42,7 +42,7 @@ if __name__ == '__main__':
                         "but 0 means retraining the whole network.", default=0, type=int)
     args = parser.parse_args()
 
-    print(args.dataset_dir)
+    print(args)
     exit(0)
 
     emore_dir = 'faces_emore_trans'
