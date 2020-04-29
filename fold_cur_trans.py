@@ -61,6 +61,16 @@ if __name__ == '__main__':
     if args.stylegan_data_dir:
         if 'smile' in args.stylegan_data_dir:
             exp_name += '_smile'
+        elif 'srm112d_no0' in args.stylegan_data_dir:
+            exp_name += '_sn0' #srm112d_no0
+        elif 'srm112d_nowrong' in args.stylegan_data_dir:
+            exp_name += '_snw'
+        elif 'srm112d_no0wrong' in args.stylegan_data_dir:
+            exp_name += '_sn0w'
+        elif 'srm112df_no0' in args.stylegan_data_dir:
+            exp_name += '_sf0'
+        elif 'srm112df' in args.stylegan_data_dir:
+            exp_name += '_sf'
         else:
             exp_name += ('_' + args.stylegan_data_dir)
         exp_name += ('_' + args.stylegan_test_or_train)
