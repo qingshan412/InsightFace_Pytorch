@@ -27,7 +27,7 @@ do
     python fold_cur_trans.py -d ${DataDir} -g 0 -t ${TransDepth} -tta \
     > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_tta
 
-    for Op in in "train" "test" "train,test"
+    for Op in "train" "test" "train,test"
     do
         python fold_cur_trans.py -d ${DataDir} -g 0 -t ${TransDepth} \
         -a ${LagData} -ta ${Op} \
@@ -46,7 +46,7 @@ do
         > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${LagData}_${Op}_tta
     done
 
-    for Op in in "train" "test" "train,test"
+    for Op in "train" "test" "train,test"
     do
         python fold_cur_trans.py -d ${DataDir} -g 0 -t ${TransDepth} \
         -as ${Model} -ts ${Op} \
@@ -65,6 +65,7 @@ do
         > data/facebank/trans/plt_recs/trans_${TransDepth}_${DataDir}_${Model}_${Op}_tta
     done
 done
+
 python fold_cur.py -d ${DataDir} -g 0 \
 > data/facebank/trans/plt_recs/no_trans_${DataDir}
 
