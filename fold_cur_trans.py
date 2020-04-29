@@ -42,6 +42,9 @@ if __name__ == '__main__':
                         "but 0 means retraining the whole network.", default=0, type=int)
     args = parser.parse_args()
 
+    print(args.dataset_dir)
+    exit(0)
+
     emore_dir = 'faces_emore_trans'
     conf = get_config(False, args)
     conf.emore_folder = conf.data_path/emore_dir
