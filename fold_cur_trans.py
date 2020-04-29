@@ -43,7 +43,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     for arg in vars(args):
-        print(arg, getattr(args, arg))
+        print(arg, ':', getattr(args, arg))
     exit(0)
 
     emore_dir = 'faces_emore_trans'
