@@ -44,7 +44,6 @@ if __name__ == '__main__':
 
     for arg in vars(args):
         print(arg+':', getattr(args, arg))
-    exit(0)
 
     emore_dir = 'faces_emore_trans'
     conf = get_config(False, args)
