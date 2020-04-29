@@ -89,10 +89,14 @@ if __name__ == '__main__':
     data_dict = {}
     test_dict = {}
     for name in names_considered:
-        data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/'stylegan'/args.dataset_dir) + 
-                                            '/' + name + '*'))
-        test_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/'divided'/raw_dir) + 
-                                            '/' + name + '*'))
+        tmp = glob.glob(str(conf.data_path/'facebank'/'stylegan'/args.dataset_dir) + 
+                        '/' + name + '*')
+        data_dict[name] = np.array(tmp)
+        folders = [os.path.basename(item) for item in tmp]
+        tmp = glob.glob(str(conf.data_path/'facebank'/'divided'/raw_dir) + 
+                        '/' + name + '*')
+        test_paths = [item for item in tmp if os.path.basename(item) not in folders]
+        test_dict[name] = np.array(test_paths)
 
     if 'LAG' in args.additional_data_dir:
         full_additional_dir = conf.data_path/'facebank'/args.additional_data_dir/raw_dir
