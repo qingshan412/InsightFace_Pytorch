@@ -11,7 +11,8 @@ module load python pytorch
 
 DataDir=divided
 LagData=LAG_y_fine
-Model=srm112d_nowrong
+Model=srm112df_no0
+#srm112d_nowrong
 
 for Op in "train" "test" "train,test"
 do
@@ -55,7 +56,8 @@ do
     > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_${Model}_${Op}_tta
 done
 
-Model=srm112d_no0wrong
+Model=srm112df
+#_no0wrong
 
 for Op in "train" "test" "train,test"
 do
