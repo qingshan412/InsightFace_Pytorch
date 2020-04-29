@@ -14,8 +14,8 @@ LagData=LAG_y_fine
 
 for DataDir in srm112df srm112df_no0
 do
-    python cur_reverse.py -d ${DataDir} -g 0 \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}
+    python cur_reverse.py -d ${DataDir} -g 0 -tta \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_tta
 done
 
 # DataDir=srm112df
