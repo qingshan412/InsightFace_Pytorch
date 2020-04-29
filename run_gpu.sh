@@ -9,8 +9,9 @@
 
 module load pytorch
 
-DataDir=srm112d_no0
+#srm112d_no0
 LagData=LAG_y_fine
+DataDir=srm112df
 
 for Op in "train" "test"
 do
@@ -48,6 +49,82 @@ python cur_reverse.py -d ${DataDir} -g 0 -rs 888 \
 python cur_reverse.py -d ${DataDir} -g 0 -rs 888 -tta \
 -a ${LagData} -ta ${Op} \
 > data/facebank/trans/plt_recs/no_trans_${DataDir}_${LagData}_${Op}_rs888_tta
+
+DataDir=srm112df_no0
+
+for Op in "train" "test"
+do
+    python cur_reverse.py -d ${DataDir} -g 0 \
+    -a ${LagData} -ta ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_${LagData}_${Op}
+
+    python cur_reverse.py -d ${DataDir} -g 0 -tta \
+    -a ${LagData} -ta ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_${LagData}_${Op}_tta
+done
+
+Op=train,test
+
+python cur_reverse.py -d ${DataDir} -g 0 \
+-a ${LagData} -ta ${Op} \
+> data/facebank/trans/plt_recs/no_trans_${DataDir}_${LagData}_${Op}_rs6
+
+python cur_reverse.py -d ${DataDir} -g 0 -tta \
+-a ${LagData} -ta ${Op} \
+> data/facebank/trans/plt_recs/no_trans_${DataDir}_${LagData}_${Op}_rs6_tta
+
+python cur_reverse.py -d ${DataDir} -g 0 -rs 8 \
+-a ${LagData} -ta ${Op} \
+> data/facebank/trans/plt_recs/no_trans_${DataDir}_${LagData}_${Op}_rs8
+
+python cur_reverse.py -d ${DataDir} -g 0 -rs 8 -tta \
+-a ${LagData} -ta ${Op} \
+> data/facebank/trans/plt_recs/no_trans_${DataDir}_${LagData}_${Op}_rs8_tta
+
+python cur_reverse.py -d ${DataDir} -g 0 -rs 888 \
+-a ${LagData} -ta ${Op} \
+> data/facebank/trans/plt_recs/no_trans_${DataDir}_${LagData}_${Op}_rs888
+
+python cur_reverse.py -d ${DataDir} -g 0 -rs 888 -tta \
+-a ${LagData} -ta ${Op} \
+> data/facebank/trans/plt_recs/no_trans_${DataDir}_${LagData}_${Op}_rs888_tta
+
+# for Op in "train" "test"
+# do
+#     python cur_reverse.py -d ${DataDir} -g 0 \
+#     -a ${LagData} -ta ${Op} \
+#     > data/facebank/trans/plt_recs/no_trans_${DataDir}_${LagData}_${Op}
+
+#     python cur_reverse.py -d ${DataDir} -g 0 -tta \
+#     -a ${LagData} -ta ${Op} \
+#     > data/facebank/trans/plt_recs/no_trans_${DataDir}_${LagData}_${Op}_tta
+# done
+
+# Op=train,test
+
+# python cur_reverse.py -d ${DataDir} -g 0 \
+# -a ${LagData} -ta ${Op} \
+# > data/facebank/trans/plt_recs/no_trans_${DataDir}_${LagData}_${Op}_rs6
+
+# python cur_reverse.py -d ${DataDir} -g 0 -tta \
+# -a ${LagData} -ta ${Op} \
+# > data/facebank/trans/plt_recs/no_trans_${DataDir}_${LagData}_${Op}_rs6_tta
+
+# python cur_reverse.py -d ${DataDir} -g 0 -rs 8 \
+# -a ${LagData} -ta ${Op} \
+# > data/facebank/trans/plt_recs/no_trans_${DataDir}_${LagData}_${Op}_rs8
+
+# python cur_reverse.py -d ${DataDir} -g 0 -rs 8 -tta \
+# -a ${LagData} -ta ${Op} \
+# > data/facebank/trans/plt_recs/no_trans_${DataDir}_${LagData}_${Op}_rs8_tta
+
+# python cur_reverse.py -d ${DataDir} -g 0 -rs 888 \
+# -a ${LagData} -ta ${Op} \
+# > data/facebank/trans/plt_recs/no_trans_${DataDir}_${LagData}_${Op}_rs888
+
+# python cur_reverse.py -d ${DataDir} -g 0 -rs 888 -tta \
+# -a ${LagData} -ta ${Op} \
+# > data/facebank/trans/plt_recs/no_trans_${DataDir}_${LagData}_${Op}_rs888_tta
 
 # DataDir=divided
 # LagData=LAG_y_fine
