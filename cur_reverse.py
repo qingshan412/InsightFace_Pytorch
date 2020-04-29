@@ -38,8 +38,8 @@ if __name__ == '__main__':
     #                     default="", type=str)
     args = parser.parse_args()
 
-    print(args.dataset_dir)
-    exit(0)
+    for arg in vars(args):
+        print(arg+':', getattr(args, arg))
 
     random.seed(args.random_seed)
 
