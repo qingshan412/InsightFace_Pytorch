@@ -50,7 +50,7 @@ if __name__ == '__main__':
     
     names_considered = args.names_considered.strip().split(',')
 
-    exp_name = 'rev'
+    exp_name = 'rev_' + args.dataset_dir
     if args.additional_data_dir:
         if 'LAG' in args.additional_data_dir:
             exp_name += '_lag'
@@ -198,13 +198,13 @@ if __name__ == '__main__':
                 #                     os.path.join(str(train_dir), name, img))
                 #                     # ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
                 #                     #     '/' + verify_type + '/train/' + name + os.sep + img))
-            # test
-            for i in range(len(test_set[name])):
-                for img in os.listdir(test_set[name][i]):
-                    shutil.copy(test_set[name][i] + os.sep + img, 
-                                os.path.join(str(test_dir), name, img))
-                                # ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
-                                #     '/' + verify_type + '/test/' + name + os.sep + img))
+            # # test
+            # for i in range(len(test_set[name])):
+            #     for img in os.listdir(test_set[name][i]):
+            #         shutil.copy(test_set[name][i] + os.sep + img, 
+            #                     os.path.join(str(test_dir), name, img))
+            #                     # ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
+            #                     #     '/' + verify_type + '/test/' + name + os.sep + img))
             # addition data from orig
             for path in test_dict[name]:
                 if os.path.basename(path) not in train_folders:
