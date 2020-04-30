@@ -116,6 +116,10 @@ if __name__ == '__main__':
         full_additional_dir = conf.data_path/'facebank'/args.additional_data_dir/raw_dir
         data_dict['lag'] = np.array(glob.glob(str(full_additional_dir) + '/*'))
         idx_gen['lag'] = kf.split(data_dict['lag'])
+    
+    if 'inn05' in args.stylegan_data_dir:
+        data_dict['inn05'] = np.array(glob.glob(str(full_stylegan_dir) + '/*'))
+        idx_gen['inn05'] = kf.split(data_dict['inn05'])
 
     learner = face_learner(conf, inference=True)
     
@@ -150,6 +154,14 @@ if __name__ == '__main__':
                 train_set['normal'] = np.concatenate((train_set['normal'], train_set['lag']))
             if 'test' in args.additional_test_or_train:
                 test_set['normal'] = np.concatenate((test_set['normal'], test_set['lag']))
+        
+        if 'inn05' in data_dict.keys():
+            (train_index, test_index) = next(idx_gen['inn05'])
+            train_set['inn05'], test_set['inn05'] = data_dict['inn05'][train_index], data_dict['inn05'][test_index]
+            if 'train' in args.stylegan_test_or_train:
+                train_set['normal'] = np.concatenate((train_set['normal'], train_set['inn05']))
+            if 'test' in args.stylegan_test_or_train:
+                test_set['normal'] = np.concatenate((test_set['normal'], test_set['inn05']))
 
         # remove previous data 
         prev = glob.glob(str(train_dir) + '/*/*')
@@ -169,13 +181,14 @@ if __name__ == '__main__':
                                 # ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
                                 #     '/' + verify_type + '/train/' + name + os.sep + img))
                 # addition data from stylegan
-                folder = os.path.basename(train_set[name][i])
-                if args.stylegan_data_dir and ('train' in args.stylegan_test_or_train) and (folder in stylegan_folders):
-                    for img in os.listdir(full_stylegan_dir + os.sep + folder):
-                        shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
-                                    os.path.join(str(train_dir), name, img))
-                                    # ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
-                                    #     '/' + verify_type + '/train/' + name + os.sep + img))
+                if 'inn05' not in data_dict.keys():
+                    folder = os.path.basename(train_set[name][i])
+                    if args.stylegan_data_dir and ('train' in args.stylegan_test_or_train) and (folder in stylegan_folders):
+                        for img in os.listdir(full_stylegan_dir + os.sep + folder):
+                            shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
+                                        os.path.join(str(train_dir), name, img))
+                                        # ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
+                                        #     '/' + verify_type + '/train/' + name + os.sep + img))
             # test
             for i in range(len(test_set[name])):
                 for img in os.listdir(test_set[name][i]):
@@ -184,13 +197,14 @@ if __name__ == '__main__':
                                 # ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
                                 #     '/' + verify_type + '/test/' + name + os.sep + img))
                 # addition data from stylegan
-                folder = os.path.basename(test_set[name][i])
-                if args.stylegan_data_dir and ('test' in args.stylegan_test_or_train) and (folder in stylegan_folders):
-                    # and 
-                    # (folder not in ['noonan7','noonan19','noonan23','normal9','normal20','normal23'])):
-                    for img in os.listdir(full_stylegan_dir + os.sep + folder):
-                        shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
-                                    os.path.join(str(test_dir), name, img))
+                if 'inn05' not in data_dict.keys():
+                    folder = os.path.basename(test_set[name][i])
+                    if args.stylegan_data_dir and ('test' in args.stylegan_test_or_train) and (folder in stylegan_folders):
+                        # and 
+                        # (folder not in ['noonan7','noonan19','noonan23','normal9','normal20','normal23'])):
+                        for img in os.listdir(full_stylegan_dir + os.sep + folder):
+                            shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
+                                        os.path.join(str(test_dir), name, img))
 
 
         if 'fake' in args.additional_data_dir:
