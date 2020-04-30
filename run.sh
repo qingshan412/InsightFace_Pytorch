@@ -11,7 +11,7 @@ module load python pytorch
 
 DataDir=divided
 LagData=LAG_y_fine
-Model=inn05
+Model=inn05_112
 
 for Op in "train" "test" "train,test"
 do
