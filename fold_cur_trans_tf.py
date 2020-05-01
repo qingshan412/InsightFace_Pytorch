@@ -38,9 +38,12 @@ if __name__ == '__main__':
                         default="", type=str)
     parser.add_argument("-ts", "--stylegan_test_or_train", help="use stylegan data in only train, or test, or both", 
                         default="", type=str)
-    parser.add_argument("-t", "--transfer_depth", help="how many layer(s) used for transfer learning, "
+    parser.add_argument("-td", "--transfer_depth", help="how many layer(s) used for transfer learning, "
                         "but 0 means retraining the whole network.", default=0, type=int)
     args = parser.parse_args()
+
+    for arg in vars(args):
+        print(arg+':', getattr(args, arg))
 
     emore_dir = 'faces_emore_trans_tf'
     conf = get_config(False, args)
@@ -51,7 +54,8 @@ if __name__ == '__main__':
     
     names_considered = args.names_considered.strip().split(',')
 
-    exp_name = args.dataset_dir[:4] + '_train_train'
+    exp_name = args.dataset_dir[:4] + '_b' #balanced_trans'
+    #'_train_train'
     if args.additional_data_dir:
         if 'LAG' in args.additional_data_dir:
             exp_name += '_lag'
@@ -61,6 +65,18 @@ if __name__ == '__main__':
     if args.stylegan_data_dir:
         if 'smile' in args.stylegan_data_dir:
             exp_name += '_smile'
+        elif 'srm112d_no0' in args.stylegan_data_dir:
+            exp_name += '_sn0' #srm112d_no0
+        elif 'srm112d_nowrong' in args.stylegan_data_dir:
+            exp_name += '_snw'
+        elif 'srm112d_no0wrong' in args.stylegan_data_dir:
+            exp_name += '_sn0w'
+        elif 'srm112df_no0' in args.stylegan_data_dir:
+            exp_name += '_sf0'
+        elif 'srm112df' in args.stylegan_data_dir:
+            exp_name += '_sf'
+        elif 'srm112df_nn' in args.stylegan_data_dir:
+            exp_name += '_snn'
         else:
             exp_name += ('_' + args.stylegan_data_dir)
         exp_name += ('_' + args.stylegan_test_or_train)
@@ -69,12 +85,14 @@ if __name__ == '__main__':
     if args.epochs != 20:
         exp_name += ('_e' + str(args.epochs))
     if args.transfer_depth != 0 and args.transfer_depth != 1:
-        exp_name += ('_t' + str(args.transfer_depth))
+        exp_name += ('_td' + str(args.transfer_depth))
     if args.use_shuffled_kfold:
         exp_name += ('_s' + str(args.random_seed))
     if args.tta:
         exp_name += '_tta'
-    
+
+    print(exp_name)
+
     if args.stylegan_data_dir:
         #e.g. smile_refine_mtcnn_112_divi
         full_stylegan_dir = str(conf.data_path/'facebank'/'stylegan'/args.stylegan_data_dir)
@@ -83,7 +101,7 @@ if __name__ == '__main__':
 
     # prepare folders
     raw_dir = 'raw_112'
-    verify_type = 'train_train'
+    verify_type = 'trans_tf' #'train_train'
     if args.tta:
         verify_type += '_tta'
     if args.use_shuffled_kfold:
@@ -115,6 +133,10 @@ if __name__ == '__main__':
         data_dict['lag'] = np.array(glob.glob(str(full_additional_dir) + '/*'))
         idx_gen['lag'] = kf.split(data_dict['lag'])
 
+    if 'inn05' in args.stylegan_data_dir:
+        data_dict['inn05'] = np.array(glob.glob(str(full_stylegan_dir) + '/*'))
+        idx_gen['inn05'] = kf.split(data_dict['inn05'])
+
     # threshold_array = np.arange(1.5, 1.6, 0.2)
     # for threshold in threshold_array:
     # mkdir for folder containing verification results
@@ -131,7 +153,7 @@ if __name__ == '__main__':
     #     counts[name] = [0, 0, 0] # #false, #true, #false_positive
     score_names = []
     scores = []
-        
+
     # for fold_idx, (train_index, test_index) in enumerate(kf.split(data_dict[names_considered[0]])):
     for fold_idx in range(args.kfold):
         train_set = {}
@@ -148,6 +170,14 @@ if __name__ == '__main__':
             if 'test' in args.additional_test_or_train:
                 test_set['normal'] = np.concatenate((test_set['normal'], test_set['lag']))
 
+        if 'inn05' in data_dict.keys():
+            (train_index, test_index) = next(idx_gen['inn05'])
+            train_set['inn05'], test_set['inn05'] = data_dict['inn05'][train_index], data_dict['inn05'][test_index]
+            if 'train' in args.stylegan_test_or_train:
+                train_set['noonan'] = np.concatenate((train_set['noonan'], train_set['inn05']))
+            if 'test' in args.stylegan_test_or_train:
+                test_set['noonan'] = np.concatenate((test_set['noonan'], test_set['inn05']))
+
         # remove previous data 
         prev = glob.glob(str(train_dir) + '/*/*')
         for p in prev:
@@ -157,32 +187,51 @@ if __name__ == '__main__':
             os.remove(p)
         # save trains to conf.facebank_path/args.dataset_dir/'train' and 
         # tests to conf.data_path/'facebank'/args.dataset_dir/'test'
+
+        # count unbalanced data
+        train_count = {}
+
         for name in names_considered:
+            train_count[name] = 0
             for i in range(len(train_set[name])):
                 for img in os.listdir(train_set[name][i]):
                     shutil.copy(train_set[name][i] + os.sep + img, 
                                 os.path.join(str(train_dir), name, img))
-                    shutil.copy(train_set[name][i] + os.sep + img, 
+                    # shutil.copy(train_set[name][i] + os.sep + img, 
+                    #             os.path.join(str(test_dir), name, img))
+                    train_count[name] += 1
+                # addition data from stylegan
+                if 'inn05' not in data_dict.keys():
+                    folder = os.path.basename(train_set[name][i])
+                    if args.stylegan_data_dir and ('train' in args.stylegan_test_or_train) and (folder in stylegan_folders):
+                        for img in os.listdir(full_stylegan_dir + os.sep + folder):
+                            shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
+                                        os.path.join(str(train_dir), name, img))
+                            train_count[name] += 1
+                        # shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
+                        #             os.path.join(str(test_dir), name, img))
+
+            for i in range(len(test_set[name])):
+                for img in os.listdir(test_set[name][i]):
+                    shutil.copy(test_set[name][i] + os.sep + img, 
                                 os.path.join(str(test_dir), name, img))
                 # addition data from stylegan
-                folder = os.path.basename(train_set[name][i])
-                if args.stylegan_data_dir and ('train' in args.stylegan_test_or_train) and (folder in stylegan_folders):
-                    for img in os.listdir(full_stylegan_dir + os.sep + folder):
-                        shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
-                                    os.path.join(str(train_dir), name, img))
-                        shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
-                                    os.path.join(str(test_dir), name, img))
+                if 'inn05' not in data_dict.keys():
+                    folder = os.path.basename(test_set[name][i])
+                    if args.stylegan_data_dir and ('test' in args.stylegan_test_or_train) and (folder in stylegan_folders):
+                        for img in os.listdir(full_stylegan_dir + os.sep + folder):
+                            shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
+                                        os.path.join(str(test_dir), name, img))
 
-            # for i in range(len(test_set[name])):
-            #     for img in os.listdir(test_set[name][i]):
-            #         shutil.copy(test_set[name][i] + os.sep + img, 
-            #                     os.path.join(str(test_dir), name, img))
-            #     # addition data from stylegan
-            #     folder = os.path.basename(test_set[name][i])
-            #     if args.stylegan_data_dir and ('test' in args.stylegan_test_or_train) and (folder in stylegan_folders):
-            #         for img in os.listdir(full_stylegan_dir + os.sep + folder):
-            #             shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
-            #                         os.path.join(str(test_dir), name, img))
+        # deal with unbalanced data
+        if train_count['normal'] // train_count['noonan'] > 1:
+            aug_num = train_count['normal'] // train_count['noonan'] - 1
+            for img in os.listdir(os.path.join(str(train_dir), 'noonan')):
+                for aug_idx in range(aug_num):
+                    aug_img = img[:img.rfind('.')] + '_' + str(aug_idx) + img[img.rfind('.'):]
+                    shutil.copy(os.path.join(str(train_dir), 'noonan', img), 
+                                os.path.join(str(train_dir), 'noonan', aug_img))
+
 
 
         if 'fake' in args.additional_data_dir:
@@ -199,7 +248,7 @@ if __name__ == '__main__':
                         # print('copy to:', img_f.replace(args.additional_data_dir, 
                         #                                 verify_type + '/train/' + name))
                         shutil.copy(img_f, os.path.join(str(train_dir), fake_dict[name], os.path.basename(img_f)))
-        
+
         print(fold_idx)
         print('datasets ready')
 
@@ -244,9 +293,9 @@ if __name__ == '__main__':
         for path in test_dir.iterdir():
             if path.is_file():
                 continue
-            print(path)
+            # print(path)
             for fil in path.iterdir():
-                print(fil)
+                # print(fil)
                 orig_name = ''.join([i for i in fil.name.strip().split('.')[0].split('_')[0] if not i.isdigit()])
                 if 'noonan' in orig_name:
                     score_names.append(names_idx['noonan'])
