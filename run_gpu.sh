@@ -9,42 +9,88 @@
 
 module load pytorch
 
-
+DataDir=divided
 LagData=LAG_y_fine
+TransDepth=3
+Model=srm112df_nn
 
-for DataDir in srm112df srm112df_no0
+for Op in "train" "test" "train,test"
 do
-    python fold_cur_reverse.py -ds ${DataDir} -g 0 \
-    > data/facebank/trans/plt_recs/no_trans_split_nOverlap_${DataDir}
+    python fold_cur_trans_tf.py -ds ${DataDir} -g 0 -td ${TransDepth} \
+    -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/trans_${DataDir}_${Model}_${Op}
 
-    python fold_cur_reverse.py -ds ${DataDir} -g 0 -s \
-    > data/facebank/trans/plt_recs/no_trans_split_nOverlap_${DataDir}_s
+    python fold_cur_trans_tf.py -ds ${DataDir} -g 0 -s -td ${TransDepth} \
+    -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/trans_${DataDir}_${Model}_${Op}_s
 
-    python fold_cur_reverse.py -ds ${DataDir} -g 0 -s -rs 888 \
-    > data/facebank/trans/plt_recs/no_trans_split_nOverlap_${DataDir}_s888
+    python fold_cur_trans_tf.py -ds ${DataDir} -g 0 -s -rs 888 -td ${TransDepth} \
+    -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/trans_${DataDir}_${Model}_${Op}_s888
 
-    python fold_cur_reverse.py -ds ${DataDir} -g 0 -tta \
-    > data/facebank/trans/plt_recs/no_trans_split_nOverlap_${DataDir}_tta
-
-    for Op in "train" "test" "train,test"
-    do
-        python fold_cur_reverse.py -ds ${DataDir} -g 0 \
-        -a ${LagData} -ta ${Op} \
-        > data/facebank/trans/plt_recs/no_trans_split_nOverlap_${DataDir}_lag_${Op}
-
-        python fold_cur_reverse.py -ds ${DataDir} -g 0 -s \
-        -a ${LagData} -ta ${Op} \
-        > data/facebank/trans/plt_recs/no_trans_split_nOverlap_${DataDir}_lag_${Op}_s
-
-        python fold_cur_reverse.py -ds ${DataDir} -g 0 -s -rs 888 \
-        -a ${LagData} -ta ${Op} \
-        > data/facebank/trans/plt_recs/no_trans_split_nOverlap_${DataDir}_lag_${Op}_s888
-
-        python fold_cur_reverse.py -ds ${DataDir} -g 0 -tta \
-        -a ${LagData} -ta ${Op} \
-        > data/facebank/trans/plt_recs/no_trans_split_nOverlap_${DataDir}_lag_${Op}_tta
-    done
+    python fold_cur_trans_tf.py -ds ${DataDir} -g 0 -tta -td ${TransDepth} \
+    -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/trans_${DataDir}_${Model}_${Op}_tta
 done
+
+for Op in "test" "train,test"
+do
+    python fold_cur_trans_tf.py -ds ${DataDir} -g 0 -td ${TransDepth} \
+    -a ${LagData} -ta "test" \
+    -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/trans_${DataDir}_lag_test_${Model}_${Op}
+
+    python fold_cur_trans_tf.py -ds ${DataDir} -g 0 -s -td ${TransDepth} \
+    -a ${LagData} -ta "test" \
+    -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/trans_${DataDir}_lag_test_${Model}_${Op}_s
+
+    python fold_cur_trans_tf.py -ds ${DataDir} -g 0 -s -rs 888 -td ${TransDepth} \
+    -a ${LagData} -ta "test" \
+    -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/trans_${DataDir}_lag_test_${Model}_${Op}_s888
+
+    python fold_cur_trans_tf.py -ds ${DataDir} -g 0 -tta -td ${TransDepth} \
+    -a ${LagData} -ta "test" \
+    -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/trans_${DataDir}_lag_test_${Model}_${Op}_tta
+done
+
+# LagData=LAG_y_fine
+
+# for DataDir in srm112df srm112df_no0
+# do
+#     python fold_cur_reverse.py -ds ${DataDir} -g 0 \
+#     > data/facebank/trans/plt_recs/no_trans_split_nOverlap_${DataDir}
+
+#     python fold_cur_reverse.py -ds ${DataDir} -g 0 -s \
+#     > data/facebank/trans/plt_recs/no_trans_split_nOverlap_${DataDir}_s
+
+#     python fold_cur_reverse.py -ds ${DataDir} -g 0 -s -rs 888 \
+#     > data/facebank/trans/plt_recs/no_trans_split_nOverlap_${DataDir}_s888
+
+#     python fold_cur_reverse.py -ds ${DataDir} -g 0 -tta \
+#     > data/facebank/trans/plt_recs/no_trans_split_nOverlap_${DataDir}_tta
+
+#     for Op in "train" "test" "train,test"
+#     do
+#         python fold_cur_reverse.py -ds ${DataDir} -g 0 \
+#         -a ${LagData} -ta ${Op} \
+#         > data/facebank/trans/plt_recs/no_trans_split_nOverlap_${DataDir}_lag_${Op}
+
+#         python fold_cur_reverse.py -ds ${DataDir} -g 0 -s \
+#         -a ${LagData} -ta ${Op} \
+#         > data/facebank/trans/plt_recs/no_trans_split_nOverlap_${DataDir}_lag_${Op}_s
+
+#         python fold_cur_reverse.py -ds ${DataDir} -g 0 -s -rs 888 \
+#         -a ${LagData} -ta ${Op} \
+#         > data/facebank/trans/plt_recs/no_trans_split_nOverlap_${DataDir}_lag_${Op}_s888
+
+#         python fold_cur_reverse.py -ds ${DataDir} -g 0 -tta \
+#         -a ${LagData} -ta ${Op} \
+#         > data/facebank/trans/plt_recs/no_trans_split_nOverlap_${DataDir}_lag_${Op}_tta
+#     done
+# done
 
 # LagData=LAG_y_fine
 
