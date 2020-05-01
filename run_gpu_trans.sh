@@ -35,25 +35,25 @@ done
 
 for Op in "test" "train,test"
 do
-    python fold_cur_trans.py -ds ${DataDir} -g 0 \
+    python fold_cur_trans.py -ds ${DataDir} -g 0 -td ${TransDepth} \
     -a ${LagData} -ta "test" \
     -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_${Op}
+    > data/facebank/trans/plt_recs/trans_${DataDir}_lag_test_${Model}_${Op}
 
-    python fold_cur_trans.py -ds ${DataDir} -g 0 -s \
+    python fold_cur_trans.py -ds ${DataDir} -g 0 -s -td ${TransDepth} \
     -a ${LagData} -ta "test" \
     -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_${Op}_s
+    > data/facebank/trans/plt_recs/trans_${DataDir}_lag_test_${Model}_${Op}_s
 
-    python fold_cur_trans.py -ds ${DataDir} -g 0 -s -rs 888\
+    python fold_cur_trans.py -ds ${DataDir} -g 0 -s -rs 888 -td ${TransDepth} \
     -a ${LagData} -ta "test" \
     -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_${Op}_s888
+    > data/facebank/trans/plt_recs/trans_${DataDir}_lag_test_${Model}_${Op}_s888
 
-    python fold_cur_trans.py -ds ${DataDir} -g 0 -tta \
+    python fold_cur_trans.py -ds ${DataDir} -g 0 -tta -td ${TransDepth} \
     -a ${LagData} -ta "test" \
     -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_${Op}_tta
+    > data/facebank/trans/plt_recs/trans_${DataDir}_lag_test_${Model}_${Op}_tta
 done
 
 # for Model in srm112df srm112df_no0
