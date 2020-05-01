@@ -118,7 +118,7 @@ if __name__ == '__main__':
         full_additional_dir = conf.data_path/'facebank'/args.additional_data_dir/raw_dir
         data_dict['lag'] = np.array(glob.glob(str(full_additional_dir) + '/*'))
         idx_gen['lag'] = kf.split(data_dict['lag'])
-    
+
     if 'inn05' in args.stylegan_data_dir:
         data_dict['inn05'] = np.array(glob.glob(str(full_stylegan_dir) + '/*'))
         idx_gen['inn05'] = kf.split(data_dict['inn05'])
@@ -156,7 +156,7 @@ if __name__ == '__main__':
                 train_set['normal'] = np.concatenate((train_set['normal'], train_set['lag']))
             if 'test' in args.additional_test_or_train:
                 test_set['normal'] = np.concatenate((test_set['normal'], test_set['lag']))
-        
+
         if 'inn05' in data_dict.keys():
             (train_index, test_index) = next(idx_gen['inn05'])
             train_set['inn05'], test_set['inn05'] = data_dict['inn05'][train_index], data_dict['inn05'][test_index]
@@ -217,9 +217,9 @@ if __name__ == '__main__':
             for name in names_considered:
                 for img_f in add_data:
                     if name in img_f.strip().split(os.sep)[-1]:
-                        print('source:', img_f)
-                        print('copy to:', img_f.replace(str(full_additional_dir), 
-                                                        str(train_dir) + os.sep + fake_dict[name]))
+                        # print('source:', img_f)
+                        # print('copy to:', img_f.replace(str(full_additional_dir), 
+                        #                                 str(train_dir) + os.sep + fake_dict[name]))
                         # print('copy to:', img_f.replace(args.additional_data_dir, 
                         #                                 verify_type + '/train/' + name))
                         shutil.copy(img_f, img_f.replace(str(full_additional_dir), 
