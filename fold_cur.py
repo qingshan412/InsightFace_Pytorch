@@ -159,9 +159,9 @@ if __name__ == '__main__':
             (train_index, test_index) = next(idx_gen['inn05'])
             train_set['inn05'], test_set['inn05'] = data_dict['inn05'][train_index], data_dict['inn05'][test_index]
             if 'train' in args.stylegan_test_or_train:
-                train_set['normal'] = np.concatenate((train_set['normal'], train_set['inn05']))
+                train_set['noonan'] = np.concatenate((train_set['noonan'], train_set['inn05']))
             if 'test' in args.stylegan_test_or_train:
-                test_set['normal'] = np.concatenate((test_set['normal'], test_set['inn05']))
+                test_set['noonan'] = np.concatenate((test_set['noonan'], test_set['inn05']))
 
         # remove previous data 
         prev = glob.glob(str(train_dir) + '/*/*')
