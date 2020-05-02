@@ -99,7 +99,7 @@ if __name__ == '__main__':
         full_stylegan_dir = str(conf.data_path/'facebank'/'stylegan'/args.stylegan_data_dir)
         stylegan_folders = os.listdir(full_stylegan_dir)
     if args.additional_data_dir:
-        full_additional_dir = conf.data_path/'facebank'/args.additional_data_dir/raw_dir
+        full_additional_dir = str(conf.data_path/'facebank'/args.additional_data_dir/raw_dir)
 
     # init kfold
     if args.use_shuffled_kfold:
