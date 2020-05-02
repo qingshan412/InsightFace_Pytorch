@@ -12,17 +12,17 @@ module load python pytorch
 DataDir=distinct
 AddDir=divided
 
-python fold_cur.py -ds ${DataDir} -g 0 \
-> data/facebank/trans/plt_recs/no_trans_${DataDir}
+# python fold_cur.py -ds ${DataDir} -g 0 \
+# > data/facebank/trans/plt_recs/no_trans_${DataDir}
 
-python fold_cur.py -ds ${DataDir} -g 0 -s \
-> data/facebank/trans/plt_recs/no_trans_${DataDir}_s
+# python fold_cur.py -ds ${DataDir} -g 0 -s \
+# > data/facebank/trans/plt_recs/no_trans_${DataDir}_s
 
-python fold_cur.py -ds ${DataDir} -g 0 -s -rs 888\
+python fold_cur.py -ds ${DataDir} -g 0 -s -rs 888 \
 > data/facebank/trans/plt_recs/no_trans_${DataDir}_s888
 
-python fold_cur.py -ds ${DataDir} -g 0 -tta \
-> data/facebank/trans/plt_recs/no_trans_${DataDir}_tta
+# python fold_cur.py -ds ${DataDir} -g 0 -tta \
+# > data/facebank/trans/plt_recs/no_trans_${DataDir}_tta
 
 for Op in "train" "test" "train,test"
 do
