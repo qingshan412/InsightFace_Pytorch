@@ -18,8 +18,8 @@ AddDir=divided
 # python fold_cur.py -ds ${DataDir} -g 0 -s \
 # > data/facebank/trans/plt_recs/no_trans_${DataDir}_s
 
-python fold_cur.py -ds ${DataDir} -g 0 -s -rs 888 \
-> data/facebank/trans/plt_recs/no_trans_${DataDir}_s888
+# python fold_cur.py -ds ${DataDir} -g 0 -s -rs 888 \
+# > data/facebank/trans/plt_recs/no_trans_${DataDir}_s888
 
 # python fold_cur.py -ds ${DataDir} -g 0 -tta \
 # > data/facebank/trans/plt_recs/no_trans_${DataDir}_tta
@@ -27,20 +27,20 @@ python fold_cur.py -ds ${DataDir} -g 0 -s -rs 888 \
 for Op in "train" "test" "train,test"
 do
     python fold_cur.py -ds ${DataDir} -g 0 \
-    -a ${AddData} -ta ${Op} \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_${AddData}_${Op}
+    -a ${AddDir} -ta ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_${AddDir}_${Op}
 
     python fold_cur.py -ds ${DataDir} -g 0 -s \
-    -a ${AddData} -ta ${Op} \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_${AddData}_${Op}_s
+    -a ${AddDir} -ta ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_${AddDir}_${Op}_s
 
     python fold_cur.py -ds ${DataDir} -g 0 -s -rs 888 \
-    -a ${AddData} -ta ${Op} \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_${AddData}_${Op}_s888
+    -a ${AddDir} -ta ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_${AddDir}_${Op}_s888
 
     python fold_cur.py -ds ${DataDir} -g 0 -tta \
-    -a ${AddData} -ta ${Op} \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_${AddData}_${Op}_tta
+    -a ${AddDir} -ta ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_${AddDir}_${Op}_tta
 done
 
 # DataDir=divided
