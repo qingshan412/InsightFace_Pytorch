@@ -84,6 +84,8 @@ if __name__ == '__main__':
         #e.g. smile_refine_mtcnn_112_divi
         full_stylegan_dir = str(conf.data_path/'facebank'/'stylegan'/args.stylegan_data_dir)
         stylegan_folders = os.listdir(full_stylegan_dir)
+    if args.additional_data_dir:
+        full_additional_dir = conf.data_path/'facebank'/args.additional_data_dir/raw_dir
 
 
     # prepare folders
@@ -115,7 +117,6 @@ if __name__ == '__main__':
         idx_gen[name] = kf.split(data_dict[name])
 
     if 'LAG' in args.additional_data_dir:
-        full_additional_dir = conf.data_path/'facebank'/args.additional_data_dir/raw_dir
         data_dict['lag'] = np.array(glob.glob(str(full_additional_dir) + '/*'))
         idx_gen['lag'] = kf.split(data_dict['lag'])
 
@@ -191,6 +192,11 @@ if __name__ == '__main__':
                                         os.path.join(str(train_dir), name, img))
                                         # ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
                                         #     '/' + verify_type + '/train/' + name + os.sep + img))
+                if 'divided' in args.additional_data_dir and 'train' in args.additional_test_or_train:
+                    folder = os.path.basename(train_set[name][i])
+                    for img in os.listdir(full_additional_dir + os.sep + folder):
+                        shutil.copy(os.path.join(full_additional_dir, folder, img), 
+                                    os.path.join(str(train_dir), name, img))
             # test
             for i in range(len(test_set[name])):
                 for img in os.listdir(test_set[name][i]):
@@ -207,6 +213,11 @@ if __name__ == '__main__':
                         for img in os.listdir(full_stylegan_dir + os.sep + folder):
                             shutil.copy(os.path.join(full_stylegan_dir, folder, img), 
                                         os.path.join(str(test_dir), name, img))
+                if 'divided' in args.additional_data_dir and 'test' in args.additional_test_or_train:
+                    folder = os.path.basename(test_set[name][i])
+                    for img in os.listdir(full_additional_dir + os.sep + folder):
+                        shutil.copy(os.path.join(full_additional_dir, folder, img), 
+                                    os.path.join(str(test_dir), name, img))
 
 
         if 'fake' in args.additional_data_dir:
