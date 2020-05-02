@@ -9,34 +9,67 @@
 
 module load python pytorch
 
-DataDir=divided
-LagData=LAG_y_fine
+DataDir=distinct
+AddDir=divided
 
-# for Model in srm112df_nn inn05_112
-# do
-Model=inn05_112
-for Op in "train" "train,test"
+python fold_cur.py -ds ${DataDir} -g 0 \
+> data/facebank/trans/plt_recs/no_trans_${DataDir}
+
+python fold_cur.py -ds ${DataDir} -g 0 -s \
+> data/facebank/trans/plt_recs/no_trans_${DataDir}_s
+
+python fold_cur.py -ds ${DataDir} -g 0 -s -rs 888\
+> data/facebank/trans/plt_recs/no_trans_${DataDir}_s888
+
+python fold_cur.py -ds ${DataDir} -g 0 -tta \
+> data/facebank/trans/plt_recs/no_trans_${DataDir}_tta
+
+for Op in "train" "test" "train,test"
 do
     python fold_cur.py -ds ${DataDir} -g 0 \
-    -a ${LagData} -ta ${Op} \
-    -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_${Op}
+    -a ${AddData} -ta ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_${AddData}_${Op}
 
     python fold_cur.py -ds ${DataDir} -g 0 -s \
-    -a ${LagData} -ta ${Op} \
-    -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_${Op}_s
+    -a ${AddData} -ta ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_${AddData}_${Op}_s
 
-    python fold_cur.py -ds ${DataDir} -g 0 -s -rs 888\
-    -a ${LagData} -ta ${Op} \
-    -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_${Op}_s888
+    python fold_cur.py -ds ${DataDir} -g 0 -s -rs 888 \
+    -a ${AddData} -ta ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_${AddData}_${Op}_s888
 
     python fold_cur.py -ds ${DataDir} -g 0 -tta \
-    -a ${LagData} -ta ${Op} \
-    -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_${Op}_tta
+    -a ${AddData} -ta ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_${DataDir}_${AddData}_${Op}_tta
 done
+
+# DataDir=divided
+# LagData=LAG_y_fine
+# for Model in srm112df_nn inn05_112
+# do
+# Model=inn05_112
+# for Op in "train" "train,test"
+# do
+#     python fold_cur.py -ds ${DataDir} -g 0 \
+#     -a ${LagData} -ta ${Op} \
+#     -as ${Model} -ts ${Op} \
+#     > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_${Op}
+
+#     python fold_cur.py -ds ${DataDir} -g 0 -s \
+#     -a ${LagData} -ta ${Op} \
+#     -as ${Model} -ts ${Op} \
+#     > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_${Op}_s
+
+#     python fold_cur.py -ds ${DataDir} -g 0 -s -rs 888\
+#     -a ${LagData} -ta ${Op} \
+#     -as ${Model} -ts ${Op} \
+#     > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_${Op}_s888
+
+#     python fold_cur.py -ds ${DataDir} -g 0 -tta \
+#     -a ${LagData} -ta ${Op} \
+#     -as ${Model} -ts ${Op} \
+#     > data/facebank/trans/plt_recs/no_trans_${DataDir}_lag_test_${Model}_${Op}_tta
+# done
 # done
 
 # Model=srm112df_nn
