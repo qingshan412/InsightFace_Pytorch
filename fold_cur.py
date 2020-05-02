@@ -79,14 +79,6 @@ if __name__ == '__main__':
         exp_name += ('_s' + str(args.random_seed))
     if args.tta:
         exp_name += '_tta'
-    
-    if args.stylegan_data_dir:
-        #e.g. smile_refine_mtcnn_112_divi
-        full_stylegan_dir = str(conf.data_path/'facebank'/'stylegan'/args.stylegan_data_dir)
-        stylegan_folders = os.listdir(full_stylegan_dir)
-    if args.additional_data_dir:
-        full_additional_dir = conf.data_path/'facebank'/args.additional_data_dir/raw_dir
-
 
     # prepare folders
     raw_dir = 'raw_112' #'mtcnn_112_aug'
@@ -101,6 +93,13 @@ if __name__ == '__main__':
     for name in names_considered:
         os.makedirs(str(train_dir) + '/' + name, exist_ok=True)
         os.makedirs(str(test_dir) + '/' + name, exist_ok=True)
+    
+    if args.stylegan_data_dir:
+        #e.g. smile_refine_mtcnn_112_divi
+        full_stylegan_dir = str(conf.data_path/'facebank'/'stylegan'/args.stylegan_data_dir)
+        stylegan_folders = os.listdir(full_stylegan_dir)
+    if args.additional_data_dir:
+        full_additional_dir = conf.data_path/'facebank'/args.additional_data_dir/raw_dir
 
     # init kfold
     if args.use_shuffled_kfold:
