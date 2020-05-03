@@ -13,7 +13,9 @@ DataDir=distinct
 AddDir=divided
 LagData=LAG_y_fine
 
-for Model in srm112df_nn inn05_112 inm05_112 innm05
+#srm112df_nn inn05_112
+
+for Model in inm05_112 innm05
 do
     for Op in "train" "test" "train,test"
     do
