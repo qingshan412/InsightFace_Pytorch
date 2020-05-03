@@ -119,9 +119,9 @@ if __name__ == '__main__':
         data_dict['lag'] = np.array(glob.glob(str(full_additional_dir) + '/*'))
         idx_gen['lag'] = kf.split(data_dict['lag'])
 
-    if 'inn05' in args.stylegan_data_dir:
-        data_dict['inn05'] = np.array(glob.glob(str(full_stylegan_dir) + '/*'))
-        idx_gen['inn05'] = kf.split(data_dict['inn05'])
+    if 'inn' in args.stylegan_data_dir or 'inm' in args.stylegan_data_dir:
+        data_dict['interp'] = np.array(glob.glob(str(full_stylegan_dir) + '/*'))
+        idx_gen['interp'] = kf.split(data_dict['interp'])
 
     learner = face_learner(conf, inference=True)
     
@@ -157,13 +157,13 @@ if __name__ == '__main__':
             if 'test' in args.additional_test_or_train:
                 test_set['normal'] = np.concatenate((test_set['normal'], test_set['lag']))
 
-        if 'inn05' in data_dict.keys():
-            (train_index, test_index) = next(idx_gen['inn05'])
-            train_set['inn05'], test_set['inn05'] = data_dict['inn05'][train_index], data_dict['inn05'][test_index]
+        if 'interp' in data_dict.keys():
+            (train_index, test_index) = next(idx_gen['interp'])
+            train_set['interp'], test_set['interp'] = data_dict['interp'][train_index], data_dict['interp'][test_index]
             if 'train' in args.stylegan_test_or_train:
-                train_set['noonan'] = np.concatenate((train_set['noonan'], train_set['inn05']))
+                train_set['noonan'] = np.concatenate((train_set['noonan'], train_set['interp']))
             if 'test' in args.stylegan_test_or_train:
-                test_set['noonan'] = np.concatenate((test_set['noonan'], test_set['inn05']))
+                test_set['noonan'] = np.concatenate((test_set['noonan'], test_set['interp']))
 
         # remove previous data 
         prev = glob.glob(str(train_dir) + '/*/*')
@@ -183,7 +183,7 @@ if __name__ == '__main__':
                                 # ('/'.join(train_set[name][i].strip().split('/')[:-2]) + 
                                 #     '/' + verify_type + '/train/' + name + os.sep + img))
                 # addition data from stylegan
-                if 'inn05' not in data_dict.keys():
+                if 'interp' not in data_dict.keys():
                     folder = os.path.basename(train_set[name][i])
                     if args.stylegan_data_dir and ('train' in args.stylegan_test_or_train) and (folder in stylegan_folders):
                         for img in os.listdir(full_stylegan_dir + os.sep + folder):
@@ -204,7 +204,7 @@ if __name__ == '__main__':
                                 # ('/'.join(test_set[name][i].strip().split('/')[:-2]) + 
                                 #     '/' + verify_type + '/test/' + name + os.sep + img))
                 # addition data from stylegan
-                if 'inn05' not in data_dict.keys():
+                if 'interp' not in data_dict.keys():
                     folder = os.path.basename(test_set[name][i])
                     if args.stylegan_data_dir and ('test' in args.stylegan_test_or_train) and (folder in stylegan_folders):
                         # and 
