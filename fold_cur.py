@@ -66,10 +66,10 @@ if __name__ == '__main__':
             exp_name += '_sn0w'
         elif 'srm112df_no0' in args.stylegan_data_dir:
             exp_name += '_sf0'
-        elif 'srm112df' in args.stylegan_data_dir:
-            exp_name += '_sf'
         elif 'srm112df_nn' in args.stylegan_data_dir:
             exp_name += '_snn'
+        elif 'srm112df' in args.stylegan_data_dir:
+            exp_name += '_sf'
         else:
             exp_name += ('_' + args.stylegan_data_dir)
         exp_name += ('_' + args.stylegan_test_or_train)
@@ -111,17 +111,25 @@ if __name__ == '__main__':
     data_dict = {}
     idx_gen = {}
     for name in names_considered:
-        data_dict[name] = np.array(glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/raw_dir) + 
-                                            '/' + name + '*'))
+        tmp_list = glob.glob(str(conf.data_path/'facebank'/args.dataset_dir/raw_dir) + 
+                                            '/' + name + '*')
+        if 'innm' in args.stylegan_data_dir:
+            tmp_list = tmp_list + glob.glob(str(full_stylegan_dir) + '/' + name + '*')
+        data_dict[name] = np.array(tmp_list)
         idx_gen[name] = kf.split(data_dict[name])
 
     if 'LAG' in args.additional_data_dir:
         data_dict['lag'] = np.array(glob.glob(str(full_additional_dir) + '/*'))
         idx_gen['lag'] = kf.split(data_dict['lag'])
 
-    if 'inn' in args.stylegan_data_dir or 'inm' in args.stylegan_data_dir:
-        data_dict['interp'] = np.array(glob.glob(str(full_stylegan_dir) + '/*'))
-        idx_gen['interp'] = kf.split(data_dict['interp'])
+    if 'innm' not in args.stylegan_data_dir:
+        if 'inn' in args.stylegan_data_dir or 'inm' in args.stylegan_data_dir:
+            data_dict['interp'] = np.array(glob.glob(str(full_stylegan_dir) + '/*'))
+            idx_gen['interp'] = kf.split(data_dict['interp'])
+            if 'inn' in args.stylegan_data_dir:
+                interp_type = 'noonan'
+            elif 'inm' in args.stylegan_data_dir:
+                interp_type = 'normal'
 
     learner = face_learner(conf, inference=True)
     
@@ -161,9 +169,9 @@ if __name__ == '__main__':
             (train_index, test_index) = next(idx_gen['interp'])
             train_set['interp'], test_set['interp'] = data_dict['interp'][train_index], data_dict['interp'][test_index]
             if 'train' in args.stylegan_test_or_train:
-                train_set['noonan'] = np.concatenate((train_set['noonan'], train_set['interp']))
+                train_set[interp_type] = np.concatenate((train_set[interp_type], train_set['interp']))
             if 'test' in args.stylegan_test_or_train:
-                test_set['noonan'] = np.concatenate((test_set['noonan'], test_set['interp']))
+                test_set[interp_type] = np.concatenate((test_set[interp_type], test_set['interp']))
 
         # remove previous data 
         prev = glob.glob(str(train_dir) + '/*/*')
@@ -196,6 +204,16 @@ if __name__ == '__main__':
                     for img in os.listdir(full_additional_dir + os.sep + folder):
                         shutil.copy(os.path.join(full_additional_dir, folder, img), 
                                     os.path.join(str(train_dir), name, img))
+            # # additional data from interpolation, avoiding overlap between train and test
+            # if 'interp' in data_dict.keys():
+            #     train_idx = set([os.path.basename(item).split('.')[0][6:] for item in train_set[name]])
+            #     for folder in data_dict['interp']:
+            #         if name in os.path.basename(folder):
+            #             idx = os.path.basename(folder)[6:].split('_')
+            #             if idx[0] in train_idx and idx[1] in train_idx:
+            #                 for img in os.listdir(folder):
+            #                     shutil.copy(folder + os.sep + img, 
+            #                                 os.path.join(str(train_dir), name, img))
             # test
             for i in range(len(test_set[name])):
                 for img in os.listdir(test_set[name][i]):
@@ -217,6 +235,16 @@ if __name__ == '__main__':
                     for img in os.listdir(full_additional_dir + os.sep + folder):
                         shutil.copy(os.path.join(full_additional_dir, folder, img), 
                                     os.path.join(str(test_dir), name, img))
+            # # additional data from interpolation, avoiding overlap between train and test
+            # if 'interp' in data_dict.keys():
+            #     test_idx = set([os.path.basename(item).split('.')[0][6:] for item in test_set[name]])
+            #     for folder in data_dict['interp']:
+            #         if name in os.path.basename(folder):
+            #             idx = os.path.basename(folder)[6:].split('_')
+            #             if idx[0] in test_idx and idx[1] in test_idx:
+            #                 for img in os.listdir(folder):
+            #                     shutil.copy(folder + os.sep + img, 
+            #                                 os.path.join(str(test_dir), name, img))
 
 
         if 'fake' in args.additional_data_dir:
