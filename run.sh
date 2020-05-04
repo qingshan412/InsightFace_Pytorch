@@ -16,7 +16,7 @@ LagData=LAG_y_fine
 Model=inn05_112
 Op=train
 
-python fold_cur_avoid.py -ds ${DataDir} -g 3 -k 5 \
+python fold_cur_avoid.py -ds ${DataDir} -g 0 -k 5 \
 -as ${Model} -ts ${Op} \
 # > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}_k5
 
