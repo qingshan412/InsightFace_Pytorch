@@ -48,7 +48,7 @@ if __name__ == '__main__':
     
     names_considered = args.names_considered.strip().split(',')
 
-    exp_name = args.dataset_dir
+    exp_name = args.dataset_dir[:4]
     if args.additional_data_dir:
         if 'LAG' in args.additional_data_dir:
             exp_name += '_lag'
