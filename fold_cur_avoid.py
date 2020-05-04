@@ -86,7 +86,7 @@ if __name__ == '__main__':
     if args.tta:
         verify_type += '_tta'
     if args.use_shuffled_kfold:
-        verify_type += '_shuffled'
+        verify_type += ('_s' + str(args.random_seed))
     train_dir = conf.facebank_path/args.dataset_dir/verify_type/'train'
     test_dir = conf.facebank_path/args.dataset_dir/verify_type/'test'
     conf.facebank_path = train_dir
