@@ -339,11 +339,14 @@ def get_train_dataset_gan(imgs_folder, target_folder, target_size):
                 imgs.append((path, fname))
     mtcnn = MTCNN()
     for img in imgs:
-        new_img = mtcnn.align(Image.open(img[0]), target_size)
-        # if 'divided' in imgs_folder:
-        new_img.save(target_folder + os.sep + '/'.join(img[0].strip().split(os.sep)[-2:]))
-        # else:
-        #     new_img.save(target_folder + os.sep + img[1])
+        bboxes, _ = mtcnn.align_multi(Image.open(img[0]), 1, 30)
+        # the last two params: conf.face_limit, conf.min_face_size
+        if bboxes.shape[0] > 0:
+            new_img = mtcnn.align(Image.open(img[0]), target_size)
+            # if 'divided' in imgs_folder:
+            new_img.save(target_folder + os.sep + '/'.join(img[0].strip().split(os.sep)[-2:]))
+            # else:
+            #     new_img.save(target_folder + os.sep + img[1])
 
 def get_lag_y_data(lag_data, lag_y_data):
     os.makedirs(lag_y_data, exist_ok=True)
