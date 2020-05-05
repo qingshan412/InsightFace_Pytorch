@@ -20,7 +20,9 @@ LagData=LAG_y_fine
 # -as ${Model} -ts ${Op} \
 # > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}_k5
 
-for Model in inn05_112 inm05_112 innm05
+# inn05_112 inm05_112 innm05
+
+for Model in inn05_sf_112 inm05_sf_112 innm05_112
 do
     for Op in "train" "test" "train,test"
     do
