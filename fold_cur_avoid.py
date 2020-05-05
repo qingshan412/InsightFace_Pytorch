@@ -125,7 +125,7 @@ if __name__ == '__main__':
         idx_gen['lag'] = kf.split(data_dict['lag'])
 
     # if 'innm' not in args.stylegan_data_dir:
-    if args.stylegan_data_dir in ['inn05_112','inm05_112','innm05','inn05_sf_112','inm05_sf_112','innm05_sf_112']:
+    if args.stylegan_data_dir in ['inn05_112','inm05_112','innm05','inn05_sf_112','inm05_sf_112','innm05_sf']:
         #'inn' in args.stylegan_data_dir or 'inm' in args.stylegan_data_dir or 'innm' in args.stylegan_data_dir:
         data_dict['interp'] = np.array(glob.glob(str(full_stylegan_dir) + '/*'))
     # idx_gen['interp'] = kf.split(data_dict['interp'])
