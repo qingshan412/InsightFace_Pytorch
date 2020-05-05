@@ -205,7 +205,7 @@ if __name__ == '__main__':
                         shutil.copy(os.path.join(full_additional_dir, folder, img), 
                                     os.path.join(str(train_dir), name, img))
             # additional data from interpolation, avoiding overlap between train and test
-            if 'interp' in data_dict.keys():
+            if 'interp' in data_dict.keys() and 'train' in args.stylegan_test_or_train:
                 train_idx = set([os.path.basename(item).split('.')[0][6:] for item in train_set[name]])
                 for folder in data_dict['interp']:
                     if name in os.path.basename(folder):
@@ -236,7 +236,7 @@ if __name__ == '__main__':
                         shutil.copy(os.path.join(full_additional_dir, folder, img), 
                                     os.path.join(str(test_dir), name, img))
             # additional data from interpolation, avoiding overlap between train and test
-            if 'interp' in data_dict.keys():
+            if 'interp' in data_dict.keys() and 'test' in args.stylegan_test_or_train:
                 test_idx = set([os.path.basename(item).split('.')[0][6:] for item in test_set[name]])
                 for folder in data_dict['interp']:
                     if name in os.path.basename(folder):
