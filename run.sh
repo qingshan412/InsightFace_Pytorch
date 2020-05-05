@@ -13,80 +13,80 @@ DataDir=distinct
 AddDir=divided
 LagData=LAG_y_fine
 
-Model=inn05_112
-Op=train
+# Model=inn05_112
+# Op=train
 
-python fold_cur_avoid.py -ds ${DataDir} -g 0 -k 5 \
--as ${Model} -ts ${Op} \
+# python fold_cur_avoid.py -ds ${DataDir} -g 0 -k 5 \
+# -as ${Model} -ts ${Op} \
 # > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}_k5
 
-# for Model in inn05_112 inm05_112 innm05
-# do
-#     for Op in "train" "test" "train,test"
-#     do
-#         python fold_cur_avoid.py -ds ${DataDir} -g 0 -k 5 \
-#         -as ${Model} -ts ${Op} \
-#         > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}_k5
+for Model in inn05_112 inm05_112 innm05
+do
+    for Op in "train" "test" "train,test"
+    do
+        python fold_cur_avoid.py -ds ${DataDir} -g 0 -k 5 \
+        -as ${Model} -ts ${Op} \
+        > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}_k5
 
-#         python fold_cur_avoid.py -ds ${DataDir} -g 0 -s -k 5 \
-#         -as ${Model} -ts ${Op} \
-#         > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}_k5_s
+        python fold_cur_avoid.py -ds ${DataDir} -g 0 -s -k 5 \
+        -as ${Model} -ts ${Op} \
+        > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}_k5_s
 
-#         python fold_cur_avoid.py -ds ${DataDir} -g 0 -s -rs 888 -k 5 \
-#         -as ${Model} -ts ${Op} \
-#         > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}_k5_s888
+        python fold_cur_avoid.py -ds ${DataDir} -g 0 -s -rs 888 -k 5 \
+        -as ${Model} -ts ${Op} \
+        > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}_k5_s888
 
-#         python fold_cur_avoid.py -ds ${DataDir} -g 0 -tta -k 5 \
-#         -as ${Model} -ts ${Op} \
-#         > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}_k5_tta
-#     done
+        python fold_cur_avoid.py -ds ${DataDir} -g 0 -tta -k 5 \
+        -as ${Model} -ts ${Op} \
+        > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}_k5_tta
+    done
 
-#     for Op in "train" "test" "train,test"
-#     do
-#         python fold_cur_avoid.py -ds ${DataDir} -g 0 -k 5 \
-#         -a ${LagData} -ta ${Op} \
-#         -as ${Model} -ts ${Op} \
-#         > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${LagData}_${Model}_${Op}_k5
+    for Op in "train" "test" "train,test"
+    do
+        python fold_cur_avoid.py -ds ${DataDir} -g 0 -k 5 \
+        -a ${LagData} -ta ${Op} \
+        -as ${Model} -ts ${Op} \
+        > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${LagData}_${Model}_${Op}_k5
 
-#         python fold_cur_avoid.py -ds ${DataDir} -g 0 -s -k 5 \
-#         -a ${LagData} -ta ${Op} \
-#         -as ${Model} -ts ${Op} \
-#         > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${LagData}_${Model}_${Op}_k5_s
+        python fold_cur_avoid.py -ds ${DataDir} -g 0 -s -k 5 \
+        -a ${LagData} -ta ${Op} \
+        -as ${Model} -ts ${Op} \
+        > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${LagData}_${Model}_${Op}_k5_s
 
-#         python fold_cur_avoid.py -ds ${DataDir} -g 0 -s -rs 888 -k 5 \
-#         -a ${LagData} -ta ${Op} \
-#         -as ${Model} -ts ${Op} \
-#         > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${LagData}_${Model}_${Op}_k5_s888
+        python fold_cur_avoid.py -ds ${DataDir} -g 0 -s -rs 888 -k 5 \
+        -a ${LagData} -ta ${Op} \
+        -as ${Model} -ts ${Op} \
+        > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${LagData}_${Model}_${Op}_k5_s888
 
-#         python fold_cur_avoid.py -ds ${DataDir} -g 0 -tta -k 5 \
-#         -a ${LagData} -ta ${Op} \
-#         -as ${Model} -ts ${Op} \
-#         > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${LagData}_${Model}_${Op}_k5_tta
-#     done
+        python fold_cur_avoid.py -ds ${DataDir} -g 0 -tta -k 5 \
+        -a ${LagData} -ta ${Op} \
+        -as ${Model} -ts ${Op} \
+        > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${LagData}_${Model}_${Op}_k5_tta
+    done
 
-#     Op="train,test"
+    Op="train,test"
     
-#     python fold_cur_avoid.py -ds ${DataDir} -g 0 -k 5 \
-#     -a ${LagData} -ta "test" \
-#     -as ${Model} -ts ${Op} \
-#     > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_lag_test_${Model}_${Op}_k5
+    python fold_cur_avoid.py -ds ${DataDir} -g 0 -k 5 \
+    -a ${LagData} -ta "test" \
+    -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_lag_test_${Model}_${Op}_k5
 
-#     python fold_cur_avoid.py -ds ${DataDir} -g 0 -s -k 5 \
-#     -a ${LagData} -ta "test" \
-#     -as ${Model} -ts ${Op} \
-#     > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_lag_test_${Model}_${Op}_k5_s
+    python fold_cur_avoid.py -ds ${DataDir} -g 0 -s -k 5 \
+    -a ${LagData} -ta "test" \
+    -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_lag_test_${Model}_${Op}_k5_s
 
-#     python fold_cur_avoid.py -ds ${DataDir} -g 0 -s -rs 888 -k 5 \
-#     -a ${LagData} -ta "test" \
-#     -as ${Model} -ts ${Op} \
-#     > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_lag_test_${Model}_${Op}_k5_s888
+    python fold_cur_avoid.py -ds ${DataDir} -g 0 -s -rs 888 -k 5 \
+    -a ${LagData} -ta "test" \
+    -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_lag_test_${Model}_${Op}_k5_s888
 
-#     python fold_cur_avoid.py -ds ${DataDir} -g 0 -tta -k 5 \
-#     -a ${LagData} -ta "test" \
-#     -as ${Model} -ts ${Op} \
-#     > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_lag_test_${Model}_${Op}_k5_tta
+    python fold_cur_avoid.py -ds ${DataDir} -g 0 -tta -k 5 \
+    -a ${LagData} -ta "test" \
+    -as ${Model} -ts ${Op} \
+    > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_lag_test_${Model}_${Op}_k5_tta
 
-# done
+done
 
 # DataDir=distinct
 # AddDir=divided
