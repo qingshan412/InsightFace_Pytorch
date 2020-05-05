@@ -22,7 +22,7 @@ LagData=LAG_y_fine
 
 # inn05_112 inm05_112 innm05
 
-for Model in inn05_sf_112 inm05_sf_112 innm05_112
+for Model in inn05_sf_112 inm05_sf_112 innm05_sf
 do
     for Op in "train" "test" "train,test"
     do
