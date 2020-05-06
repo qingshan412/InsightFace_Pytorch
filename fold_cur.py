@@ -32,8 +32,8 @@ if __name__ == '__main__':
                         default="", type=str)
     parser.add_argument("-ta", "--additional_test_or_train", help="use additional data in only train, or test, or both", 
                         default="", type=str)
-    parser.add_argument("-as", "--stylegan_data_dir", help="where to get the additional data, "
-                        "not only for the stylegan", default="", type=str)
+    parser.add_argument("-as", "--stylegan_data_dir", help="where to get the additional data", 
+                        default="", type=str)
     parser.add_argument("-ts", "--stylegan_test_or_train", help="use stylegan data in only train, or test, or both", 
                         default="", type=str)
     args = parser.parse_args()
@@ -80,6 +80,9 @@ if __name__ == '__main__':
     if args.tta:
         exp_name += '_tta'
 
+    print(exp_name)
+
+
     # prepare folders
     raw_dir = 'raw_112' #'mtcnn_112_aug'
     verify_type = 'no_retrain' #'mtcnn_112_aug' 'verify'
@@ -93,13 +96,14 @@ if __name__ == '__main__':
     for name in names_considered:
         os.makedirs(str(train_dir) + '/' + name, exist_ok=True)
         os.makedirs(str(test_dir) + '/' + name, exist_ok=True)
-    
+
     if args.stylegan_data_dir:
         #e.g. smile_refine_mtcnn_112_divi
         full_stylegan_dir = str(conf.data_path/'facebank'/'stylegan'/args.stylegan_data_dir)
         stylegan_folders = os.listdir(full_stylegan_dir)
     if args.additional_data_dir:
         full_additional_dir = str(conf.data_path/'facebank'/args.additional_data_dir/raw_dir)
+
 
     # init kfold
     if args.use_shuffled_kfold:
