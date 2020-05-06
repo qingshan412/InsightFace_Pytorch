@@ -70,6 +70,8 @@ if __name__ == '__main__':
             exp_name += '_snn'
         elif 'srm112df' in args.stylegan_data_dir:
             exp_name += '_sf'
+        elif args.stylegan_data_dir.endswith('_112'):
+            exp_name += ('_' + args.stylegan_data_dir[:-4])
         else:
             exp_name += ('_' + args.stylegan_data_dir)
         exp_name += ('_' + args.stylegan_test_or_train)
