@@ -115,6 +115,7 @@ if __name__ == '__main__':
                                             '/' + name + '*')
         if 'innm' in args.stylegan_data_dir:
             tmp_list = tmp_list + glob.glob(str(full_stylegan_dir) + '/' + name + '*')
+            stylegan_folders = []
         data_dict[name] = np.array(tmp_list)
         idx_gen[name] = kf.split(data_dict[name])
 
@@ -124,6 +125,7 @@ if __name__ == '__main__':
 
     if 'innm' not in args.stylegan_data_dir:
         if 'inn' in args.stylegan_data_dir or 'inm' in args.stylegan_data_dir:
+            stylegan_folders = []
             data_dict['interp'] = np.array(glob.glob(str(full_stylegan_dir) + '/*'))
             idx_gen['interp'] = kf.split(data_dict['interp'])
             if 'inn' in args.stylegan_data_dir:
