@@ -9,52 +9,56 @@
 
 module load pytorch
 
-DataDir=divided
+# DataDir=divided
+DataDir=distinct
 LagData=LAG_y_fine
 TransDepth=3
-Model=inn05_sf_112
+# Model=inn05_112
 # inn05_112
 
-for Op in "train" "test" "train,test"
+for Model in inn05_112 inn05_sf_112
 do
-    python fold_cur_trans.py -ds ${DataDir} -g 0 -td ${TransDepth} \
-    -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/trans_${DataDir}_${Model}_${Op}
+    for Op in "train" "test" "train,test"
+    do
+        python fold_cur_trans.py -ds ${DataDir} -g 0 -td ${TransDepth} \
+        -as ${Model} -ts ${Op} \
+        > data/facebank/trans/plt_recs/trans_${DataDir}_${Model}_${Op}
 
-    python fold_cur_trans.py -ds ${DataDir} -g 0 -s -td ${TransDepth} \
-    -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/trans_${DataDir}_${Model}_${Op}_s
+        python fold_cur_trans.py -ds ${DataDir} -g 0 -s -td ${TransDepth} \
+        -as ${Model} -ts ${Op} \
+        > data/facebank/trans/plt_recs/trans_${DataDir}_${Model}_${Op}_s
 
-    python fold_cur_trans.py -ds ${DataDir} -g 0 -s -rs 888 -td ${TransDepth} \
-    -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/trans_${DataDir}_${Model}_${Op}_s888
+        python fold_cur_trans.py -ds ${DataDir} -g 0 -s -rs 888 -td ${TransDepth} \
+        -as ${Model} -ts ${Op} \
+        > data/facebank/trans/plt_recs/trans_${DataDir}_${Model}_${Op}_s888
 
-    python fold_cur_trans.py -ds ${DataDir} -g 0 -tta -td ${TransDepth} \
-    -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/trans_${DataDir}_${Model}_${Op}_tta
-done
+        python fold_cur_trans.py -ds ${DataDir} -g 0 -tta -td ${TransDepth} \
+        -as ${Model} -ts ${Op} \
+        > data/facebank/trans/plt_recs/trans_${DataDir}_${Model}_${Op}_tta
+    done
 
-for Op in "test" "train,test"
-do
-    python fold_cur_trans.py -ds ${DataDir} -g 0 -td ${TransDepth} \
-    -a ${LagData} -ta "test" \
-    -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/trans_${DataDir}_lag_test_${Model}_${Op}
+    for Op in "test" "train,test"
+    do
+        python fold_cur_trans.py -ds ${DataDir} -g 0 -td ${TransDepth} \
+        -a ${LagData} -ta "test" \
+        -as ${Model} -ts ${Op} \
+        > data/facebank/trans/plt_recs/trans_${DataDir}_lag_test_${Model}_${Op}
 
-    python fold_cur_trans.py -ds ${DataDir} -g 0 -s -td ${TransDepth} \
-    -a ${LagData} -ta "test" \
-    -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/trans_${DataDir}_lag_test_${Model}_${Op}_s
+        python fold_cur_trans.py -ds ${DataDir} -g 0 -s -td ${TransDepth} \
+        -a ${LagData} -ta "test" \
+        -as ${Model} -ts ${Op} \
+        > data/facebank/trans/plt_recs/trans_${DataDir}_lag_test_${Model}_${Op}_s
 
-    python fold_cur_trans.py -ds ${DataDir} -g 0 -s -rs 888 -td ${TransDepth} \
-    -a ${LagData} -ta "test" \
-    -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/trans_${DataDir}_lag_test_${Model}_${Op}_s888
+        python fold_cur_trans.py -ds ${DataDir} -g 0 -s -rs 888 -td ${TransDepth} \
+        -a ${LagData} -ta "test" \
+        -as ${Model} -ts ${Op} \
+        > data/facebank/trans/plt_recs/trans_${DataDir}_lag_test_${Model}_${Op}_s888
 
-    python fold_cur_trans.py -ds ${DataDir} -g 0 -tta -td ${TransDepth} \
-    -a ${LagData} -ta "test" \
-    -as ${Model} -ts ${Op} \
-    > data/facebank/trans/plt_recs/trans_${DataDir}_lag_test_${Model}_${Op}_tta
+        python fold_cur_trans.py -ds ${DataDir} -g 0 -tta -td ${TransDepth} \
+        -a ${LagData} -ta "test" \
+        -as ${Model} -ts ${Op} \
+        > data/facebank/trans/plt_recs/trans_${DataDir}_lag_test_${Model}_${Op}_tta
+    done
 done
 
 # for Model in srm112df srm112df_no0
