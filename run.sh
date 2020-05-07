@@ -9,8 +9,8 @@
 
 module load python pytorch
 
-# DataDir=distinct
-DataDir=divided
+DataDir=distinct
+# DataDir=divided
 # AddDir=divided
 LagData=LAG_y_fine
 
@@ -22,8 +22,9 @@ LagData=LAG_y_fine
 # > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}_k5
 
 # inm05_112 innm05 inn05_sf_112 inm05_sf_112 innm05_sf
+# innm05 innm05_sf
 
-for Model in innm05 innm05_sf
+for Model in inn05_sf_112
 do
     for Op in "train" "test" "train,test"
     do
