@@ -26,24 +26,24 @@ LagData=LAG_y_fine
 
 for Model in inn05_sf_112
 do
-    for Op in "train" "test" "train,test"
-    do
-        python fold_cur.py -ds ${DataDir} -g 0 \
-        -as ${Model} -ts ${Op} \
-        > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}
+    # for Op in "train" "test" "train,test"
+    # do
+    #     python fold_cur.py -ds ${DataDir} -g 0 \
+    #     -as ${Model} -ts ${Op} \
+    #     > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}
 
-        python fold_cur.py -ds ${DataDir} -g 0 -s \
-        -as ${Model} -ts ${Op} \
-        > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}_s
+    #     python fold_cur.py -ds ${DataDir} -g 0 -s \
+    #     -as ${Model} -ts ${Op} \
+    #     > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}_s
 
-        python fold_cur.py -ds ${DataDir} -g 0 -s -rs 888 \
-        -as ${Model} -ts ${Op} \
-        > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}_s888
+    #     python fold_cur.py -ds ${DataDir} -g 0 -s -rs 888 \
+    #     -as ${Model} -ts ${Op} \
+    #     > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}_s888
 
-        python fold_cur.py -ds ${DataDir} -g 0 -tta \
-        -as ${Model} -ts ${Op} \
-        > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}_tta
-    done
+    #     python fold_cur.py -ds ${DataDir} -g 0 -tta \
+    #     -as ${Model} -ts ${Op} \
+    #     > data/facebank/trans/plt_recs/no_trans_avoid_${DataDir}_${Model}_${Op}_tta
+    # done
 
     for Op in "train" "test" "train,test"
     do
