@@ -15,8 +15,9 @@ LagData=LAG_y_fine
 TransDepth=3
 # Model=inn05_112
 # inn05_112
+#  inn05_112 inn05_sf_112
 
-for Model in inn05_112 inn05_sf_112
+for Model in srm112df_nn
 do
     for Op in "train" "test" "train,test"
     do
